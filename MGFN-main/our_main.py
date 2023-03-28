@@ -12,28 +12,38 @@ from config import *
 from models.mgfn import mgfn
 from datasets.dataset import Dataset
 from train import train
-from test import test
+# from test import test
 import datetime
 
 def save_config(save_path):
-    path = save_path+'/'
+    path = save_path + '/'
     os.makedirs(path, exist_ok=True)
     f = open(path + "config_{}.txt".format(datetime.datetime.now()), 'w')
     for key in vars(args).keys():
-        f.write('{}: {}'.format(key,vars(args)[key]))
+        f.write('{}: {}'.format(key, vars(args)[key]))
         f.write('\n')
 
-if args.datasetname == "UCF-bg-fg-sepa":
-    savepath = './ckpt/{}_{}_{}_{}_{}_{}_{}'.format(args.datasetname,args.feat_extractor,args.lr,args.batch_size,
-                                                    args.lossratio,args.bothratio,args.comment)
-elif args.add_mag_info == True:
-    savepath = './ckpt/{}_{}_{}_{}_{}_{}'.format(args.datasetname, args.feat_extractor, args.lr, args.batch_size,args.mag_ratio,
-                                              args.comment)
-else:
-    savepath = './ckpt/{}_{}_{}_{}_{}'.format(args.datasetname,args.feat_extractor,args.lr,args.batch_size,
-                                                    args.comment)
+# if args.datasetname == "UCF-bg-fg-sepa":
+#     savepath = './ckpt/{}_{}_{}_{}_{}_{}_{}'.format(args.datasetname,  # UCF or other
+#                                                     args.feat_extractor,  # ['i3d', 'c3d']
+#                                                     args.lr,  # learning rates
+#                                                     args.batch_size,  # (default: 16)
+#                                                     args.lossratio,  #
+#                                                     args.bothratio,
+#                                                     args.comment)
+# elif args.add_mag_info == True:
+#     savepath = './ckpt/{}_{}_{}_{}_{}_{}'.format(args.datasetname, args.feat_extractor, args.lr, args.batch_size,args.mag_ratio,
+#                                               args.comment)
+# else:
+#     savepath = './ckpt/{}_{}_{}_{}_{}'.format(args.datasetname,args.feat_extractor,args.lr,args.batch_size,
+#                                                     args.comment)
+
+savepath = "/home/marc/Documents/sandbox"
 save_config(savepath)
-log_writer = SummaryWriter(savepath)
+
+# log_writer = SummaryWriter(savepath)
+
+
 try:
      set_start_method('spawn')
 except RuntimeError:
@@ -41,7 +51,7 @@ except RuntimeError:
 
 
 if __name__ == '__main__':
-    args=option.parse_args()
+    args = option.parse_args()
     config = Config(args)
     train_nloader = DataLoader(Dataset(args, test_mode=False, is_normal=True),
                                batch_size=args.batch_size, shuffle=False,
@@ -91,12 +101,12 @@ if __name__ == '__main__':
 
         cost, loss_smooth, loss_sparse = train(train_nloader, train_aloader, model, args.batch_size, optimizer,
                                                    device, iterator)
-        log_writer.add_scalar('loss_contrastive', cost, step)
+        # log_writer.add_scalar('loss_contrastive', cost, step)
 
         if step % 1 == 0 and step > 0:
             auc, pr_auc = test(test_loader, model, args, device, savepath)
-            log_writer.add_scalar('auc-roc', auc, step)
-            log_writer.add_scalar('pr_auc', pr_auc, step)
+            # log_writer.add_scalar('auc-roc', auc, step)
+            # log_writer.add_scalar('pr_auc', pr_auc, step)
 
             test_info["epoch"].append(step)
             test_info["test_AUC"].append(auc)

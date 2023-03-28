@@ -5,10 +5,10 @@ import option
 args=option.parse_args()
 from torch import nn
 from tqdm import tqdm
+
 def sparsity(arr, batch_size, lamda2):
     loss = torch.mean(torch.norm(arr, dim=0))
     return lamda2*loss
-
 
 def smooth(arr, lamda1):
     arr2 = torch.zeros_like(arr)
@@ -76,11 +76,10 @@ class mgfn_loss(torch.nn.Module):
 
 
 
-def train(nloader, aloader, model, batch_size, optimizer, device,iterator = 0):
+def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
     with torch.set_grad_enabled(True):
         model.train()
-        for step, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(
-                zip(nloader, aloader))):
+        for step, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
 
             input = torch.cat((ninput, ainput), 0).to(device)
 
@@ -99,11 +98,10 @@ def train(nloader, aloader, model, batch_size, optimizer, device,iterator = 0):
 
             cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude) + loss_smooth + loss_sparse
 
-
             optimizer.zero_grad()
             cost.backward()
 
             optimizer.step()
             iterator += 1
-        return  cost.item(),loss_smooth.item(),loss_sparse.item()
+        return cost.item(), loss_smooth.item(), loss_sparse.item()
 

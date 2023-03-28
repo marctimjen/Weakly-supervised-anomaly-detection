@@ -2,9 +2,9 @@ import torch.utils.data as data
 import numpy as np
 from utils.utils import process_feat
 import torch
-torch.set_default_tensor_type('torch.cuda.FloatTensor')
+# torch.set_default_tensor_type('torch.cuda.FloatTensor')
 import option
-args=option.parse_args()
+args = option.parse_args()
 
 class Dataset(data.Dataset):
     def __init__(self, args, is_normal=True, transform=None, test_mode=False):
@@ -25,11 +25,11 @@ class Dataset(data.Dataset):
         if self.test_mode is False:
             if args.datasetname == 'UCF':
                 if self.is_normal:
-                    self.list = self.list[810:]#ucf 810; sht63; xd 9525
+                    self.list = self.list[810:] #ucf 810; sht63; xd 9525
                     print('normal list')
                     print(self.list)
                 else:
-                    self.list = self.list[:810]#ucf 810; sht 63; 9525
+                    self.list = self.list[:810] #ucf 810; sht 63; 9525
                     print('abnormal list')
                     print(self.list)
             elif args.datasetname == 'XD':

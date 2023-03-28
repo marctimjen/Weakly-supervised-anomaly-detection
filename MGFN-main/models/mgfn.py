@@ -1,9 +1,9 @@
 import torch
 from torch import nn, einsum
-from utils.utils import FeedForward,LayerNorm, GLANCE,FOCUS
+from utils.utils import FeedForward, LayerNorm, GLANCE, FOCUS
 import option
 
-args=option.parse_args()
+args = option.parse_args()
 
 def exists(val):
     return val is not None
@@ -40,7 +40,8 @@ def MSNSD(features,scores,bs,batch_size,drop_out,ncrops,k):
         abnormal_scores = normal_scores
         abnormal_features = normal_features
 
-    select_idx = torch.ones_like(nfea_magnitudes).cuda()
+    # select_idx = torch.ones_like(nfea_magnitudes).cuda()
+    select_idx = torch.ones_like(nfea_magnitudes)
     select_idx = drop_out(select_idx)
 
 
@@ -62,7 +63,9 @@ def MSNSD(features,scores,bs,batch_size,drop_out,ncrops,k):
                                 dim=1)
 
 
-    select_idx_normal = torch.ones_like(nfea_magnitudes).cuda()
+    # select_idx_normal = torch.ones_like(nfea_magnitudes).cuda()
+    select_idx_normal = torch.ones_like(nfea_magnitudes)
+
     select_idx_normal = drop_out(select_idx_normal)
     nfea_magnitudes_drop = nfea_magnitudes * select_idx_normal
     idx_normal = torch.topk(nfea_magnitudes_drop, k, dim=1)[1]
@@ -174,7 +177,7 @@ class mgfn(nn.Module):
         self.to_logits = nn.Sequential(
             nn.LayerNorm(last_dim)
         )
-        self.batch_size =  args.batch_size
+        self.batch_size = args.batch_size
         self.fc = nn.Linear(last_dim, 1)
         self.sigmoid = nn.Sigmoid()
         self.drop_out = nn.Dropout(args.dropout_rate)

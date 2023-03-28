@@ -4,6 +4,7 @@ import torch
 import torch as nn
 from torch import nn, einsum
 from einops import rearrange
+
 class Visualizer(object):
     def __init__(self, env='default', **kwargs):
         self.vis = visdom.Visdom(env=env, **kwargs)
