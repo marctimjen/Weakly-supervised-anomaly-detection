@@ -33,13 +33,13 @@ class Visualizer(object):
         self.vis.scatter(X=data, win=name)
 
 def process_feat(feat, length):
-    new_feat = np.zeros((length, feat.shape[1])).astype(np.float32) #UCF(32,2048)
-    r = np.linspace(0, len(feat), length+1, dtype=np.int) #(33,)
+    new_feat = np.zeros((length, feat.shape[1])).astype(np.float32)  # UCF(32,2048)
+    r = np.linspace(0, len(feat), length+1, dtype=np.int)  # (33,)
     for i in range(length):
-        if r[i]!=r[i+1]:
-            new_feat[i,:] = np.mean(feat[r[i]:r[i+1],:], 0)
+        if r[i] != r[i+1]:
+            new_feat[i, :] = np.mean(feat[r[i]:r[i+1], :], 0)
         else:
-            new_feat[i,:] = feat[r[i],:]
+            new_feat[i, :] = feat[r[i], :]
     return new_feat
 
 
@@ -163,7 +163,7 @@ class GLANCE(nn.Module):
         self.norm = LayerNorm(dim)
         self.to_qkv = nn.Conv1d(dim, inner_dim * 3, 1, bias = False)
         self.to_out = nn.Conv1d(inner_dim, dim, 1)
-        self.attn =0
+        self.attn = 0
 
     def forward(self, x):
         x = self.norm(x)

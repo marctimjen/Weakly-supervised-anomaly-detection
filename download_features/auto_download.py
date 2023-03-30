@@ -81,7 +81,7 @@ class ClickMouse(threading.Thread):
 
 kb = board()
 mouse = Controller()
-click_thread = ClickMouse(down_path, tar_path, button, iter=815)  # Normal 526
+click_thread = ClickMouse(down_path, tar_path, button, iter=1139)  # Normal 948
 click_thread.start()
 
 def on_press(key):

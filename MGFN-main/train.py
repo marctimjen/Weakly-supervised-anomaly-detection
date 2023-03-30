@@ -1,14 +1,13 @@
 import torch
 import torch.nn.functional as F
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
-import option
-args=option.parse_args()
 from torch import nn
 from tqdm import tqdm
 
-def sparsity(arr, batch_size, lamda2):
+
+def sparsity(arr, lamda2):
     loss = torch.mean(torch.norm(arr, dim=0))
-    return lamda2*loss
+    return lamda2 * loss
 
 def smooth(arr, lamda1):
     arr2 = torch.zeros_like(arr)
@@ -16,6 +15,9 @@ def smooth(arr, lamda1):
     arr2[-1] = arr[-1]
 
     loss = torch.sum((arr2-arr)**2)
+
+    del arr2
+    del arr
 
     return lamda1*loss
 
@@ -45,14 +47,11 @@ class SigmoidCrossEntropyLoss(nn.Module):
 
 
 class mgfn_loss(torch.nn.Module):
-    def __init__(self, alpha):
+    def __init__(self):
         super(mgfn_loss, self).__init__()
-        self.alpha = alpha
         self.sigmoid = torch.nn.Sigmoid()
         self.criterion = torch.nn.BCELoss()
         self.contrastive = ContrastiveLoss()
-
-
 
     def forward(self, score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude):
         label = torch.cat((nlabel, alabel), 0)
@@ -71,19 +70,28 @@ class mgfn_loss(torch.nn.Module):
                                       0)  # try to cluster the same class
         loss_con_a = self.contrastive(torch.norm(abn_feamagnitude[int(seperate):], p=1, dim=2),
                                       torch.norm(abn_feamagnitude[:int(seperate)], p=1, dim=2), 0)
-        loss_total = loss_cls + 0.001 * (0.001 * loss_con + loss_con_a + loss_con_n )
+        loss_total = loss_cls + 0.001 * (0.001 * loss_con + loss_con_a + loss_con_n)
         return loss_total
 
 
 
 def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
+    """
+    :param nloader (DataLoader): A pytorch dataloader that only loads normal videos
+    :param aloader (DataLoader): A pytorch dataloader that only loads abnormal videos
+    :param model:
+    :param batch_size:
+    :param optimizer:
+    :param device:
+    :return:
+    """
     with torch.set_grad_enabled(True):
         model.train()
         for step, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
 
-            input = torch.cat((ninput, ainput), 0).to(device)
+            inp = torch.cat((ninput, ainput), 0).to(device)
 
-            score_abnormal, score_normal, abn_feamagnitude, nor_feamagnitude, scores = model(input)  # b*32  x 2048
+            score_abnormal, score_normal, abn_feamagnitude, nor_feamagnitude, scores = model(inp)  # b*32  x 2048
             scores = scores.view(batch_size * 32 * 2, -1)
 
             scores = scores.squeeze()
@@ -92,16 +100,17 @@ def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
             nlabel = nlabel[0:batch_size]
             alabel = alabel[0:batch_size]
 
-            loss_criterion = mgfn_loss(0.0001)
-            loss_sparse = sparsity(abn_scores, batch_size, 8e-3)
+            loss_criterion = mgfn_loss()
+            loss_sparse = sparsity(abn_scores, 8e-3)
             loss_smooth = smooth(abn_scores, 8e-4)
 
-            cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude) + loss_smooth + loss_sparse
+            cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude) + \
+                   loss_smooth + loss_sparse
 
             optimizer.zero_grad()
             cost.backward()
-
             optimizer.step()
             iterator += 1
+
         return cost.item(), loss_smooth.item(), loss_sparse.item()
 
