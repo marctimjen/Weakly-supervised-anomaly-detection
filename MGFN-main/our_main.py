@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     # args = option.parse_args()
     # config = Config(args)
-
+    # TODO: Get randomly samples from train loaders + make sure they output more than 100 samples.
     train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
                                        modality=param["modality"], seg_length=param["seg_length"],
                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=True),
@@ -108,7 +108,7 @@ if __name__ == '__main__':
     test_info = {"epoch": [], "test_AUC": [], "test_PR": []}
 
     best_AUC = -1
-    best_PR = -1  # put your own path here
+    best_PR = -1
 
     # for name, value in model.named_parameters():
     #     print(name)
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
         # log_writer.add_scalar('loss_contrastive', cost, step)
         if step % 1 == 0 and step > 0:
-            auc, pr_auc = test(test_loader, model, param, device)
+            auc, pr_auc = test(test_loader, model, param, device)  # TODO: ugly
             # log_writer.add_scalar('auc-roc', auc, step)
             # log_writer.add_scalar('pr_auc', pr_auc, step)
 
@@ -139,7 +139,7 @@ if __name__ == '__main__':
                     torch.save(model.state_dict(), save_path + param["model_name"] + f'{step}-i3d.pkl')
                     save_best_record(test_info, os.path.join(save_path, f'{step}-step-AUC.txt'))
             else:
-                if test_info["test_AUC"][-1] > best_AUC :
+                if test_info["test_AUC"][-1] > best_AUC:
                     best_AUC = test_info["test_AUC"][-1]
                     torch.save(model.state_dict(), save_path + param["model_name"] + f'{step}-i3d.pkl')
                     save_best_record(test_info, os.path.join(save_path, f'{step}-step-AUC.txt'))

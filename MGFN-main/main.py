@@ -107,7 +107,7 @@ if __name__ == '__main__':
                     torch.save(model.state_dict(), savepath + '/' + args.model_name + '{}-i3d.pkl'.format(step))
                     save_best_record(test_info, os.path.join(savepath + "/", '{}-step-AUC.txt'.format(step)))
             else:
-                if test_info["test_AUC"][-1] > best_AUC :
+                if test_info["test_AUC"][-1] > best_AUC:
                     best_AUC = test_info["test_AUC"][-1]
                     torch.save(model.state_dict(), savepath + '/' + args.model_name + '{}-i3d.pkl'.format(step))
                     save_best_record(test_info, os.path.join(savepath + "/", '{}-step-AUC.txt'.format(step)))
