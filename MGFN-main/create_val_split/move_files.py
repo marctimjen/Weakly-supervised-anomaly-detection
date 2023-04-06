@@ -12,7 +12,7 @@ with open(path + rf"ucf-i3d-val.list", 'r') as f:  # use a context manager to sa
 old_path = "/home/cv05f23/data/train"
 new_path = "/home/cv05f23/data/UCF/train"
 for i in train:
-    shutil.move(i, new_path + i[len(old_path):])
+    shutil.move(old_path + i[len(new_path):], i)
 
 with open(path + rf"ucf-i3d-val.list", 'r') as f:  # use a context manager to safely opening and closing files
     val = [line.strip() for line in f.readlines()]  # use strip to get rid of the \n at the end of string
@@ -20,4 +20,4 @@ with open(path + rf"ucf-i3d-val.list", 'r') as f:  # use a context manager to sa
 old_path = "/home/cv05f23/data/train"
 new_path = "/home/cv05f23/data/UCF/val"
 for i in val:
-    shutil.move(i, new_path + i[len(old_path):])
+    shutil.move(old_path + i[len(new_path):], i)
