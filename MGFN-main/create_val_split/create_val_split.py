@@ -1,6 +1,8 @@
 import numpy as np
 import re
 
+np.random.seed(42)  # set seed for random permutation
+
 path = rf"/home/cv05f23/data/UCF/lists/"
 
 with open(path + rf"ucf-i3d.list", 'r') as f:  # use a context manager to safely opening and closing files
