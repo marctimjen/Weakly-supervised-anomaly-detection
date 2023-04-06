@@ -38,7 +38,7 @@ train_set = []
 
 
 for key in vals.keys():
-    random_nr = np.random.choice(range(len(vals[key])), len(vals[key]))
+    random_nr = np.random.choice(range(len(vals[key])), len(vals[key]), replace=False)
     validation_set.extend([vals[key][i] for i in random_nr[:anomaly_nr[key]]])
     train_set.extend([vals[key][i] for i in random_nr[anomaly_nr[key]:]])
 
