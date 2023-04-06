@@ -29,7 +29,7 @@ def test(dataloader, model, params, device):
 
         gt = np.load(params["gt"])
         pred = list(pred.cpu().detach().numpy())
-        pred = np.repeat(np.array(pred), 16)
+        pred = np.repeat(np.array(pred), 16)  # repeat (eg. x5 will expand each entry of a list by 5 [0, 1] => [0 x5, 1 x5]).
         fpr, tpr, threshold = roc_curve(list(gt), pred)
         rec_auc = auc(fpr, tpr)
         precision, recall, th = precision_recall_curve(list(gt), pred)
