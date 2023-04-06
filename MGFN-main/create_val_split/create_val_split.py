@@ -3,12 +3,12 @@ import re
 
 np.random.seed(42)  # set seed for random permutation
 
-path = rf"/home/cv05f23/data/UCF/lists/"
+path = rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/"
 
 with open(path + rf"ucf-i3d.list", 'r') as f:  # use a context manager to safely opening and closing files
     ls = [line.strip() for line in f.readlines()]  # use strip to get rid of the \n at the end of string
 
-print(ls)
+#print(ls)
 vals = dict()
 
 for i in ls:
@@ -49,6 +49,7 @@ with open(path + rf"ucf-i3d-train.list", 'w+') as f:  # use a context manager to
         final_path = new_path + j[len(old_path):]
         f.write(f"{final_path}\n")  # https://www.scaler.com/topics/python-write-list-to-file/
 
+new_path = "/home/cv05f23/data/UCF/val"
 with open(path + rf"ucf-i3d-val.list", 'w+') as f:  # use a context manager to safely opening and closing files
     for j in validation_set:
         final_path = new_path + j[len(old_path):]
