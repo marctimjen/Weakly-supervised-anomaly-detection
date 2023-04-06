@@ -42,6 +42,9 @@ for key in vals.keys():
     validation_set.extend([vals[key][i] for i in random_nr[:anomaly_nr[key]]])
     train_set.extend([vals[key][i] for i in random_nr[anomaly_nr[key]:]])
 
+validation_set.sort()  # sort the data
+train_set.sort()  # sort the data
+
 old_path = "/home/cv05f23/data/train"
 new_path = "/home/cv05f23/data/UCF/train"
 with open(path + rf"ucf-i3d-train.list", 'w+') as f:  # use a context manager to safely opening and closing files
