@@ -85,7 +85,7 @@ if __name__ == '__main__':
                                      test_mode=True),
                              batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
     model = model.to(device)
-    model_dict = model.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(params["pretrained_path"], map_location="cpu").items()})
+    model_dict = model.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(params["pretrained_path"], map_location=device).items()})
     auc = test(test_loader, model, param, device)
 
 
