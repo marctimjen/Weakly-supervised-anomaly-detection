@@ -84,9 +84,9 @@ if __name__ == '__main__':
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname="UCF", modality="RGB", seg_length=32,
                                      test_mode=True),
                              batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
-    print(params["pretrained_path"])
+    print(param["pretrained_path"])
     model = model.to("cpu")
-    model_dict = model.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(params["pretrained_path"], map_location="cpu").items()})
+    model_dict = model.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(param["pretrained_path"], map_location="cpu").items()})
     model = model.to(device)
     auc = test(test_loader, model, param, device)
 
