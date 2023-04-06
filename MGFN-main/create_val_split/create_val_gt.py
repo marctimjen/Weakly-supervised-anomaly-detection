@@ -24,7 +24,7 @@ for i in gt_values:
 # print(info)
 
 
-res = np.load("/home/cv05f23/data/UCF/test_gt/gt-ucf.npy")
+# res = np.load("/home/cv05f23/data/UCF/test_gt/gt-ucf.npy")
 start_of_arr = 0
 end_of_arr = 0
 
@@ -40,7 +40,7 @@ for i in val:
     if ls[2] != -1:
         arr[ls[2]: ls[3] + 1] = 1
     array_dict[string] = arr
-    array_dict[string + "_gt"] = res[start_of_arr: end_of_arr]
+    # array_dict[string + "_gt"] = res[start_of_arr: end_of_arr]
     start_of_arr = end_of_arr
 
 file_names = [i for i in array_dict.keys()]
