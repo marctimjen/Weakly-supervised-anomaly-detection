@@ -56,13 +56,17 @@ if __name__ == '__main__':
             params["test_rgb_list"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
                                       "MGFN-main/UCF_list/ucf-i3d-test.list"
 
+            params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+                                        "MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl"
+
             return "/home/marc/Documents/sandbox"  # path where to wave files
 
         elif args.user == "cluster":
             params["save_dir"] = ""  # where to save results + model
             params["rgb_list"] = ""
-            params["gt"] = ""
-            params["test_rgb_list"] = ""
+            params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf.npy"
+            params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-test.list"
+            params["pretrained_path"] = "/home/cv05f23/data/UCF/lists/UCF_pretrained/mgfn_ucf.pkl"
             return ""  # path where to wave files
 
 
@@ -81,7 +85,7 @@ if __name__ == '__main__':
                                      test_mode=True),
                              batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
     model = model.to(device)
-    model_dict = model.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(r'/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl', map_location="cpu").items()})
+    model_dict = model.load_state_dict({k.replace('module.', ''): v for k, v in torch.load(params["pretrained_path"], map_location="cpu").items()})
     auc = test(test_loader, model, param, device)
 
 
