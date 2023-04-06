@@ -1,7 +1,7 @@
 import numpy as np
 import re
 
-path = rf"/home/cv05f23/data/UCF/lists"
+path = rf"/home/cv05f23/data/UCF/lists/"
 
 with open(path + rf"ucf-i3d.list", 'r') as f:  # use a context manager to safely opening and closing files
     ls = [line.strip() for line in f.readlines()]  # use strip to get rid of the \n at the end of string
