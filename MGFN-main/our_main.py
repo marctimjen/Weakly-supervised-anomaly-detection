@@ -12,6 +12,7 @@ from test import test
 import datetime
 import params
 import os
+import neptune
 
 # import option
 # args = option.parse_args()
@@ -60,9 +61,20 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--params", required=True, help="Params to load")  # which parameters to load
     args = parser.parse_args()
 
+    token = os.getenv('NEPTUNE_API_TOKEN')
+    run = neptune.init_run(
+        project="AAM/anomaly",
+        api_token=token,
+    )
+    run_id = run["sys/id"].fetch()
+
     param = params.HYPERPARAMS[args.params]
+    param["user"] = args.user
+    param["params"] = args.params
+    run["params"] = param
+
     save_path = path_inator(param, args)
-    save_path = save_config(save_path, "25", params=param)
+    save_path = save_config(save_path, run_id, params=param)
 
     # args = option.parse_args()
     # config = Config(args)
@@ -145,3 +157,5 @@ if __name__ == '__main__':
                     save_best_record(test_info, os.path.join(save_path, f'{step}-step-AUC.txt'))
 
     torch.save(model.state_dict(), save_path + param["model_name"] + 'final.pkl')
+
+    run.stop()
