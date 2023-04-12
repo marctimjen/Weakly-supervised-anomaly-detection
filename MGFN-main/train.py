@@ -115,3 +115,36 @@ def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
 
         return cost.item(), loss_smooth.item(), loss_sparse.item()
 
+def val(nloader, aloader, model, batch_size, device):
+    """
+    :param nloader (DataLoader): A pytorch dataloader that only loads normal videos
+    :param aloader (DataLoader): A pytorch dataloader that only loads abnormal videos
+    :param model:
+    :param batch_size:
+    :param optimizer:
+    :param device:
+    :return:
+    """
+    with torch.set_grad_enabled(False):
+        model.eval()
+        for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
+
+            inp = torch.cat((ninput, ainput), 0).to(device)
+
+            score_abnormal, score_normal, abn_feamagnitude, nor_feamagnitude, scores = model(inp)  # b*32  x 2048
+            scores = scores.view(batch_size * 32 * 2, -1)
+
+            scores = scores.squeeze()
+            abn_scores = scores[batch_size * 32:]
+
+            nlabel = nlabel[0:batch_size]
+            alabel = alabel[0:batch_size]
+
+            loss_criterion = mgfn_loss()
+            loss_sparse = sparsity(abn_scores, 8e-3)
+            loss_smooth = smooth(abn_scores, 8e-4)
+
+            cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude) + \
+                    loss_smooth + loss_sparse
+
+        return cost.item()

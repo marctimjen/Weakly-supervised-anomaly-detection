@@ -8,33 +8,43 @@ torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 class Dataset(data.Dataset):
     def __init__(self, rgb_list, datasetname="UCF", modality="RGB", seg_length=32, add_mag_info=False, is_normal=True,
-                 transform=None, test_mode=False):
+                    transform=None, mode="train"):
+        """
+        :param rgb_list:
+        :param datasetname:
+        :param modality:
+        :param seg_length:
+        :param add_mag_info:
+        :param is_normal:
+        :param transform:
+        :param mode: is either "train", "val" or "test
+        """
+
+        assert mode in ["train", "test", "val"], 'mode needs to be "train", "test" or "val"'
+
         self.modality = modality
         self.is_normal = is_normal
         self.datasetname = datasetname
         self.seg_length = seg_length
         self.add_mag_info = add_mag_info
-        if test_mode:
-            print("remember to change rgb_list")
-            self.rgb_list_file = rgb_list
-        else:
-            self.rgb_list_file = rgb_list
+        self.rgb_list_file = rgb_list
+
         self.tranform = transform
-        self.test_mode = test_mode
+        self.mode = mode
         self._parse_list()
         self.num_frame = 0
         self.labels = None
 
     def _parse_list(self):
         self.list = list(open(self.rgb_list_file))
-        if self.test_mode is False:
+        if self.mode != "test":
             if self.datasetname == 'UCF':
                 if self.is_normal:
-                    self.list = self.list[810:] #ucf 810; sht63; xd 9525
+                    self.list = [i for i in self.list if "Normal_Videos" in i]
                     print('normal list')
                     print(self.list)
                 else:
-                    self.list = self.list[:810] #ucf 810; sht 63; 9525
+                    self.list = [i for i in self.list if not("Normal_Videos" in i)]
                     print('abnormal list')
                     print(self.list)
             elif self.datasetname == 'XD':
@@ -47,19 +57,7 @@ class Dataset(data.Dataset):
                     print('abnormal list')
                     print(self.list)
 
-
-    def clear_ram(self, index):
-        """
-        This function is for clearing the ram.
-        """
-        if index % 100 == 0:
-            del self.input_data
-            del self.target_data
-
-
-
     def __getitem__(self, index):
-
         label = self.get_label(index)  # get video level label 0/1
         if self.datasetname == 'UCF':
             features = np.load(self.list[index].strip('\n'), allow_pickle=True)
@@ -72,7 +70,7 @@ class Dataset(data.Dataset):
         if self.tranform is not None:
             features = self.tranform(features)
 
-        if self.test_mode:
+        if self.mode == "test":
             if self.datasetname == 'UCF':
                 mag = np.linalg.norm(features, axis=2)[:, :, np.newaxis]
                 features = np.concatenate((features, mag), axis=2)

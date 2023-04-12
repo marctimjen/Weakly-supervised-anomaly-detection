@@ -18,7 +18,6 @@ file_list = list(open(rgb_list_file))
 num_frame = 0
 gt = []
 for file in file_list:
-
     features = np.load(file.strip('\n'), allow_pickle=True)
     features = [t.cpu().detach().numpy() for t in features]
     features = np.array(features, dtype=np.float32)
@@ -27,7 +26,7 @@ for file in file_list:
     split_file = file.split('/')[-1].split('_')[0]
     mat_prefix = '_x264.mat'
     mat_file = split_file + mat_prefix
- 
+
     count = 0
     if 'Normal_' in file: # if it's normal
         # print('hello')

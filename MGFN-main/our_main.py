@@ -4,10 +4,10 @@ import torch
 from utils.utils import save_best_record
 from tqdm import tqdm
 import argparse
-from torch.multiprocessing import set_start_method
+# from torch.multiprocessing import set_start_method
 from models.mgfn import mgfn
 from datasets.dataset import Dataset
-from train import train
+from train import train, val
 from test import test
 import datetime
 import params
@@ -33,13 +33,16 @@ def path_inator(params, args):
     if args.user == "marc":
         params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
-                             "UCF_list/ucf-i3d.list"
+                                "UCF_list/ucf-i3d.list"
 
         params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
-                       "results/ucf_gt/gt-ucf.npy"
+                        "results/ucf_gt/gt-ucf.npy"
+
+        params["test_rgb_val"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+                                    "MGFN-main/UCF_list/ucf-i3d-val.list"
 
         params["test_rgb_list"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-                                  "MGFN-main/UCF_list/ucf-i3d-test.list"
+                                    "MGFN-main/UCF_list/ucf-i3d-test.list"
 
         return "/home/marc/Documents/sandbox"  # path where to wave files
 
@@ -80,28 +83,40 @@ if __name__ == '__main__':
     # config = Config(args)
     # TODO: Get randomly samples from train loaders + make sure they output more than 100 samples.
     train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
-                                       modality=param["modality"], seg_length=param["seg_length"],
-                                       add_mag_info=param["add_mag_info"], test_mode=False, is_normal=True),
-                               batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
-                               pin_memory=False, drop_last=True)
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
 
     train_aloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
-                                       modality=param["modality"], seg_length=param["seg_length"],
-                                       add_mag_info=param["add_mag_info"], test_mode=False, is_normal=False),
-                               batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
-                               pin_memory=False, drop_last=True)
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=False),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
+
+    val_nloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
+
+    val_aloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=False),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
-                                       modality=param["modality"], seg_length=param["seg_length"],
-                                       add_mag_info=param["add_mag_info"], test_mode=True),
-                             batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], test_mode=True),
+                                batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
 
     model = mgfn(depths=(param["depths1"], param["depths2"], param["depths3"]),
-                 mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
-                 batch_size=param["batch_size"],
-                 dropout_rate=param["dropout_rate"],
-                 mag_ratio=param["mag_ratio"]
-                 )
+                    mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
+                    batch_size=param["batch_size"],
+                    dropout_rate=param["dropout_rate"],
+                    mag_ratio=param["mag_ratio"]
+                    )
 
     if param["pretrained_ckpt"] is not None:
         model_ckpt = torch.load(param["pretrained_ckpt"])
@@ -117,10 +132,9 @@ if __name__ == '__main__':
         os.makedirs(save_path)
 
     optimizer = optim.Adam(model.parameters(), lr=param["lr"][0], weight_decay=param["w_decay"])
-    test_info = {"epoch": [], "test_AUC": [], "test_PR": []}
+    val_info = {"epoch": [], "val_loss": []}
 
-    best_AUC = -1
-    best_PR = -1
+    best_loss = float("inf")
 
     # for name, value in model.named_parameters():
     #     print(name)
@@ -134,27 +148,19 @@ if __name__ == '__main__':
                 param_group["lr"] = param["lr"][step - 1]
 
         cost, loss_smooth, loss_sparse = train(train_nloader, train_aloader, model, param["batch_size"], optimizer,
-                                               device, iterator)
+                                                device, iterator)
 
-        # log_writer.add_scalar('loss_contrastive', cost, step)
         if step % 1 == 0 and step > 0:
-            auc, pr_auc = test(test_loader, model, param, device)  # TODO: ugly
-            # log_writer.add_scalar('auc-roc', auc, step)
-            # log_writer.add_scalar('pr_auc', pr_auc, step)
+            loss = val(nloader=val_nloader, aloader=val_aloader, model=model, batch_size=param["batch_size"],
+                        device=device)
 
-            test_info["epoch"].append(step)
-            test_info["test_AUC"].append(auc)
-            test_info["test_PR"].append(pr_auc)
-            if param["datasetname"] == 'XD':
-                if test_info["test_PR"][-1] > best_PR:
-                    best_PR = test_info["test_PR"][-1]
-                    torch.save(model.state_dict(), save_path + param["model_name"] + f'{step}-i3d.pkl')
-                    save_best_record(test_info, os.path.join(save_path, f'{step}-step-AUC.txt'))
-            else:
-                if test_info["test_AUC"][-1] > best_AUC:
-                    best_AUC = test_info["test_AUC"][-1]
-                    torch.save(model.state_dict(), save_path + param["model_name"] + f'{step}-i3d.pkl')
-                    save_best_record(test_info, os.path.join(save_path, f'{step}-step-AUC.txt'))
+            val_info["epoch"].append(step)
+            val_info["val_loss"].append(loss)
+
+            if val_info["val_loss"][-1] < best_loss:
+                best_loss = val_info["val_loss"][-1]
+                torch.save(model.state_dict(), save_path + param["model_name"] + f'{step}-i3d.pkl')
+                save_best_record(val_info, os.path.join(save_path, f'{step}-step-loss.txt'))
 
     torch.save(model.state_dict(), save_path + param["model_name"] + 'final.pkl')
 
