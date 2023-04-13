@@ -41,12 +41,11 @@ def path_inator(params, args):
         return params["save_dir"]  # path where to save files
 
     elif args.user == "cluster":
-        params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
-        params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
-        params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
-        params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-        params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
-                        "results/ucf_gt/gt-ucf.npy"
+        params["save_dir"] = "/home/cv05f23/data/UCF/results"  # where to save results + model
+        params["rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-train.list"
+        params["test_rgb_val"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-val.list"
+        params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/UCF_list/ucf-i3d-test.list"
+        params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
         return params["save_dir"]  # path where to save files
 
 # try:
