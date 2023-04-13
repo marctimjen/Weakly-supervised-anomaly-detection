@@ -44,7 +44,7 @@ def path_inator(params, args):
         params["save_dir"] = "/home/cv05f23/data/UCF/results"  # where to save results + model
         params["rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-train.list"
         params["test_rgb_val"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-val.list"
-        params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/UCF_list/ucf-i3d-test.list"
+        params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-test.list"
         params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
         return params["save_dir"]  # path where to save files
 
