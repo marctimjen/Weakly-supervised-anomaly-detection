@@ -95,8 +95,7 @@ def modelsize(model, input, type_size=4):
 def save_best_record(test_info, file_path):
     fo = open(file_path, "w")
     fo.write("epoch: {}\n".format(test_info["epoch"][-1]))
-    fo.write(str(test_info["test_AUC"][-1]))
-    fo.write(str(test_info["test_PR"][-1]))
+    fo.write(str(test_info["val_loss"][-1]))
     fo.close()
 
 class LayerNorm(nn.Module):

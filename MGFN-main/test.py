@@ -47,14 +47,11 @@ if __name__ == '__main__':
     def path_inator(params, args):
         if args.user == "marc":
             params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
-            params["rgb_list"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
-                                 "UCF_list/ucf-i3d.list"
-
+            params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
+            params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
+            params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
             params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
-                           "results/ucf_gt/gt-ucf.npy"
-
-            params["test_rgb_list"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-                                      "MGFN-main/UCF_list/ucf-i3d-test.list"
+                            "results/ucf_gt/gt-ucf.npy"
 
             params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
                                         "MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl"
@@ -82,8 +79,8 @@ if __name__ == '__main__':
     model = Model()
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname="UCF", modality="RGB", seg_length=32,
-                                     test_mode=True),
-                             batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
+                                        mode="test"),
+                                batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
     model = model.to("cpu")
 
     di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_path"], map_location="cpu").items()}

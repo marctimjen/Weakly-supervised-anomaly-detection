@@ -1,0 +1,105 @@
+{"obj": {"type": "AssignString", "path": ["sys", "name"], "value": "Untitled"}, "version": 1}
+{"obj": {"type": "AssignString", "path": ["sys", "description"], "value": ""}, "version": 2}
+{"obj": {"type": "AssignString", "path": ["monitoring", "7f1cec5f", "hostname"], "value": "Marc-supercomputer"}, "version": 3}
+{"obj": {"type": "AssignString", "path": ["sys", "hostname"], "value": "Marc-supercomputer"}, "version": 4}
+{"obj": {"type": "AssignString", "path": ["monitoring", "7f1cec5f", "pid"], "value": "4731"}, "version": 5}
+{"obj": {"type": "AssignString", "path": ["monitoring", "7f1cec5f", "tid"], "value": "140615088051264"}, "version": 6}
+{"obj": {"type": "AssignBool", "path": ["sys", "failed"], "value": false}, "version": 7}
+{"obj": {"type": "ClearStringLog", "path": ["monitoring", "7f1cec5f", "stdout"]}, "version": 8}
+{"obj": {"type": "ClearStringLog", "path": ["monitoring", "7f1cec5f", "stderr"]}, "version": 9}
+{"obj": {"type": "AssignString", "path": ["source_code", "entrypoint"], "value": "our_main.py"}, "version": 10}
+{"obj": {"type": "UploadFileSet", "path": ["source_code", "files"], "file_globs": ["/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/our_main.py"], "reset": "False"}, "version": 11}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "7f1cec5f", "cpu"], "min": 0.0, "max": 100.0, "unit": "%"}, "version": 12}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "7f1cec5f", "cpu"]}, "version": 13}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "7f1cec5f", "memory"], "min": 0.0, "max": 31.233219146728516, "unit": "GB"}, "version": 14}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "7f1cec5f", "memory"]}, "version": 15}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "7f1cec5f", "gpu_0"], "min": 0.0, "max": 100.0, "unit": "%"}, "version": 16}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "7f1cec5f", "gpu_0"]}, "version": 17}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "7f1cec5f", "gpu_1"], "min": 0.0, "max": 100.0, "unit": "%"}, "version": 18}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "7f1cec5f", "gpu_1"]}, "version": 19}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "7f1cec5f", "gpu_memory_0"], "min": 0.0, "max": 12.0, "unit": "GB"}, "version": 20}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "7f1cec5f", "gpu_memory_0"]}, "version": 21}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "7f1cec5f", "gpu_memory_1"], "min": 0.0, "max": 12.0, "unit": "GB"}, "version": 22}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "7f1cec5f", "gpu_memory_1"]}, "version": 23}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "cpu"], "values": [{"value": 8.1, "step": null, "ts": 1681363373.464603}]}, "version": 24}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "memory"], "values": [{"value": 4.667198181152344, "step": null, "ts": 1681363373.464603}]}, "version": 25}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_0"], "values": [{"value": 44.0, "step": null, "ts": 1681363373.464603}]}, "version": 26}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_0"], "values": [{"value": 0.83349609375, "step": null, "ts": 1681363373.464603}]}, "version": 27}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_1"], "values": [{"value": 0.06451416015625, "step": null, "ts": 1681363373.464603}]}, "version": 28}
+{"obj": {"type": "AssignString", "path": ["params", "feat_extractor"], "value": "i3d"}, "version": 29}
+{"obj": {"type": "AssignInt", "path": ["params", "feature_size"], "value": 2048}, "version": 30}
+{"obj": {"type": "AssignInt", "path": ["params", "hiddensize"], "value": 512}, "version": 31}
+{"obj": {"type": "AssignString", "path": ["params", "comment"], "value": "mgfn"}, "version": 32}
+{"obj": {"type": "AssignString", "path": ["params", "local_con"], "value": "static"}, "version": 33}
+{"obj": {"type": "AssignInt", "path": ["params", "head_K"], "value": 4}, "version": 34}
+{"obj": {"type": "AssignInt", "path": ["params", "workers"], "value": 0}, "version": 35}
+{"obj": {"type": "AssignInt", "path": ["params", "num_classes"], "value": 2}, "version": 36}
+{"obj": {"type": "AssignInt", "path": ["params", "plot_freq"], "value": 10}, "version": 37}
+{"obj": {"type": "AssignInt", "path": ["params", "max_epoch"], "value": 1000}, "version": 38}
+{"obj": {"type": "AssignString", "path": ["params", "model_name"], "value": "mgfn"}, "version": 39}
+{"obj": {"type": "AssignString", "path": ["params", "gt"], "value": "data/ucf_tencrop_1d/gt-ucf.npy"}, "version": 40}
+{"obj": {"type": "AssignInt", "path": ["params", "depths1"], "value": 3}, "version": 41}
+{"obj": {"type": "AssignInt", "path": ["params", "depths2"], "value": 3}, "version": 42}
+{"obj": {"type": "AssignInt", "path": ["params", "depths3"], "value": 2}, "version": 43}
+{"obj": {"type": "AssignString", "path": ["params", "mgfn_type1"], "value": "gb"}, "version": 44}
+{"obj": {"type": "AssignString", "path": ["params", "mgfn_type2"], "value": "fb"}, "version": 45}
+{"obj": {"type": "AssignString", "path": ["params", "mgfn_type3"], "value": "fb"}, "version": 46}
+{"obj": {"type": "AssignFloat", "path": ["params", "dropout_rate"], "value": 0.7}, "version": 47}
+{"obj": {"type": "AssignFloat", "path": ["params", "mag_ratio"], "value": 0.1}, "version": 48}
+{"obj": {"type": "AssignInt", "path": ["params", "seg_length"], "value": 32}, "version": 49}
+{"obj": {"type": "AssignBool", "path": ["params", "add_mag_info"], "value": false}, "version": 50}
+{"obj": {"type": "AssignString", "path": ["params", "rgb_list"], "value": "data/ucf_tencrop_1d/ucf-i3d.list"}, "version": 51}
+{"obj": {"type": "AssignString", "path": ["params", "val_rgb_list"], "value": "data/ucf_tencrop_1d/ucf-i3d-val.list"}, "version": 52}
+{"obj": {"type": "AssignString", "path": ["params", "test_rgb_list"], "value": "data/ucf_tencrop_1d/ucf-i3d-test.list"}, "version": 53}
+{"obj": {"type": "AssignString", "path": ["params", "datasetname"], "value": "UCF"}, "version": 54}
+{"obj": {"type": "AssignString", "path": ["params", "dataset"], "value": "UCF"}, "version": 55}
+{"obj": {"type": "AssignString", "path": ["params", "modality"], "value": "RGB"}, "version": 56}
+{"obj": {"type": "AssignInt", "path": ["params", "T"], "value": 32}, "version": 57}
+{"obj": {"type": "AssignInt", "path": ["params", "P"], "value": 10}, "version": 58}
+{"obj": {"type": "AssignFloat", "path": ["params", "alpha"], "value": 0.1}, "version": 59}
+{"obj": {"type": "AssignInt", "path": ["params", "k"], "value": 3}, "version": 60}
+{"obj": {"type": "AssignInt", "path": ["params", "lambda_1"], "value": 1}, "version": 61}
+{"obj": {"type": "AssignInt", "path": ["params", "lambda_2"], "value": 1}, "version": 62}
+{"obj": {"type": "AssignFloat", "path": ["params", "lambda_3"], "value": 0.001}, "version": 63}
+{"obj": {"type": "AssignFloat", "path": ["params", "w_decay"], "value": 0.0005}, "version": 64}
+{"obj": {"type": "AssignInt", "path": ["params", "batch_size"], "value": 16}, "version": 65}
+{"obj": {"type": "AssignString", "path": ["params", "user"], "value": "marc"}, "version": 66}
+{"obj": {"type": "AssignString", "path": ["params", "params"], "value": "params_def"}, "version": 67}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stderr"], "values": [{"value": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/our_main.py:71: NeptuneUnsupportedType: You're attempting to log a type that is not directly supported by Neptune (<class 'list'>).\n        Convert the value to a supported type, such as a string or float, or use stringify_unsupported(obj)\n        for dictionaries or collections that contain unsupported values.\n        For more, see https://docs.neptune.ai/help/value_of_unsupported_type\n  run[\"params\"] = param\n", "step": null, "ts": 1681363373.5432942}]}, "version": 68}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stderr"], "values": [{"value": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/our_main.py:71: NeptuneUnsupportedType: You're attempting to log a type that is not directly supported by Neptune (<class 'NoneType'>).\n        Convert the value to a supported type, such as a string or float, or use stringify_unsupported(obj)\n        for dictionaries or collections that contain unsupported values.\n        For more, see https://docs.neptune.ai/help/value_of_unsupported_type\n  run[\"params\"] = param\n", "step": null, "ts": 1681363373.5436118}]}, "version": 69}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "normal list", "step": null, "ts": 1681363373.548357}]}, "version": 70}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1681363373.5489936}]}, "version": 71}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "['/home/marc/Documents/data/UCF/train/Normal_Videos001_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos002_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos004_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos005_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos007_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos008_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos009_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos011_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos012_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos013_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos016_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos017_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos020_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Normal_Videos021_x264_i3d.npy\\n', '/hom", "step": null, "ts": 1681363373.5497212}]}, "version": 72}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1681363373.5499954}]}, "version": 73}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "abnormal list", "step": null, "ts": 1681363373.5502217}]}, "version": 74}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1681363373.5504177}]}, "version": 75}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "['/home/marc/Documents/data/UCF/train/Abuse001_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse002_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse003_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse004_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse005_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse006_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse007_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse008_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse009_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse010_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse011_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse012_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse013_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse014_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse015_x264_i3d.npy\\n', '/home/marc/Documents/data/UCF/train/Abuse016_x264_i3d", "step": null, "ts": 1681363373.5506046}]}, "version": 76}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1681363373.5507786}]}, "version": 77}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "Warning: string series 'monitoring/7f1cec5f/stdout' value was longer than 1000 characters and was truncated. This warning is printed only once per series.\n", "step": null, "ts": 1681363373.5509355}]}, "version": 78}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "cpu"], "values": [{"value": 8.2, "step": null, "ts": 1681363383.475344}]}, "version": 79}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "memory"], "values": [{"value": 4.682956695556641, "step": null, "ts": 1681363383.475344}]}, "version": 80}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_0"], "values": [{"value": 7.0, "step": null, "ts": 1681363383.475344}]}, "version": 81}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_0"], "values": [{"value": 0.83349609375, "step": null, "ts": 1681363383.475344}]}, "version": 82}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_1"], "values": [{"value": 0.06451416015625, "step": null, "ts": 1681363383.475344}]}, "version": 83}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "cpu"], "values": [{"value": 6.6, "step": null, "ts": 1681363393.482482}]}, "version": 84}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "memory"], "values": [{"value": 4.683353424072266, "step": null, "ts": 1681363393.482482}]}, "version": 85}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_0"], "values": [{"value": 23.0, "step": null, "ts": 1681363393.482482}]}, "version": 86}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_0"], "values": [{"value": 0.83349609375, "step": null, "ts": 1681363393.482482}]}, "version": 87}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_1"], "values": [{"value": 0.06451416015625, "step": null, "ts": 1681363393.482482}]}, "version": 88}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "cpu"], "values": [{"value": 2.5, "step": null, "ts": 1681363403.4874089}]}, "version": 89}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "memory"], "values": [{"value": 4.6936492919921875, "step": null, "ts": 1681363403.4874089}]}, "version": 90}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_0"], "values": [{"value": 45.0, "step": null, "ts": 1681363403.4874089}]}, "version": 91}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_0"], "values": [{"value": 0.82958984375, "step": null, "ts": 1681363403.4874089}]}, "version": 92}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_1"], "values": [{"value": 0.06451416015625, "step": null, "ts": 1681363403.4874089}]}, "version": 93}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "cpu"], "values": [{"value": 4.7, "step": null, "ts": 1681363413.4911442}]}, "version": 94}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "memory"], "values": [{"value": 4.673000335693359, "step": null, "ts": 1681363413.4911442}]}, "version": 95}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_0"], "values": [{"value": 25.0, "step": null, "ts": 1681363413.4911442}]}, "version": 96}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_0"], "values": [{"value": 0.82958984375, "step": null, "ts": 1681363413.4911442}]}, "version": 97}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "7f1cec5f", "gpu_memory_1"], "values": [{"value": 0.06451416015625, "step": null, "ts": 1681363413.4911442}]}, "version": 98}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stderr"], "values": [{"value": "Traceback (most recent call last):\n", "step": null, "ts": 1681363418.9807007}]}, "version": 99}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stderr"], "values": [{"value": "", "step": null, "ts": 1681363418.9819057}]}, "version": 100}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stderr"], "values": [{"value": "  File \"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/our_main.py\", line 91, in <module>\n    val_nloader = DataLoader(Dataset(rgb_list=param[\"test_rgb_val\"], datasetname=param[\"datasetname\"],\n", "step": null, "ts": 1681363418.982157}]}, "version": 101}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stderr"], "values": [{"value": "", "step": null, "ts": 1681363418.982369}]}, "version": 102}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stderr"], "values": [{"value": "KeyboardInterrupt\n", "step": null, "ts": 1681363418.982551}]}, "version": 103}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stderr"], "values": [{"value": "", "step": null, "ts": 1681363418.982729}]}, "version": 104}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "7f1cec5f", "stdout"], "values": [{"value": "Shutting down background jobs, please wait a moment...\n", "step": null, "ts": 1681363418.9890203}]}, "version": 105}

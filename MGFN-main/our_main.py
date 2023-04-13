@@ -32,26 +32,22 @@ def save_config(save_path, nept_id, params):
 def path_inator(params, args):
     if args.user == "marc":
         params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
-        params["rgb_list"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
-                                "UCF_list/ucf-i3d.list"
-
+        params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
+        params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
+        params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
         params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
                         "results/ucf_gt/gt-ucf.npy"
 
-        params["test_rgb_val"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-                                    "MGFN-main/UCF_list/ucf-i3d-val.list"
-
-        params["test_rgb_list"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-                                    "MGFN-main/UCF_list/ucf-i3d-test.list"
-
-        return "/home/marc/Documents/sandbox"  # path where to wave files
+        return params["save_dir"]  # path where to save files
 
     elif args.user == "cluster":
-        params["save_dir"] = ""  # where to save results + model
-        params["rgb_list"] = ""
-        params["gt"] = ""
-        params["test_rgb_list"] = ""
-        return ""  # path where to wave files
+        params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
+        params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
+        params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
+        params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
+        params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
+                        "results/ucf_gt/gt-ucf.npy"
+        return params["save_dir"]  # path where to save files
 
 # try:
 #      set_start_method('spawn')
@@ -81,34 +77,34 @@ if __name__ == '__main__':
 
     # args = option.parse_args()
     # config = Config(args)
-    # TODO: Get randomly samples from train loaders + make sure they output more than 100 samples.
+
     train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=True),
+                                        add_mag_info=param["add_mag_info"], mode="train", is_normal=True),
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     train_aloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=False),
+                                        add_mag_info=param["add_mag_info"], mode="train", is_normal=False),
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     val_nloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=True),
+                                        add_mag_info=param["add_mag_info"], mode="val", is_normal=True),
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     val_aloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], test_mode=False, is_normal=False),
+                                        add_mag_info=param["add_mag_info"], mode="val", is_normal=False),
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], test_mode=True),
+                                        add_mag_info=param["add_mag_info"], mode="test"),
                                 batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
 
     model = mgfn(depths=(param["depths1"], param["depths2"], param["depths3"]),
@@ -149,10 +145,13 @@ if __name__ == '__main__':
 
         cost, loss_smooth, loss_sparse = train(train_nloader, train_aloader, model, param["batch_size"], optimizer,
                                                 device, iterator)
+        run["train/loss"].log(cost)
 
         if step % 1 == 0 and step > 0:
             loss = val(nloader=val_nloader, aloader=val_aloader, model=model, batch_size=param["batch_size"],
                         device=device)
+
+            run["validation/loss"].log(loss)
 
             val_info["epoch"].append(step)
             val_info["val_loss"].append(loss)
