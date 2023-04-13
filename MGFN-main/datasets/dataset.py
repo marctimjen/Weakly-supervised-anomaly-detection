@@ -41,12 +41,12 @@ class Dataset(data.Dataset):
             if self.datasetname == 'UCF':
                 if self.is_normal:
                     self.list = [i for i in self.list if "Normal_Videos" in i]
-                    print('normal list')
-                    print(self.list)
+                    # print('normal list')
+                    # print(self.list)
                 else:
                     self.list = [i for i in self.list if not("Normal_Videos" in i)]
-                    print('abnormal list')
-                    print(self.list)
+                    # print('abnormal list')
+                    # print(self.list)
             elif self.datasetname == 'XD':
                 if self.is_normal:
                     self.list = self.list[9525:]

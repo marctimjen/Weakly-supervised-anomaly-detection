@@ -74,31 +74,34 @@ if __name__ == '__main__':
     save_path = path_inator(param, args)
     save_path = save_config(save_path, run_id, params=param)
 
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    print(device)
+
     # args = option.parse_args()
     # config = Config(args)
 
     train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
                                         add_mag_info=param["add_mag_info"], mode="train", is_normal=True),
-                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                batch_size=param["batch_size"], shuffle=True, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     train_aloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
                                         add_mag_info=param["add_mag_info"], mode="train", is_normal=False),
-                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                batch_size=param["batch_size"], shuffle=True, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     val_nloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
                                         add_mag_info=param["add_mag_info"], mode="val", is_normal=True),
-                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                batch_size=param["batch_size"], shuffle=True, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     val_aloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
                                         add_mag_info=param["add_mag_info"], mode="val", is_normal=False),
-                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                batch_size=param["batch_size"], shuffle=True, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
@@ -118,8 +121,7 @@ if __name__ == '__main__':
         model.load_state_dict(model_ckpt)
         print("pretrained loaded")
 
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    # device = torch.device("cpu")
+
 
     model = model.to(device)
 

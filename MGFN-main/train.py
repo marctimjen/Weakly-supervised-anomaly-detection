@@ -88,6 +88,7 @@ def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
     """
     with torch.set_grad_enabled(True):
         model.train()
+        total_cost = 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
 
             inp = torch.cat((ninput, ainput), 0).to(device)
@@ -113,7 +114,9 @@ def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
             optimizer.step()
             iterator += 1
 
-        return cost.item(), loss_smooth.item(), loss_sparse.item()
+            total_cost += cost.item()
+
+        return total_cost, loss_smooth.item(), loss_sparse.item()
 
 def val(nloader, aloader, model, batch_size, device):
     """
@@ -127,6 +130,7 @@ def val(nloader, aloader, model, batch_size, device):
     """
     with torch.set_grad_enabled(False):
         model.eval()
+        total_cost = 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
 
             inp = torch.cat((ninput, ainput), 0).to(device)
@@ -146,5 +150,5 @@ def val(nloader, aloader, model, batch_size, device):
 
             cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude) + \
                     loss_smooth + loss_sparse
-
-        return cost.item()
+            total_cost += cost.item()
+        return total_cost
