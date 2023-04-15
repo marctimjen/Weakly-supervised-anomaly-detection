@@ -8,7 +8,7 @@ torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 class Dataset(data.Dataset):
     def __init__(self, rgb_list, datasetname="UCF", modality="RGB", seg_length=32, add_mag_info=False, is_normal=True,
-                    transform=None, mode="train"):
+                    transform=None, mode="train", shuffle=True):
         """
         :param rgb_list:
         :param datasetname:
@@ -35,6 +35,10 @@ class Dataset(data.Dataset):
         self.num_frame = 0
         self.labels = None
 
+        self.i = 0  # iterater when to stop the data-loading
+        self.shuffle = shuffle
+        self.idx_list = self.randomizer(shuffle=self.shuffle, lenght=len(self.list))
+
     def _parse_list(self):
         self.list = list(open(self.rgb_list_file))
         if self.mode != "test":
@@ -57,8 +61,18 @@ class Dataset(data.Dataset):
                     print('abnormal list')
                     print(self.list)
 
-    def __getitem__(self, index):
-        label = self.get_label(index)  # get video level label 0/1
+    def __getitem__(self, idx):
+
+        self.i += 1
+        index = self.idx_list[idx]
+        if self.i % self.__len__() == 0:
+            self.idx_list = self.randomizer(shuffle=self.shuffle, lenght=len(self.list))
+
+        if self.is_normal:  # get video level label 0/1
+            label = torch.tensor(0.0)
+        else:
+            label = torch.tensor(1.0)
+
         if self.datasetname == 'UCF':
             features = np.load(self.list[index].strip('\n'), allow_pickle=True)
             features = np.array(features, dtype=np.float32)
@@ -100,17 +114,15 @@ class Dataset(data.Dataset):
                     feature = np.concatenate((feature, feature_mag), axis=1)
                 return feature, label
 
-    def get_label(self, index):
-        if self.is_normal:
-            # label[0] = 1
-            label = torch.tensor(0.0)
-        else:
-            label = torch.tensor(1.0)
-            # label[1] = 1
-        return label
-
     def __len__(self):
         return len(self.list)
+
+    def randomizer(self, shuffle: bool, lenght: int) -> np.array:
+        if shuffle:
+            return np.random.permutation(lenght)
+        else:
+            return np.arange(lenght)
+
 
     def get_num_frames(self):
         return self.num_frame

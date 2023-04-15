@@ -82,32 +82,27 @@ if __name__ == '__main__':
 
     train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], mode="train", is_normal=True),
-                                batch_size=param["batch_size"], shuffle=True, num_workers=param["workers"],
+                                        add_mag_info=param["add_mag_info"], mode="train", is_normal=True, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     train_aloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], mode="train", is_normal=False),
-                                batch_size=param["batch_size"], shuffle=True, num_workers=param["workers"],
+                                        add_mag_info=param["add_mag_info"], mode="train", is_normal=False, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     val_nloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], mode="val", is_normal=True),
-                                batch_size=param["batch_size"], shuffle=True, num_workers=param["workers"],
+                                        add_mag_info=param["add_mag_info"], mode="val", is_normal=True, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
     val_aloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], mode="val", is_normal=False),
-                                batch_size=param["batch_size"], shuffle=True, num_workers=param["workers"],
+                                        add_mag_info=param["add_mag_info"], mode="val", is_normal=False, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
-
-    test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
-                                        modality=param["modality"], seg_length=param["seg_length"],
-                                        add_mag_info=param["add_mag_info"], mode="test"),
-                                batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
 
     model = mgfn(depths=(param["depths1"], param["depths2"], param["depths3"]),
                     mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
