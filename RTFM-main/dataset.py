@@ -7,31 +7,20 @@ torch.set_default_tensor_type('torch.FloatTensor')
 
 
 class Dataset(data.Dataset):
-    def __init__(self, args, is_normal=True, transform=None, test_mode=False):
-        self.modality = args.modality
-        self.is_normal = is_normal
-        self.dataset = args.dataset
-        if self.dataset == 'shanghai':
-            if test_mode:
-                self.rgb_list_file = 'list/shanghai-i3d-test-10crop.list'
-            else:
-                self.rgb_list_file = 'list/shanghai-i3d-train-10crop.list'
-        else:
-            if test_mode:
-                self.rgb_list_file = 'list/ucf-i3d-test.list'
-            else:
-                self.rgb_list_file = 'list/ucf-i3d.list'
+    def __init__(self, dataset, rgb_list, is_normal=True, transform=None, mode="train"):
 
+        assert mode in ["train", "test", "val"], 'mode needs to be "train", "test" or "val"'
+        self.is_normal = is_normal
+        self.dataset = dataset
+        self.rgb_list_file = rgb_list  # path to path-file
         self.tranform = transform
-        self.test_mode = test_mode
+        self.mode = mode
         self._parse_list()
         self.num_frame = 0
         self.labels = None
-
-
     def _parse_list(self):
         self.list = list(open(self.rgb_list_file))
-        if self.test_mode is False:
+        if self.mode != "test":
             if self.dataset == 'shanghai':
                 if self.is_normal:
                     self.list = self.list[63:]
@@ -44,11 +33,11 @@ class Dataset(data.Dataset):
 
             elif self.dataset == 'ucf':
                 if self.is_normal:
-                    self.list = self.list[810:]
+                    self.list = [i for i in self.list if "Normal_Videos" in i]
                     print('normal list for ucf')
                     print(self.list)
                 else:
-                    self.list = self.list[:810]
+                    self.list = [i for i in self.list if not("Normal_Videos" in i)]
                     print('abnormal list for ucf')
                     print(self.list)
 
@@ -60,7 +49,7 @@ class Dataset(data.Dataset):
 
         if self.tranform is not None:
             features = self.tranform(features)
-        if self.test_mode:
+        if self.mode == "test":
             return features
         else:
             # process 10-cropped snippet feature

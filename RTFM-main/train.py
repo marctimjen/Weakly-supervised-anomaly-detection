@@ -4,7 +4,7 @@ import torch.nn.functional as F
 torch.set_default_tensor_type('torch.FloatTensor')
 from torch.nn import L1Loss
 from torch.nn import MSELoss
-
+from tqdm import tqdm
 
 
 def sparsity(arr, batch_size, lamda2):
@@ -79,36 +79,64 @@ class RTFM_loss(torch.nn.Module):
         return loss_total
 
 
-def train(nloader, aloader, model, batch_size, optimizer, viz, device):
+def train(nloader, aloader, model, params, optimizer, viz, device):
     with torch.set_grad_enabled(True):
         model.train()
+        total_cost = 0
+        for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
+            input = torch.cat((ninput, ainput), 0).to(device)
 
-        ninput, nlabel = next(nloader)
-        ainput, alabel = next(aloader)
+            score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, \
+            feat_normal_bottom, scores, scores_nor_bottom, scores_nor_abn_bag, _ = model(input)  # b*32  x 2048
 
-        input = torch.cat((ninput, ainput), 0).to(device)
+            scores = scores.view(params["batch_size"] * 32 * 2, -1)
 
-        score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, \
-        feat_normal_bottom, scores, scores_nor_bottom, scores_nor_abn_bag, _ = model(input)  # b*32  x 2048
+            scores = scores.squeeze()
+            abn_scores = scores[params["batch_size"] * 32:]
 
-        scores = scores.view(batch_size * 32 * 2, -1)
+            nlabel = nlabel[0:params["batch_size"]]
+            alabel = alabel[0:params["batch_size"]]
 
-        scores = scores.squeeze()
-        abn_scores = scores[batch_size * 32:]
+            loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"])
+            loss_sparse = sparsity(abn_scores, params["batch_size"], 8e-3)
+            loss_smooth = smooth(abn_scores, 8e-4)
+            cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn) \
+                    + loss_smooth + loss_sparse
 
-        nlabel = nlabel[0:batch_size]
-        alabel = alabel[0:batch_size]
+            # viz.plot_lines('loss', cost.item())
+            # viz.plot_lines('smooth loss', loss_smooth.item())
+            # viz.plot_lines('sparsity loss', loss_sparse.item())
+            optimizer.zero_grad()
+            cost.backward()
+            optimizer.step()
 
-        loss_criterion = RTFM_loss(0.0001, 100)
-        loss_sparse = sparsity(abn_scores, batch_size, 8e-3)
-        loss_smooth = smooth(abn_scores, 8e-4)
-        cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn) + loss_smooth + loss_sparse
+            total_cost += cost.item()
+        return total_cost
 
-        viz.plot_lines('loss', cost.item())
-        viz.plot_lines('smooth loss', loss_smooth.item())
-        viz.plot_lines('sparsity loss', loss_sparse.item())
-        optimizer.zero_grad()
-        cost.backward()
-        optimizer.step()
+
+def val(nloader, aloader, model, params, device):
+    with torch.set_grad_enabled(False):
+        model.eval()
+        total_cost = 0
+        for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
+            input = torch.cat((ninput, ainput), 0).to(device)
+
+            score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, \
+            feat_normal_bottom, scores, scores_nor_bottom, scores_nor_abn_bag, _ = model(input)  # b*32  x 2048
+
+            scores = scores.view(params["batch_size"] * 32 * 2, -1)
+            scores = scores.squeeze()
+            abn_scores = scores[params["batch_size"] * 32:]
+            nlabel = nlabel[0:params["batch_size"]]
+            alabel = alabel[0:params["batch_size"]]
+
+            loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"])
+            loss_sparse = sparsity(abn_scores, params["batch_size"], 8e-3)
+            loss_smooth = smooth(abn_scores, 8e-4)
+            cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn) \
+                    + loss_smooth + loss_sparse
+
+            total_cost += cost.item()
+        return total_cost
 
 

@@ -11,8 +11,10 @@ def test(dataloader, model, args, viz, device):
         for i, input in enumerate(dataloader):
             input = input.to(device)
             input = input.permute(0, 2, 1, 3)
-            score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, feat_select_normal_bottom, logits, \
-            scores_nor_bottom, scores_nor_abn_bag, feat_magnitudes = model(inputs=input)
+            score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, \
+                feat_select_normal_bottom, logits, scores_nor_bottom, scores_nor_abn_bag, \
+                feat_magnitudes = model(inputs=input)
+
             logits = torch.squeeze(logits, 1)
             logits = torch.mean(logits, 0)
             sig = logits
@@ -41,4 +43,22 @@ def test(dataloader, model, args, viz, device):
         viz.lines('scores', pred)
         viz.lines('roc', tpr, fpr)
         return rec_auc
+
+
+if __name__ == '__main__':
+    import argparse
+    from torch.utils.data import DataLoader
+    from dataset import Dataset
+    import params
+    from model import Model
+
+    parser = argparse.ArgumentParser(description='MGFN')
+    parser.add_argument("-u", '--user', default='cluster',
+                        choices=['cluster', 'marc'])  # this gives dir to data and save loc
+    parser.add_argument("-p", "--params", required=True, help="Params to load")  # which parameters to load
+    args = parser.parse_args()
+
+    test_loader = DataLoader(Dataset(dataset="UCF", test_mode=True),
+                                batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
+
 

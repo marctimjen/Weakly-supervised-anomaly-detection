@@ -33,17 +33,16 @@ def path_inator(params, args):
     if args.user == "marc":
         params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
-        params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
+        params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
         params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
                         "results/ucf_gt/gt-ucf.npy"
-
         return params["save_dir"]  # path where to save files
 
     elif args.user == "cluster":
         params["save_dir"] = "/home/cv05f23/data/UCF/results"  # where to save results + model
         params["rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-train.list"
-        params["test_rgb_val"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-val.list"
+        params["val_rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-val.list"
         params["test_rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list"
         params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
         return params["save_dir"]  # path where to save files
@@ -92,13 +91,13 @@ if __name__ == '__main__':
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
-    val_nloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
+    val_nloader = DataLoader(Dataset(rgb_list=param["val_rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
                                         add_mag_info=param["add_mag_info"], mode="val", is_normal=True, shuffle=True),
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
-    val_aloader = DataLoader(Dataset(rgb_list=param["test_rgb_val"], datasetname=param["datasetname"],
+    val_aloader = DataLoader(Dataset(rgb_list=param["val_rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
                                         add_mag_info=param["add_mag_info"], mode="val", is_normal=False, shuffle=True),
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],

@@ -90,8 +90,8 @@ def modelsize(model, input, type_size=4):
           .format(model._get_name(), total_nums * type_size*2 / 1000 / 1000))
 
 
-def save_best_record(test_info, file_path):
+def save_best_record(val_info, file_path):
     fo = open(file_path, "w")
-    fo.write("epoch: {}\n".format(test_info["epoch"][-1]))
-    fo.write(str(test_info["test_AUC"][-1]))
+    fo.write("epoch: {}\n".format(val_info["epoch"][-1]))
+    fo.write(str(val_info["val_loss"][-1]))
     fo.close()
