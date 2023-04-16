@@ -52,6 +52,7 @@ if __name__ == '__main__':
             params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
             params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
                             "results/ucf_gt/gt-ucf.npy"
+            # params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
 
             params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
                                         "MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl"

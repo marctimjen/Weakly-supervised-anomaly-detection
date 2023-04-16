@@ -10,6 +10,7 @@ import os
 from utils import save_best_record
 from dataset import Dataset
 from train import train, val
+import neptune
 
 # from config import *
 # from test_10crop import test
@@ -52,12 +53,21 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--params", required=True, help="Params to load")  # which parameters to load
     args = parser.parse_args()
 
+    token = os.getenv('NEPTUNE_API_TOKEN')
+    run = neptune.init_run(
+        project="AAM/anomaly",
+        api_token=token,
+    )
+    run_id = run["sys/id"].fetch()
+
     param = params.HYPERPARAMS[args.params]
     param["user"] = args.user
     param["params"] = args.params
+    run["params"] = param
+    run["model"] = "RFTM"
 
     save_path = path_inator(param, args)
-    save_path = save_config(save_path, str(100), params=param)
+    save_path = save_config(save_path, run_id, params=param)
 
     train_nloader = DataLoader(Dataset(dataset=param["dataset"], rgb_list=param["rgb_list"], mode="train",
                                         is_normal=True),
@@ -116,6 +126,9 @@ if __name__ == '__main__':
         loss = train(train_nloader, train_aloader, model, param, optimizer, viz, device)
         val_loss = val(val_nloader, val_aloader, model, param, device)
 
+        run["train/loss"].log(loss)
+        run["validation/loss"].log(val_loss)
+
         val_info["epoch"].append(step)
         val_info["val_loss"].append(val_loss)
 
@@ -125,4 +138,6 @@ if __name__ == '__main__':
             save_best_record(val_info, os.path.join(save_path, '{}-step-val_loss.txt'.format(step)))
 
     torch.save(model.state_dict(), save_path + param["model_name"] + 'final.pkl')
+
+    run.stop()
 
