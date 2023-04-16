@@ -33,21 +33,25 @@ for i in val:
     end_of_arr += length
     arr = np.zeros(length)
     ls = info[string]
-    print(string, end=" ")
+    # print(string, end=" ")
     if ls[0] != -1:
         arr[ls[0]: ls[1] + 1] = 1
-        print(ls[0], ls[1] + 1, end=" ")
+        # print(ls[0], ls[1] + 1, end=" ")
     if ls[2] != -1:
         arr[ls[2]: ls[3] + 1] = 1
-        print(ls[2], ls[3] + 1, end=" ")
+        # print(ls[2], ls[3] + 1, end=" ")
 
-    print("")
+    if any(arr != res[start_of_arr: end_of_arr]):
+        print(string)
+
+    start_of_arr = end_of_arr
+
+    # print("")
     # if ls[0] == -1 and ls[2] == -1:
     #     break
 
     total_anno += np.sum(arr)
 
-    start_of_arr = end_of_arr
 
 print("Amount of annotations in the gt-file:", np.sum(res))
 print("Total amount of annotations in the test-list", total_anno)

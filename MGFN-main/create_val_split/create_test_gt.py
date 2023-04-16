@@ -128,7 +128,7 @@ if __name__ == "__main__":
 # #     if j == 10:
 # #         break
 #
-# # j = 0  # This show that the last videos has not been annotated correctly
+# # j = 0  # This show that the last videos might not have the correct annotatation
 # # for i in array_dict:
 # #     j += 1
 # #     if j % 2 == 0:
