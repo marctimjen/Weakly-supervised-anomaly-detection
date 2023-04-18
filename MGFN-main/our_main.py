@@ -35,8 +35,6 @@ def path_inator(params, args):
         params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
         params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-        params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
-                        "results/ucf_gt/gt-ucf.npy"
         return params["save_dir"]  # path where to save files
 
     elif args.user == "cluster":
@@ -44,7 +42,6 @@ def path_inator(params, args):
         params["rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-train.list"
         params["val_rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-val.list"
         params["test_rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list"
-        params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
         return params["save_dir"]  # path where to save files
 
 # try:
@@ -69,6 +66,7 @@ if __name__ == '__main__':
     param["user"] = args.user
     param["params"] = args.params
     run["params"] = param
+    run["model"] = "MGFN"
 
     save_path = path_inator(param, args)
     save_path = save_config(save_path, run_id, params=param)
@@ -136,18 +134,18 @@ if __name__ == '__main__':
             for param_group in optimizer.param_groups:
                 param_group["lr"] = param["lr"][step - 1]
 
-        cost, loss_smooth, loss_sparse = train(train_nloader, train_aloader, model, param["batch_size"], optimizer,
+        cost, loss_smooth, loss_sparse = train(train_nloader, train_aloader, model, param, optimizer,
                                                 device, iterator)
-        run["train/loss"].log(cost)
+        run["train/loss"].log(cost/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
         if step % 1 == 0 and step > 0:
-            loss = val(nloader=val_nloader, aloader=val_aloader, model=model, batch_size=param["batch_size"],
+            loss = val(nloader=val_nloader, aloader=val_aloader, model=model, params=param,
                         device=device)
 
-            run["validation/loss"].log(loss)
+            run["validation/loss"].log(loss/(param["UCF_val_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
             val_info["epoch"].append(step)
-            val_info["val_loss"].append(loss)
+            val_info["val_loss"].append(loss/(param["UCF_val_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
             if val_info["val_loss"][-1] < best_loss:
                 best_loss = val_info["val_loss"][-1]

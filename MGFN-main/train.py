@@ -5,21 +5,19 @@ from torch import nn
 from tqdm import tqdm
 
 
-def sparsity(arr, lamda2):  # smoothness (14)
+def sparsity(arr, lamda2):  # Sparcity (14)
     loss = torch.mean(torch.norm(arr, dim=0))
     return lamda2 * loss
 
-def smooth(arr, lamda1):  # Spacity (15)
-    arr2 = torch.zeros_like(arr)
-    arr2[:-1] = arr[1:]
-    arr2[-1] = arr[-1]
-
-    loss = torch.sum((arr2-arr)**2)
+def smooth(arr, lamda1):  # smoothness (15)  input 32 x 32 x 1
+    arr1 = arr[:, :-1, :]  # we need to do it only per video.  32 x 31 x 1
+    arr2 = arr[:, 1:, :]   # 32 x 31 x 1
+    loss = torch.sum((arr2 - arr1) ** 2)
 
     del arr2
-    del arr
+    del arr1
 
-    return lamda1*loss
+    return lamda1 * loss
 
 
 class ContrastiveLoss(nn.Module):  # This is used for the three different cases of (9) - (11)
@@ -30,7 +28,7 @@ class ContrastiveLoss(nn.Module):  # This is used for the three different cases 
     def forward(self, output1, output2, label):
         euclidean_distance = F.pairwise_distance(output1, output2, keepdim=True)
         loss_contrastive = torch.mean((1-label) * torch.pow(euclidean_distance, 2) +
-                                      (label) * torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
+                                        (label) * torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
         return loss_contrastive
 
 # class SigmoidCrossEntropyLoss(nn.Module):  # Maybe (L_SCE)
@@ -43,9 +41,10 @@ class ContrastiveLoss(nn.Module):  # This is used for the three different cases 
 #         return torch.abs(torch.mean(- x * target + torch.clamp(x, min=0) + torch.log(tmp)))
 
 class mgfn_loss(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, lambda3):
         super(mgfn_loss, self).__init__()
         # self.sigmoid = torch.nn.Sigmoid()
+        self.lambda3 = lambda3
         self.criterion = torch.nn.BCELoss()  # Sigmoid - should be combined with BCE to create the L_SCE loss.
         self.contrastive = ContrastiveLoss()  # L_MC
 
@@ -71,12 +70,12 @@ class mgfn_loss(torch.nn.Module):
                                       torch.norm(abn_feamagnitude[:int(seperate)], p=1, dim=2),
                                       0)  # (10)
 
-        loss_total = loss_cls + 0.001 * (0.001 * loss_con + loss_con_a + loss_con_n)
+        loss_total = loss_cls + self.lambda3 * (loss_con + loss_con_a + loss_con_n)  # Last part is MC loss?
         return loss_total
 
 
 
-def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
+def train(nloader, aloader, model, params, optimizer, device, iterator = 0):
     """
     :param nloader (DataLoader): A pytorch dataloader that only loads normal videos
     :param aloader (DataLoader): A pytorch dataloader that only loads abnormal videos
@@ -94,20 +93,17 @@ def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
             inp = torch.cat((ninput, ainput), 0).to(device)
 
             score_abnormal, score_normal, abn_feamagnitude, nor_feamagnitude, scores = model(inp)  # b*32  x 2048
-            scores = scores.view(batch_size * 32 * 2, -1)
+            loss_smooth = smooth(scores, params["lambda_1"])  # scores is the s_a^(i,j) (loss functions)
+            loss_sparse = sparsity(scores[:params["batch_size"], :, :].view(-1), params["lambda_2"])
+            # sparsity should be with normal scores
 
-            scores = scores.squeeze()
-            abn_scores = scores[batch_size * 32:]
+            nlabel = nlabel[0: params["batch_size"]]
+            alabel = alabel[0: params["batch_size"]]
 
-            nlabel = nlabel[0:batch_size]
-            alabel = alabel[0:batch_size]
-
-            loss_criterion = mgfn_loss()
-            loss_sparse = sparsity(abn_scores, 8e-3)
-            loss_smooth = smooth(abn_scores, 8e-4)
+            loss_criterion = mgfn_loss(params["lambda_3"])
 
             cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude) + \
-                   loss_smooth + loss_sparse
+                    loss_smooth + loss_sparse
 
             optimizer.zero_grad()
             cost.backward()
@@ -118,7 +114,7 @@ def train(nloader, aloader, model, batch_size, optimizer, device, iterator = 0):
 
         return total_cost, loss_smooth.item(), loss_sparse.item()
 
-def val(nloader, aloader, model, batch_size, device):
+def val(nloader, aloader, model, params, device):
     """
     :param nloader (DataLoader): A pytorch dataloader that only loads normal videos
     :param aloader (DataLoader): A pytorch dataloader that only loads abnormal videos
@@ -136,17 +132,14 @@ def val(nloader, aloader, model, batch_size, device):
             inp = torch.cat((ninput, ainput), 0).to(device)
 
             score_abnormal, score_normal, abn_feamagnitude, nor_feamagnitude, scores = model(inp)  # b*32  x 2048
-            scores = scores.view(batch_size * 32 * 2, -1)
+            loss_smooth = smooth(scores, params["lambda_1"])  # scores is the s_a^(i,j) (loss functions)
+            loss_sparse = sparsity(scores[:params["batch_size"], :, :].view(-1), params["lambda_2"])
+            # sparsity should be with normal scores
 
-            scores = scores.squeeze()
-            abn_scores = scores[batch_size * 32:]
+            nlabel = nlabel[0: params["batch_size"]]
+            alabel = alabel[0: params["batch_size"]]
 
-            nlabel = nlabel[0:batch_size]
-            alabel = alabel[0:batch_size]
-
-            loss_criterion = mgfn_loss()
-            loss_sparse = sparsity(abn_scores, 8e-3)
-            loss_smooth = smooth(abn_scores, 8e-4)
+            loss_criterion = mgfn_loss(params["lambda_3"])
 
             cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude) + \
                     loss_smooth + loss_sparse

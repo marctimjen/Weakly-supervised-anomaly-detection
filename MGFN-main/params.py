@@ -9,6 +9,9 @@ dataset_params = {"seg_length": 32,
                   "datasetname": "UCF",
                   "dataset": "UCF",
                   "modality": "RGB",
+                  "UCF_train_len": 1449,
+                  "UCF_val_len": 161,
+                  "UCF_test_len": 290
                   }
 
 mgfn_params = {"depths1": 3,
