@@ -115,8 +115,6 @@ if __name__ == '__main__':
         model.load_state_dict(model_ckpt)
         print("pretrained loaded")
 
-
-
     model = model.to(device)
 
     if not os.path.exists(save_path):
@@ -159,3 +157,7 @@ if __name__ == '__main__':
     torch.save(model.state_dict(), save_path + param["model_name"] + 'final.pkl')
 
     run.stop()
+
+
+
+

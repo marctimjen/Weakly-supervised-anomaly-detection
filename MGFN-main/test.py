@@ -36,6 +36,8 @@ def test(dataloader, model, params, device):
         pr_auc = auc(recall, precision)
         print('pr_auc : ' + str(pr_auc))
         print('rec_auc : ' + str(rec_auc))
+        path = params["pretrained_path"][:-4] + "_test.npy"
+        np.save(path, pred)  # save the prediction file
         return rec_auc, pr_auc
 
 if __name__ == '__main__':
@@ -50,12 +52,14 @@ if __name__ == '__main__':
             params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
             params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
             params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-            params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
-                            "results/ucf_gt/gt-ucf.npy"
-            # params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
+            # params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
+            #                 "results/ucf_gt/gt-ucf.npy"
+            params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
 
             params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
                                         "MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl"
+
+            # params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-43/mgfnfinal.pkl"
 
             return "/home/marc/Documents/sandbox"  # path where to wave files
 
@@ -80,7 +84,7 @@ if __name__ == '__main__':
     model = Model()
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname="UCF", modality="RGB", seg_length=32,
-                                        mode="test"),
+                                        mode="test", shuffle=False),
                                 batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
     model = model.to("cpu")
 

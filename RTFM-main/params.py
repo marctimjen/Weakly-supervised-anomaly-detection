@@ -1,5 +1,4 @@
-original = {"T": 32, "P": 10, "alpha": 0.0001, "margin": 100,
-            "w_decay": 0.005, "lr": [0.001]*15000, "batch_size": 32}  # hyper params
+original = {"margin": 100, "w_decay": 0.0005, "lr": [0.001]*15000, "batch_size": 32}  # hyper params
 
 dataset_params = {"rgb_list": "data/ucf_tencrop_1d/ucf-i3d.list",
                   "val_rgb_list": "data/ucf_tencrop_1d/ucf-i3d-val.list",
