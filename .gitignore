@@ -4,3 +4,4 @@ MGFN-main/results/XD_pretrained/mgfn_xd.pkl
 MGFN-main/results/UCF_pretrained/RESULT.txt
 MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl
 MGFN-main/results/ucf_gt/gt-ucf.npy
+*.log

@@ -26,7 +26,7 @@ mgfn_params = {"depths1": 3,
 
 test = {"gt": "data/ucf_tencrop_1d/gt-ucf.npy"}
 
-main = {"max_epoch": 100,
+main = {"max_epoch": 100,  # normally 1000
         "pretrained_ckpt": None,
         "model_name": "mgfn"
         }
@@ -45,7 +45,17 @@ params_def = {
 }
 
 
+
+params_1 = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.5,
+            "w_decay": 0.0005, "lr": [0.001]*15000, "batch_size": 8}  # hyper params
+
+
 HYPERPARAMS = {
     'params_def': params_def | main | test | mgfn_params | dataset_params | original,
-
+    'params_1': params_1 | main | test | mgfn_params | dataset_params | original,
 }
+
+
+
+
+
