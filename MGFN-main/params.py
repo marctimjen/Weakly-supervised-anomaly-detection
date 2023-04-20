@@ -26,7 +26,7 @@ mgfn_params = {"depths1": 3,
 
 test = {"gt": "data/ucf_tencrop_1d/gt-ucf.npy"}
 
-main = {"max_epoch": 1000,
+main = {"max_epoch": 100,
         "pretrained_ckpt": None,
         "model_name": "mgfn"
         }
