@@ -134,7 +134,7 @@ if __name__ == '__main__':
             for param_group in optimizer.param_groups:
                 param_group["lr"] = param["lr"][step - 1]
 
-        loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum = train(train_nloader, train_aloader, model, param, optimizer,
+        loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum = train(train_nloader, train_aloader, model, param, optimizer,
                                                                     device, iterator)
 
         run["train/loss"].log(loss_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
@@ -143,8 +143,12 @@ if __name__ == '__main__':
         run["train/loss_smooth"].log(smooth_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_sparse"].log(sparse_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
+        run["train/loss_con_sum"].log(con_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_con_n_sum"].log(con_n_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_con_a_sum"].log(con_a_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+
         if step % 1 == 0 and step > 0:
-            loss, sce_sum, mc_sum, smooth_sum, sparse_sum = val(nloader=val_nloader, aloader=val_aloader, model=model,
+            loss, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum = val(nloader=val_nloader, aloader=val_aloader, model=model,
                                                                 params=param, device=device)
 
             run["val/loss"].log(
@@ -157,6 +161,13 @@ if __name__ == '__main__':
                 smooth_sum / (param["UCF_val_len"] // (param["batch_size"] * 2) * param["batch_size"]))
             run["val/loss_sparse"].log(
                 sparse_sum / (param["UCF_val_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+
+            run["val/loss_con_sum"].log(
+                con_sum / (param["UCF_val_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+            run["val/loss_con_n_sum"].log(
+                con_n_sum / (param["UCF_val_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+            run["val/loss_con_a_sum"].log(
+                con_a_sum / (param["UCF_val_len"] // (param["batch_size"] * 2) * param["batch_size"]))
 
             val_info["epoch"].append(step)
             val_info["val_loss"].append(loss/(param["UCF_val_len"]//(param["batch_size"]*2)*param["batch_size"]))

@@ -75,7 +75,7 @@ class mgfn_loss(torch.nn.Module):
 
         loss_con = self.contrastive(torch.norm(abn_feamagnitude, p=1, dim=2),
                                     torch.norm(nor_feamagnitude, p=1, dim=2),
-                                    1)  # try tp separate normal and abnormal  (11)
+                                    1)  # try tp separate normal and abnormal (11)
 
         loss_con_n = self.contrastive(torch.norm(nor_feamagnitude[int(seperate):], p=1, dim=2),
                                         torch.norm(nor_feamagnitude[:int(seperate)], p=1, dim=2),
@@ -87,7 +87,7 @@ class mgfn_loss(torch.nn.Module):
 
         # loss_total = loss_cls + self.lambda3 * (loss_con + loss_con_a + loss_con_n)  # Last part is MC loss?
         loss_mc = self.lambda3 * (loss_con + loss_con_a + loss_con_n)
-        return loss_cls, loss_mc
+        return loss_cls, loss_mc, loss_con, loss_con_n, loss_con_a
 
 
 
@@ -104,6 +104,7 @@ def train(nloader, aloader, model, params, optimizer, device, iterator = 0):
     with torch.set_grad_enabled(True):
         model.train()
         loss_sum, loss_sce_sum, loss_mc_sum, loss_smooth_sum, loss_sparse_sum = 0, 0, 0, 0, 0
+        loss_con_sum, loss_con_n_sum, loss_con_a_sum = 0, 0, 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
 
             inp = torch.cat((ninput, ainput), 0).to(device)
@@ -117,8 +118,9 @@ def train(nloader, aloader, model, params, optimizer, device, iterator = 0):
             alabel = alabel[0: params["batch_size"]]
 
             loss_criterion = mgfn_loss(params["lambda_3"])
-            loss_sce, loss_mc = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude,
-                                                abn_feamagnitude)
+            loss_sce, loss_mc, loss_con, loss_con_n, loss_con_a = loss_criterion(score_normal, score_abnormal, nlabel,
+                                                                                    alabel, nor_feamagnitude,
+                                                                                    abn_feamagnitude)
             cost = loss_sce + loss_mc + loss_smooth + loss_sparse
 
             optimizer.zero_grad()
@@ -131,8 +133,11 @@ def train(nloader, aloader, model, params, optimizer, device, iterator = 0):
             loss_mc_sum += loss_mc.item()
             loss_smooth_sum += loss_smooth.item()
             loss_sparse_sum += loss_sparse.item()
+            loss_con_sum += loss_con.item()
+            loss_con_n_sum += loss_con_n.item()
+            loss_con_a_sum += loss_con_a.item()
 
-        return loss_sum, loss_sce_sum, loss_mc_sum, loss_smooth_sum, loss_sparse_sum
+        return loss_sum, loss_sce_sum, loss_mc_sum, loss_smooth_sum, loss_sparse_sum, loss_con_sum, loss_con_n_sum, loss_con_a_sum
 
 def val(nloader, aloader, model, params, device):
     """
@@ -147,6 +152,7 @@ def val(nloader, aloader, model, params, device):
     with torch.set_grad_enabled(False):
         model.eval()
         loss_sum, loss_sce_sum, loss_mc_sum, loss_smooth_sum, loss_sparse_sum = 0, 0, 0, 0, 0
+        loss_con_sum, loss_con_n_sum, loss_con_a_sum = 0, 0, 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
 
             inp = torch.cat((ninput, ainput), 0).to(device)
@@ -161,8 +167,10 @@ def val(nloader, aloader, model, params, device):
 
             loss_criterion = mgfn_loss(params["lambda_3"])
 
-            loss_sce, loss_mc = loss_criterion(score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude,
-                                                abn_feamagnitude)
+            loss_sce, loss_mc, loss_con, loss_con_n, loss_con_a = loss_criterion(score_normal, score_abnormal, nlabel,
+                                                                                    alabel, nor_feamagnitude,
+                                                                                    abn_feamagnitude)
+
             cost = loss_sce + loss_mc + loss_smooth + loss_sparse
 
             loss_sum += cost.item()
@@ -170,5 +178,8 @@ def val(nloader, aloader, model, params, device):
             loss_mc_sum += loss_mc.item()
             loss_smooth_sum += loss_smooth.item()
             loss_sparse_sum += loss_sparse.item()
+            loss_con_sum += loss_con.item()
+            loss_con_n_sum += loss_con_n.item()
+            loss_con_a_sum += loss_con_a.item()
 
-        return loss_sum, loss_sce_sum, loss_mc_sum, loss_smooth_sum, loss_sparse_sum
+        return loss_sum, loss_sce_sum, loss_mc_sum, loss_smooth_sum, loss_sparse_sum, loss_con_sum, loss_con_n_sum, loss_con_a_sum
