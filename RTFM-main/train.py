@@ -11,20 +11,13 @@ def sparsity(arr, batch_size, lamda2):
     loss = torch.mean(torch.norm(arr, dim=0))
     return lamda2*loss
 
-
-def smooth(arr, lamda1):
-    arr2 = torch.zeros_like(arr)
-    arr2[:-1] = arr[1:]
-    arr2[-1] = arr[-1]
-
-    loss = torch.sum((arr2-arr)**2)
-
-    return lamda1*loss
-
-
-def l1_penalty(var):
-    return torch.mean(torch.norm(var, dim=0))
-
+def smooth(arr, lamda1):  # smoothness (15)  input 32 x 32 x 1
+    arr1 = arr[:, :-1, :]  # we need to do it only per video.  32 x 31 x 1
+    arr2 = arr[:, 1:, :]   # 32 x 31 x 1
+    loss = torch.sum((arr2 - arr1) ** 2)
+    del arr2
+    del arr1
+    return lamda1 * loss
 
 class SigmoidMAELoss(torch.nn.Module):
     def __init__(self):
@@ -35,17 +28,6 @@ class SigmoidMAELoss(torch.nn.Module):
 
     def forward(self, pred, target):
         return self.__l1_loss__(pred, target)
-
-
-class SigmoidCrossEntropyLoss(torch.nn.Module):
-    # Implementation Reference: http://vast.uccs.edu/~adhamija/blog/Caffe%20Custom%20Layer.html
-    def __init__(self):
-        super(SigmoidCrossEntropyLoss, self).__init__()
-
-    def forward(self, x, target):
-        tmp = 1 + torch.exp(- torch.abs(x))
-        return torch.abs(torch.mean(- x * target + torch.clamp(x, min=0) + torch.log(tmp)))
-
 
 class RTFM_loss(torch.nn.Module):
     def __init__(self, alpha, margin):
@@ -63,9 +45,7 @@ class RTFM_loss(torch.nn.Module):
 
         score = torch.cat((score_normal, score_abnormal), 0)
         score = score.squeeze()
-
         label = label.cuda()
-
         loss_cls = self.criterion(score, label)  # BCE loss in the score space
 
         loss_abn = torch.abs(self.margin - torch.norm(torch.mean(feat_a, dim=1), p=2, dim=1))
@@ -74,34 +54,37 @@ class RTFM_loss(torch.nn.Module):
 
         loss_rtfm = torch.mean((loss_abn + loss_nor) ** 2)
 
-        loss_total = loss_cls + self.alpha * loss_rtfm
+        # loss_total = loss_cls + self.alpha * loss_rtfm
 
-        return loss_total
+        return loss_cls, loss_abn, loss_nor,  self.alpha * loss_rtfm
 
 
 def train(nloader, aloader, model, params, optimizer, viz, device):
     with torch.set_grad_enabled(True):
         model.train()
-        total_cost = 0
+        total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum = 0, 0, 0, 0, 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
             input = torch.cat((ninput, ainput), 0).to(device)
 
             score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, \
             feat_normal_bottom, scores, scores_nor_bottom, scores_nor_abn_bag, _ = model(input)  # b*32  x 2048
 
-            scores = scores.view(params["batch_size"] * 32 * 2, -1)
+            loss_smooth = smooth(scores, params["lambda_1"])  # scores is the s_a^(i,j) (loss functions) (32 x 32 x 1)
+            loss_sparse = sparsity(scores[:params["batch_size"], :, :].view(-1), params["lambda_2"])
+            # sparsity should be with normal scores
 
-            scores = scores.squeeze()
-            abn_scores = scores[params["batch_size"] * 32:]
+            # lambda2 = 8e-3
+            # lambda3 = 8e-4
 
             nlabel = nlabel[0:params["batch_size"]]
             alabel = alabel[0:params["batch_size"]]
 
             loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"])
-            loss_sparse = sparsity(abn_scores, params["batch_size"], 8e-3)
-            loss_smooth = smooth(abn_scores, 8e-4)
-            cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn) \
-                    + loss_smooth + loss_sparse
+
+            loss_cls, loss_abn, loss_nor, loss_rtfm = \
+                loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
+
+            cost = loss_smooth + loss_sparse + loss_cls + loss_rtfm
 
             # viz.plot_lines('loss', cost.item())
             # viz.plot_lines('smooth loss', loss_smooth.item())
@@ -111,32 +94,60 @@ def train(nloader, aloader, model, params, optimizer, viz, device):
             optimizer.step()
 
             total_cost += cost.item()
-        return total_cost
+            loss_cls_sum += loss_cls.item()
+            loss_abn_sum += loss_abn.item()
+            loss_nor_sum += loss_nor.item()
+            loss_rtfm_sum += loss_rtfm.item()
+
+        return total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum
 
 
 def val(nloader, aloader, model, params, device):
     with torch.set_grad_enabled(False):
         model.eval()
-        total_cost = 0
+        total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum = 0, 0, 0, 0, 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
             input = torch.cat((ninput, ainput), 0).to(device)
 
             score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, \
             feat_normal_bottom, scores, scores_nor_bottom, scores_nor_abn_bag, _ = model(input)  # b*32  x 2048
 
-            scores = scores.view(params["batch_size"] * 32 * 2, -1)
-            scores = scores.squeeze()
-            abn_scores = scores[params["batch_size"] * 32:]
+            loss_smooth = smooth(scores, params["lambda_1"])  # scores is the s_a^(i,j) (loss functions) (32 x 32 x 1)
+            loss_sparse = sparsity(scores[:params["batch_size"], :, :].view(-1), params["lambda_2"])
+            # sparsity should be with normal scores
+
+            # lambda2 = 8e-3
+            # lambda3 = 8e-4
+
             nlabel = nlabel[0:params["batch_size"]]
             alabel = alabel[0:params["batch_size"]]
 
             loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"])
-            loss_sparse = sparsity(abn_scores, params["batch_size"], 8e-3)
-            loss_smooth = smooth(abn_scores, 8e-4)
-            cost = loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn) \
-                    + loss_smooth + loss_sparse
+
+            loss_cls, loss_abn, loss_nor, loss_rtfm = \
+                loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
+
+            cost = loss_smooth + loss_sparse + loss_cls + loss_rtfm
 
             total_cost += cost.item()
-        return total_cost
+            loss_cls_sum += loss_cls.item()
+            loss_abn_sum += loss_abn.item()
+            loss_nor_sum += loss_nor.item()
+            loss_rtfm_sum += loss_rtfm.item()
+
+        return total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum
 
 
+
+
+
+
+#
+# class SigmoidCrossEntropyLoss(torch.nn.Module):
+#     # Implementation Reference: http://vast.uccs.edu/~adhamija/blog/Caffe%20Custom%20Layer.html
+#     def __init__(self):
+#         super(SigmoidCrossEntropyLoss, self).__init__()
+#
+#     def forward(self, x, target):
+#         tmp = 1 + torch.exp(- torch.abs(x))
+#         return torch.abs(torch.mean(- x * target + torch.clamp(x, min=0) + torch.log(tmp)))

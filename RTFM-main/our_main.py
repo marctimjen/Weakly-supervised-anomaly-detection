@@ -123,11 +123,23 @@ if __name__ == '__main__':
         # if (step - 1) % len(train_aloader) == 0:
         #     loadera_iter = iter(train_aloader)
 
-        loss = train(train_nloader, train_aloader, model, param, optimizer, viz, device)
-        val_loss = val(val_nloader, val_aloader, model, param, device)
+        total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum \
+            = train(train_nloader, train_aloader, model, param, optimizer, viz, device)
 
-        run["train/loss"].log(loss)
-        run["validation/loss"].log(val_loss)
+        run["train/loss"].log(loss_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_cls"].log(loss_cls_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_abn"].log(loss_abn_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_nor"].log(loss_nor_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_rtfm"].log(loss_rtfm_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+
+        val_loss, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum \
+            = val(val_nloader, val_aloader, model, param, device)
+
+        run["val/loss"].log(val_loss/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss_cls"].log(loss_cls_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss_abn"].log(loss_abn_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss_nor"].log(loss_nor_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss_rtfm"].log(loss_rtfm_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
         val_info["epoch"].append(step)
         val_info["val_loss"].append(val_loss)
