@@ -21,7 +21,7 @@ class Dataset(data.Dataset):
     def _parse_list(self):
         self.list = list(open(self.rgb_list_file))
         if self.mode != "test":
-            if self.dataset == 'shanghai':
+            if self.dataset.lower() == 'shanghai':
                 if self.is_normal:
                     self.list = self.list[63:]
                     print('normal list for shanghai tech')
@@ -31,7 +31,7 @@ class Dataset(data.Dataset):
                     print('abnormal list for shanghai tech')
                     print(self.list)
 
-            elif self.dataset == 'ucf':
+            elif self.dataset.lower() == 'ucf':
                 if self.is_normal:
                     self.list = [i for i in self.list if "Normal_Videos" in i]
                     print('normal list for ucf')
