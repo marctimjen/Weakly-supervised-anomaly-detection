@@ -65,7 +65,7 @@ class Dataset(data.Dataset):
 
         self.i += 1
         index = self.idx_list[idx]
-        if self.i % self.__len__() == 0:
+        if self.i % self.__len__() == 0 and self.shuffle:
             self.idx_list = self.randomizer(shuffle=self.shuffle, lenght=len(self.list))
 
         if self.is_normal:  # get video level label 0/1
@@ -122,7 +122,6 @@ class Dataset(data.Dataset):
             return np.random.permutation(lenght)
         else:
             return np.arange(lenght)
-
 
     def get_num_frames(self):
         return self.num_frame

@@ -6,3 +6,4 @@ MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl
 MGFN-main/results/ucf_gt/gt-ucf.npy
 *.log
 *.pyc
+*.pyc

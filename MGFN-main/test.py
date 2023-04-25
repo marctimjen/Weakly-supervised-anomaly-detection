@@ -3,6 +3,7 @@ from sklearn.metrics import auc, roc_curve, precision_recall_curve
 from tqdm import tqdm
 import numpy as np
 from datasets.dataset import Dataset
+import gc
 
 # import matplotlib.pyplot as plt
 # import option
@@ -14,18 +15,21 @@ def test(dataloader, model, params, device):
     # plt.clf()
     with torch.no_grad():
         model.eval()
-        pred = torch.zeros(0)
-        featurelen = []
-        for i, inputs in tqdm(enumerate(dataloader)):
-
-            input = inputs[0].to(device)
-            input = input.permute(0, 2, 1, 3)
-            _, _, _, _, logits = model(input)
+        pred = torch.zeros(0).cpu()
+        # featurelen = []
+        for i, (inputs, name) in tqdm(enumerate(dataloader)):
+            print(name)
+            inputs = inputs.permute(0, 2, 1, 3)
+            _, _, _, _, logits = model(inputs)
             logits = torch.squeeze(logits, 1)
             logits = torch.mean(logits, 0)
-            sig = logits.detach()
-            featurelen.append(len(sig))
+            sig = logits.detach().cpu()
+
+            # featurelen.append(len(sig))
             pred = torch.cat((pred, sig))
+            torch.cuda.empty_cache()
+
+
 
         gt = np.load(params["gt"])
         pred = list(pred.cpu().detach().numpy())
@@ -34,10 +38,10 @@ def test(dataloader, model, params, device):
         rec_auc = auc(fpr, tpr)
         precision, recall, th = precision_recall_curve(list(gt), pred)
         pr_auc = auc(recall, precision)
-        print('pr_auc : ' + str(pr_auc))
-        print('rec_auc : ' + str(rec_auc))
-        path = params["pretrained_path"][:-4] + "_test.npy"
-        np.save(path, pred)  # save the prediction file
+        # print('pr_auc : ' + str(pr_auc))
+        # print('rec_auc : ' + str(rec_auc))
+        # path = params["pretrained_path"][:-4] + "_test.npy"
+        # np.save(path, pred)  # save the prediction file
         return rec_auc, pr_auc
 
 if __name__ == '__main__':
@@ -56,10 +60,10 @@ if __name__ == '__main__':
             #                 "results/ucf_gt/gt-ucf.npy"
             params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
 
-            # params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-            #                             "MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl"
+            params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+                                        "MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl"
 
-            params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-60/mgfn7-i3d.pkl"
+            # params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-60/mgfn7-i3d.pkl"
 
             return "/home/marc/Documents/sandbox"  # path where to wave files
 
@@ -89,8 +93,8 @@ if __name__ == '__main__':
     model = model.to("cpu")
 
     di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_path"], map_location="cpu").items()}
-    # di["to_logits.weight"] = di.pop("to_logits.0.weight")
-    # di["to_logits.bias"] = di.pop("to_logits.0.bias")
+    di["to_logits.weight"] = di.pop("to_logits.0.weight")
+    di["to_logits.bias"] = di.pop("to_logits.0.bias")
 
     model_dict = model.load_state_dict(di)
     model = model.to(device)

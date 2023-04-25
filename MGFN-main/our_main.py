@@ -31,17 +31,13 @@ def save_config(save_path, nept_id, params):
 
 def path_inator(params, args):
     if args.user == "marc":
-        params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
+        params["save_dir"] = "/home/marc/Documents/sandbox/mgfn"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
         params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
         return params["save_dir"]  # path where to save files
 
     elif args.user == "cluster":
-        params["save_dir"] = "/home/cv05f23/data/UCF/results"  # where to save results + model
-        params["rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-train.list"
-        params["val_rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-val.list"
-        params["test_rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list"
         return params["save_dir"]  # path where to save files
 
 # try:
@@ -118,7 +114,7 @@ if __name__ == '__main__':
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
-    optimizer = optim.Adam(model.parameters(), lr=param["lr"][0], weight_decay=param["w_decay"])
+    optimizer = optim.Adam(model.parameters(), lr=param["lr"], weight_decay=param["w_decay"])
     val_info = {"epoch": [], "val_loss": []}
 
     best_loss = float("inf")
@@ -130,9 +126,9 @@ if __name__ == '__main__':
     for step in tqdm(range(1, param["max_epoch"] + 1), total=param["max_epoch"], dynamic_ncols=True):
 
         # for step in range(1, args.max_epoch + 1):
-        if step > 1 and param["lr"][step - 1] != param["lr"][step - 2]:
-            for param_group in optimizer.param_groups:
-                param_group["lr"] = param["lr"][step - 1]
+        # if step > 1 and param["lr"][step - 1] != param["lr"][step - 2]:
+        #     for param_group in optimizer.param_groups:
+        #         param_group["lr"] = param["lr"][step - 1]
 
         loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum = train(train_nloader, train_aloader, model, param, optimizer,
                                                                     device, iterator)

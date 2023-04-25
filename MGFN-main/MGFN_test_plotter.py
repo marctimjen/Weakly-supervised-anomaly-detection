@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 
 
 gt = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")
-pred = np.load("/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-60/mgfn7-i3d_test.npy")
+# pred = np.load("/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-60/mgfn7-i3d_test.npy")
+
+pred = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/results/UCF_pretrained/mgfn_ucf_test.npy")
 
 path = rf"/home/marc/Documents/data/UCF/UCF_list/"
 with open(path + rf"ucf-i3d-test.list", 'r') as f:  # use a context manager to safely opening and closing files
@@ -32,7 +34,7 @@ for i in val:
     plt.xlabel('frame number')
     plt.ylabel('anomaly score')
 
-    path = f"/home/marc/Documents/data/UCF/results/MGFN/Plots/" + string[:-3] + ".jpg"
+    path = f"/home/marc/Documents/data/UCF/results/MGFN/Plots_their/" + string[:-3] + ".jpg"
     plt.savefig(path, bbox_inches='tight')
     plt.close()
 
