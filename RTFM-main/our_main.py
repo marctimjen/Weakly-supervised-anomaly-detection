@@ -30,7 +30,7 @@ def save_config(save_path, nept_id, params):
 
 def path_inator(params, args):
     if args.user == "marc":
-        params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
+        params["save_dir"] = "/home/marc/Documents/sandbox/rftm"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
         params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
@@ -39,7 +39,7 @@ def path_inator(params, args):
         return params["save_dir"]  # path where to save files
 
     elif args.user == "cluster":
-        params["save_dir"] = "/home/cv05f23/data/UCF/results"  # where to save results + model
+        params["save_dir"] = "/home/cv05f23/data/UCF/results/rftm"  # where to save results + model
         params["rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-train.list"
         params["val_rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-val.list"
         params["test_rgb_list"] = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list"
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/anomaly",
+        project="AAM/rftm",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()
@@ -89,9 +89,9 @@ if __name__ == '__main__':
                                 batch_size=param["batch_size"], shuffle=True,
                                 num_workers=0, pin_memory=False, drop_last=True)
 
-    test_loader = DataLoader(Dataset(dataset=param["dataset"], rgb_list=param["test_rgb_list"], mode="test"),
-                                batch_size=1, shuffle=False,
-                                num_workers=0, pin_memory=False)
+    # test_loader = DataLoader(Dataset(dataset=param["dataset"], rgb_list=param["test_rgb_list"], mode="test"),
+    #                             batch_size=1, shuffle=False,
+    #                             num_workers=0, pin_memory=False)
 
     model = Model(n_features=param["feature_size"], batch_size=param["batch_size"])
 
@@ -123,23 +123,23 @@ if __name__ == '__main__':
         # if (step - 1) % len(train_aloader) == 0:
         #     loadera_iter = iter(train_aloader)
 
-        total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum \
+        total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
             = train(train_nloader, train_aloader, model, param, optimizer, viz, device)
 
-        run["train/loss"].log(loss_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss"].log(total_cost/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_cls"].log(loss_cls_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_abn"].log(loss_abn_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_nor"].log(loss_nor_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_sparse"].log(loss_sparse_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_smooth"].log(loss_smooth_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_rtfm"].log(loss_rtfm_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
-        val_loss, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum \
+        val_loss, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
             = val(val_nloader, val_aloader, model, param, device)
 
-        run["val/loss"].log(val_loss/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["val/loss_cls"].log(loss_cls_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["val/loss_abn"].log(loss_abn_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["val/loss_nor"].log(loss_nor_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["val/loss_rtfm"].log(loss_rtfm_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss"].log(val_loss/(param["UCF_val_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss_cls"].log(loss_cls_sum/(param["UCF_val_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss_sparse"].log(loss_sparse_sum/(param["UCF_val_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss_smooth"].log(loss_smooth_sum/(param["UCF_val_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["val/loss_rtfm"].log(loss_rtfm_sum/(param["UCF_val_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
         val_info["epoch"].append(step)
         val_info["val_loss"].append(val_loss)

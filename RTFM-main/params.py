@@ -1,4 +1,5 @@
-original = {"margin": 100, "w_decay": 0.0005, "lr": [0.001]*15000, "batch_size": 32}  # hyper params
+original = {"margin": 100, "w_decay": 0.0005, "lr": [0.001]*15000, "batch_size": 32, "lambda_2": 8e-3,
+            "lambda_1": 8e-4, "alpha": 0.0001}  # hyper params
 
 dataset_params = {"rgb_list": "data/ucf_tencrop_1d/ucf-i3d.list",
                   "val_rgb_list": "data/ucf_tencrop_1d/ucf-i3d-val.list",
@@ -6,6 +7,9 @@ dataset_params = {"rgb_list": "data/ucf_tencrop_1d/ucf-i3d.list",
                   "datasetname": "UCF",
                   "dataset": "UCF",
                   "modality": "RGB",
+                  "UCF_train_len": 1449,
+                  "UCF_val_len": 161,
+                  "UCF_test_len": 290
                   }
 
 test = {"gt": "data/ucf_tencrop_1d/gt-ucf.npy"}

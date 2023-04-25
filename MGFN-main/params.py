@@ -44,11 +44,8 @@ params_def = {
     "plot_freq": 10,
 }
 
-
-
-params_1 = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.5,
+params_1 = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 0.5, "lambda_2": 1, "lambda_3": 0.5,
             "w_decay": 0.0005, "lr": [0.001]*15000, "batch_size": 8}  # hyper params
-
 
 HYPERPARAMS = {
     'params_def': params_def | main | test | mgfn_params | dataset_params | original,

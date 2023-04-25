@@ -7,7 +7,7 @@ from torch.nn import MSELoss
 from tqdm import tqdm
 
 
-def sparsity(arr, batch_size, lamda2):
+def sparsity(arr, lamda2):
     loss = torch.mean(torch.norm(arr, dim=0))
     return lamda2*loss
 
@@ -56,13 +56,13 @@ class RTFM_loss(torch.nn.Module):
 
         # loss_total = loss_cls + self.alpha * loss_rtfm
 
-        return loss_cls, loss_abn, loss_nor,  self.alpha * loss_rtfm
+        return loss_cls, self.alpha * loss_rtfm
 
 
 def train(nloader, aloader, model, params, optimizer, viz, device):
     with torch.set_grad_enabled(True):
         model.train()
-        total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum = 0, 0, 0, 0, 0
+        total_cost, loss_cls_sum, loss_rtfm_sum, loss_sparse_sum, loss_smooth_sum = 0, 0, 0, 0, 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
             input = torch.cat((ninput, ainput), 0).to(device)
 
@@ -73,15 +73,12 @@ def train(nloader, aloader, model, params, optimizer, viz, device):
             loss_sparse = sparsity(scores[:params["batch_size"], :, :].view(-1), params["lambda_2"])
             # sparsity should be with normal scores
 
-            # lambda2 = 8e-3
-            # lambda3 = 8e-4
-
             nlabel = nlabel[0:params["batch_size"]]
             alabel = alabel[0:params["batch_size"]]
 
             loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"])
 
-            loss_cls, loss_abn, loss_nor, loss_rtfm = \
+            loss_cls, loss_rtfm = \
                 loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
 
             cost = loss_smooth + loss_sparse + loss_cls + loss_rtfm
@@ -94,18 +91,18 @@ def train(nloader, aloader, model, params, optimizer, viz, device):
             optimizer.step()
 
             total_cost += cost.item()
+            loss_sparse_sum += loss_sparse.item()
+            loss_smooth_sum += loss_smooth.item()
             loss_cls_sum += loss_cls.item()
-            loss_abn_sum += loss_abn.item()
-            loss_nor_sum += loss_nor.item()
             loss_rtfm_sum += loss_rtfm.item()
 
-        return total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum
+        return total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum
 
 
 def val(nloader, aloader, model, params, device):
     with torch.set_grad_enabled(False):
         model.eval()
-        total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum = 0, 0, 0, 0, 0
+        total_cost, loss_cls_sum, loss_rtfm_sum, loss_sparse_sum, loss_smooth_sum = 0, 0, 0, 0, 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
             input = torch.cat((ninput, ainput), 0).to(device)
 
@@ -116,26 +113,23 @@ def val(nloader, aloader, model, params, device):
             loss_sparse = sparsity(scores[:params["batch_size"], :, :].view(-1), params["lambda_2"])
             # sparsity should be with normal scores
 
-            # lambda2 = 8e-3
-            # lambda3 = 8e-4
-
             nlabel = nlabel[0:params["batch_size"]]
             alabel = alabel[0:params["batch_size"]]
 
             loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"])
 
-            loss_cls, loss_abn, loss_nor, loss_rtfm = \
+            loss_cls, loss_rtfm = \
                 loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
 
             cost = loss_smooth + loss_sparse + loss_cls + loss_rtfm
 
             total_cost += cost.item()
+            loss_sparse_sum += loss_sparse.item()
+            loss_smooth_sum += loss_smooth.item()
             loss_cls_sum += loss_cls.item()
-            loss_abn_sum += loss_abn.item()
-            loss_nor_sum += loss_nor.item()
             loss_rtfm_sum += loss_rtfm.item()
 
-        return total_cost, loss_cls_sum, loss_abn_sum, loss_nor_sum, loss_rtfm_sum
+        return total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum
 
 
 
