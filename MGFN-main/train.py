@@ -136,7 +136,6 @@ def train(nloader, aloader, model, params, optimizer, device, iterator = 0):
             loss_con_sum += loss_con.item()
             loss_con_n_sum += loss_con_n.item()
             loss_con_a_sum += loss_con_a.item()
-            break
 
         return loss_sum, loss_sce_sum, loss_mc_sum, loss_smooth_sum, loss_sparse_sum, loss_con_sum, loss_con_n_sum, loss_con_a_sum
 
@@ -182,6 +181,5 @@ def val(nloader, aloader, model, params, device):
             loss_con_sum += loss_con.item()
             loss_con_n_sum += loss_con_n.item()
             loss_con_a_sum += loss_con_a.item()
-            break
 
         return loss_sum, loss_sce_sum, loss_mc_sum, loss_smooth_sum, loss_sparse_sum, loss_con_sum, loss_con_n_sum, loss_con_a_sum

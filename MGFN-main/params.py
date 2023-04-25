@@ -24,8 +24,8 @@ mgfn_params = {"depths1": 3,
                "mag_ratio": 0.1
                }
 
-main = {"max_epoch": 100,  # normally 1000
-        "pretrained_ckpt": None,
+main = {"max_epoch": 250,  # normally 1000
+        "pretrained_ckpt": False,
         "model_name": "mgfn"
         }
 
@@ -36,14 +36,14 @@ params_def = {
     "comment": "mgfn",
     "local_con": "static",
     "head_K": 4,
-    "gpus": [0],
+    "gpus": 0,
     "workers": 0,
     "num_classes": 2,
     "plot_freq": 10,
 }
 
 params_1 = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 0.5, "lambda_2": 1, "lambda_3": 0.5,
-            "w_decay": 0.0005, "lr": [0.001]*15000, "batch_size": 8}  # hyper params
+            "w_decay": 0.0005, "lr": 0.001, "batch_size": 8}  # hyper params
 
 paths = {
     "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-train.list",

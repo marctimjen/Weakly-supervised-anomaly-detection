@@ -13,13 +13,16 @@ import gc
 
 def test(dataloader, model, params, device):
     # plt.clf()
+    # model = model.to("cpu")
     with torch.no_grad():
         model.eval()
         pred = torch.zeros(0).cpu()
         # featurelen = []
         for i, (inputs, name) in tqdm(enumerate(dataloader)):
             print(name)
+            print(inputs.shape)
             inputs = inputs.permute(0, 2, 1, 3)
+            # inputs = inputs.to("cpu")
             _, _, _, _, logits = model(inputs)
             logits = torch.squeeze(logits, 1)
             logits = torch.mean(logits, 0)
@@ -28,8 +31,6 @@ def test(dataloader, model, params, device):
             # featurelen.append(len(sig))
             pred = torch.cat((pred, sig))
             torch.cuda.empty_cache()
-
-
 
         gt = np.load(params["gt"])
         pred = list(pred.cpu().detach().numpy())

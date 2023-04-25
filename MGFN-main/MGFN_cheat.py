@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/anomaly",
+        project="AAM/mgfn",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()
@@ -74,8 +74,29 @@ if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     print(device)
 
-    # args = option.parse_args()
-    # config = Config(args)
+    train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], mode="train", is_normal=True, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
+
+    train_aloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], mode="train", is_normal=False, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
+
+    val_nloader = DataLoader(Dataset(rgb_list=param["val_rgb_list"], datasetname=param["datasetname"],
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], mode="val", is_normal=True, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
+
+    val_aloader = DataLoader(Dataset(rgb_list=param["val_rgb_list"], datasetname=param["datasetname"],
+                                        modality=param["modality"], seg_length=param["seg_length"],
+                                        add_mag_info=param["add_mag_info"], mode="val", is_normal=False, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
 
     model = mgfn(depths=(param["depths1"], param["depths2"], param["depths3"]),
                     mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
@@ -84,7 +105,7 @@ if __name__ == '__main__':
                     mag_ratio=param["mag_ratio"]
                     )
 
-    if param["pretrained_ckpt"] is not None:
+    if param["pretrained_ckpt"]:
         model_ckpt = torch.load(param["pretrained_ckpt"])
         model.load_state_dict(model_ckpt)
         print("pretrained loaded")
@@ -103,42 +124,15 @@ if __name__ == '__main__':
     #     print(name)
 
     iterator = 0
-    for step in tqdm(range(1, param["max_epoch"] + 1), total=param["max_epoch"], dynamic_ncols=True):
-
-        train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
-                                           modality=param["modality"], seg_length=param["seg_length"],
-                                           add_mag_info=param["add_mag_info"], mode="train", is_normal=True,
-                                           shuffle=True),
-                                   batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
-                                   pin_memory=False, drop_last=True)
-
-        train_aloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
-                                           modality=param["modality"], seg_length=param["seg_length"],
-                                           add_mag_info=param["add_mag_info"], mode="train", is_normal=False,
-                                           shuffle=True),
-                                   batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
-                                   pin_memory=False, drop_last=True)
-
-        val_nloader = DataLoader(Dataset(rgb_list=param["val_rgb_list"], datasetname=param["datasetname"],
-                                         modality=param["modality"], seg_length=param["seg_length"],
-                                         add_mag_info=param["add_mag_info"], mode="val", is_normal=True, shuffle=True),
-                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
-                                 pin_memory=False, drop_last=True)
-
-        val_aloader = DataLoader(Dataset(rgb_list=param["val_rgb_list"], datasetname=param["datasetname"],
-                                         modality=param["modality"], seg_length=param["seg_length"],
-                                         add_mag_info=param["add_mag_info"], mode="val", is_normal=False, shuffle=True),
-                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
-                                 pin_memory=False, drop_last=True)
-
+    for step in tqdm(range(0, param["max_epoch"]), total=param["max_epoch"], dynamic_ncols=True):
 
         # for step in range(1, args.max_epoch + 1):
         # if step > 1 and param["lr"][step - 1] != param["lr"][step - 2]:
         #     for param_group in optimizer.param_groups:
         #         param_group["lr"] = param["lr"][step - 1]
 
-        loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum = train(train_nloader, train_aloader, model, param, optimizer,
-                                                                    device, iterator)
+        loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum\
+            = train(train_nloader, train_aloader, model, param, optimizer, device, iterator)
 
         run["train/loss"].log(loss_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_sce"].log(sce_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
@@ -150,61 +144,36 @@ if __name__ == '__main__':
         run["train/loss_con_n_sum"].log(con_n_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_con_a_sum"].log(con_a_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
-        if step % 1 == 0 and step > 0:
-            loss, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum = val(nloader=val_nloader, aloader=val_aloader, model=model,
-                                                                params=param, device=device)
+        # if step % 1 == 0 and step > 0:
+        loss, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum = \
+            val(nloader=val_nloader, aloader=val_aloader, model=model, params=param, device=device)
 
-            run["test/loss"].log(
-                loss / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
-            run["test/loss_sce"].log(
-                sce_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
-            run["test/loss_mc"].log(
-                mc_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
-            run["test/loss_smooth"].log(
-                smooth_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
-            run["test/loss_sparse"].log(
-                sparse_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+        run["test/loss"].log(
+            loss / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+        run["test/loss_sce"].log(
+            sce_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+        run["test/loss_mc"].log(
+            mc_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+        run["test/loss_smooth"].log(
+            smooth_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+        run["test/loss_sparse"].log(
+            sparse_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
 
-            run["test/loss_con_sum"].log(
-                con_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
-            run["test/loss_con_n_sum"].log(
-                con_n_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
-            run["test/loss_con_a_sum"].log(
-                con_a_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+        run["test/loss_con_sum"].log(
+            con_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+        run["test/loss_con_n_sum"].log(
+            con_n_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
+        run["test/loss_con_a_sum"].log(
+            con_a_sum / (param["UCF_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
 
-            val_info["epoch"].append(step)
-            val_info["val_loss"].append(loss/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        val_info["epoch"].append(step)
+        val_info["val_loss"].append(loss/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
-            del train_nloader, train_aloader, val_nloader, val_aloader
-            del loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum, loss
+        torch.save(model.state_dict(), save_path + param["model_name"] + f'{step}-i3d.pkl')
 
-            torch.cuda.empty_cache()
-
-            test_loader = DataLoader(Dataset(rgb_list=param["val_rgb_list"], datasetname=param["datasetname"],
-                                             modality=param["modality"], seg_length=param["seg_length"],
-                                             add_mag_info=param["add_mag_info"], mode="test", is_normal=False,
-                                             shuffle=False),
-                                     batch_size=1, shuffle=False, num_workers=param["workers"], pin_memory=False)
-
-            rec_auc, pr_auc = test(dataloader=test_loader, model=model, params=param, device=device)
-
-            run["test/rec_auc"].log(rec_auc)
-            run["test/pr_auc"].log(pr_auc)
-
-            val_info["rec_auc"].append(rec_auc)
-
-            if val_info["val_loss"][-1] < best_loss:
-                best_loss = val_info["val_loss"][-1]
-                torch.save(model.state_dict(), save_path + param["model_name"] + f'{step}-i3d.pkl')
-                save_best_record(val_info, os.path.join(save_path, f'{step}-step-loss.txt'))
-
-            if best_auc < val_info["rec_auc"][-1]:
-                best_auc = val_info["rec_auc"][-1]
-                torch.save(model.state_dict(), save_path + param["model_name"] + f'{step}-i3d.pkl')
-                save_best_record(val_info, os.path.join(save_path, f'{step}-step-auc.txt'))
-
-            del test_loader
-            torch.cuda.empty_cache()
+        if val_info["val_loss"][-1] < best_loss:
+            best_loss = val_info["val_loss"][-1]
+            save_best_record(val_info, os.path.join(save_path, f'{step}-step-loss.txt'))
 
     torch.save(model.state_dict(), save_path + param["model_name"] + 'final.pkl')
 
