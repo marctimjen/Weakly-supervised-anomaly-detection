@@ -87,10 +87,9 @@ if __name__ == '__main__':
         with_id="MGFN-1"
     )
 
-
     for i in range(param["max_epoch"]):
         # param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_AN-110/mgfn{i}-i3d.pkl"
-        param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_AN-110/mgfn{i}-i3d.pkl"
+        param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-1/mgfn{i}-i3d.pkl"
         model = Model()
 
         test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname="UCF", modality="RGB", seg_length=32,
