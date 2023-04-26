@@ -1,4 +1,4 @@
-original = {"margin": 100, "w_decay": 0.0005, "lr": [0.001]*15000, "batch_size": 32, "lambda_2": 8e-3,
+original = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
             "lambda_1": 8e-4, "alpha": 0.0001}  # hyper params
 
 dataset_params = {"rgb_list": "data/ucf_tencrop_1d/ucf-i3d.list",
@@ -15,14 +15,14 @@ dataset_params = {"rgb_list": "data/ucf_tencrop_1d/ucf-i3d.list",
 test = {"gt": "data/ucf_tencrop_1d/gt-ucf.npy"}
 
 main = {"max_epoch": 1000,
-        "pretrained_ckpt": None,
+        "pretrained_ckpt": False,
         "model_name": "rftm"
         }
 
 params_def = {
     "feat_extractor": "i3d",
     "feature_size": 2048,
-    "gpus": [0],
+    "gpus": 0,
     "workers": 4,
     "num_classes": 1,
     "plot_freq": 10,
