@@ -38,6 +38,7 @@ def path_inator(params, args):
         return params["save_dir"]  # path where to save files
 
     elif args.user == "cluster":
+        params["save_dir"] = "/home/cv05f23/data/UCF/results"  # where to save results + model
         return params["save_dir"]  # path where to save files
 
 # try:
