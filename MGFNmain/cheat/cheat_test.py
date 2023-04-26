@@ -83,7 +83,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/anomaly",
+        project="AAM/mgfn",
         api_token=token,
         with_id="MGFN-4"
     )
