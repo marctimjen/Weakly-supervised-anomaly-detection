@@ -1,6 +1,6 @@
 import torch
 from torch import nn, einsum
-from utils.utils import FeedForward, LayerNorm, GLANCE, FOCUS
+from MGFNmain.utils.utils import FeedForward, LayerNorm, GLANCE, FOCUS
 
 
 def exists(val):

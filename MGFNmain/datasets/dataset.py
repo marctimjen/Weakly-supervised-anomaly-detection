@@ -1,6 +1,6 @@
 import torch.utils.data as data
 import numpy as np
-from utils.utils import process_feat
+from MGFNmain.utils.utils import process_feat
 import torch
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
 # import option

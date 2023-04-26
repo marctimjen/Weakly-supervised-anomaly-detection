@@ -34,7 +34,7 @@ def path_inator(params, args):
         params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
         params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-        params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
+        params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/" \
                         "results/ucf_gt/gt-ucf.npy"
         return params["save_dir"]  # path where to save files
 

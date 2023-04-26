@@ -57,12 +57,12 @@ if __name__ == '__main__':
             params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
             params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
             params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-            # params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/" \
+            # params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/" \
             #                 "results/ucf_gt/gt-ucf.npy"
             params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
 
             params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-                                        "MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl"
+                                        "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
 
             # params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-60/mgfn7-i3d.pkl"
 
@@ -102,8 +102,8 @@ if __name__ == '__main__':
     auc = test(test_loader, model, param, device)
 
 
-# --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/results/ucf_gt/gt-ucf.npy
-# --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/results/ucf_gt/gt-ucf.npy
+# --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy
+# --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy
 
 
 # dir = fr"/home/marc/Downloads/UCF_Test_ten_i3d/"

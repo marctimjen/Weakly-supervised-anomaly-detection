@@ -46,15 +46,15 @@ params_1 = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 0.5, "lambda_2":
             "w_decay": 0.0005, "lr": 0.001, "batch_size": 8}  # hyper params
 
 paths = {
-    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-train.list",
-    "val_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-val.list",
-    "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list",
+    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-train.list",
+    "val_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-val.list",
+    "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list",
     "gt": "data/ucf_tencrop_1d/gt-ucf.npy"
 }
 
 paths_cheat = {
-    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-train_cheat.list",
-    "val_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list",
+    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-train_cheat.list",
+    "val_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list",
     "UCF_train_cheat_len": 1610,
 }
 

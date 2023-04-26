@@ -51,14 +51,14 @@ def create_gt(test_path: str, gt_file_path: str, start: str, save_path: str) -> 
 if __name__ == "__main__":
     create_gt(
         test_path=rf"/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list",
-        gt_file_path = rf"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/Temporal_Anomaly_Annotation_for_Testing_Videos.txt",
+        gt_file_path =rf"/MGFNmain/UCF_list/Temporal_Anomaly_Annotation_for_Testing_Videos.txt",
         start="/home/marc/Documents/data/UCF/test/",
         save_path=rf"/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
     )
 
 
-# # path = rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/"
-# # path = rf"C:\Users\Marc\Documents\GitHub\8 semester\Weakly-supervised-anomaly-detection\MGFN-main\UCF_list\\"
+# # path = rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/"
+# # path = rf"C:\Users\Marc\Documents\GitHub\8 semester\Weakly-supervised-anomaly-detection\MGFNmain\UCF_list\\"
 #
 # path = rf"/home/marc/Documents/data/UCF/UCF_list/"
 # with open(path + rf"ucf-i3d-test.list", 'r') as f:  # use a context manager to safely opening and closing files
@@ -72,9 +72,9 @@ if __name__ == "__main__":
 #
 # val = v1 + v2
 #
-# # gt_file_path = rf"C:\Users\Marc\Documents\GitHub\8 semester\Weakly-supervised-anomaly-detection\MGFN-main\UCF_list\Temporal_Anomaly_Annotation_for_Testing_Videos.txt"
-# # gt_file_path = rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/Temporal_Anomaly_Annotation_for_Testing_Videos.txt"
-# gt_file_path = rf"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/Temporal_Anomaly_Annotation_for_Testing_Videos.txt"
+# # gt_file_path = rf"C:\Users\Marc\Documents\GitHub\8 semester\Weakly-supervised-anomaly-detection\MGFNmain\UCF_list\Temporal_Anomaly_Annotation_for_Testing_Videos.txt"
+# # gt_file_path = rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/Temporal_Anomaly_Annotation_for_Testing_Videos.txt"
+# gt_file_path = rf"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/Temporal_Anomaly_Annotation_for_Testing_Videos.txt"
 #
 # with open(gt_file_path, 'r') as f:  # use a context manager to safely opening and closing files
 #     gt_values = [line.strip() for line in f.readlines()]  # use strip to get rid of the \n at the end of string
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 #
 #
 # # res = np.load("/home/cv05f23/data/UCF/test_gt/gt-ucf.npy")
-# res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/results/ucf_gt/gt-ucf.npy")
+# res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy")
 # res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFM-main/list/gt-ucf.npy")
 # start_of_arr = 0
 # end_of_arr = 0

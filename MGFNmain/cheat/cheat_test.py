@@ -5,10 +5,11 @@ import numpy as np
 import sys
 sys.path.append("../..")  # adds higher directory to python modules path
 sys.path.append("..")  # adds higher directory to python modules path
-from datasets.dataset import Dataset
-import gc
+sys.path.insert(1, '/MGFNmain/datasets')
+from MGFNmain.datasets.dataset import Dataset
 import os
 import neptune
+
 
 
 
@@ -52,15 +53,15 @@ def test(dataloader, model, params, device):
 if __name__ == '__main__':
     import argparse
     from torch.utils.data import DataLoader
-    import params
-    from models.mgfn import mgfn as Model
+    from MGFNmain import params
+    from MGFNmain.models.mgfn import mgfn as Model
 
     def path_inator(params, args):
         if args.user == "marc":
             params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
             params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
             # params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-            #                             "MGFN-main/results/UCF_pretrained/mgfn_ucf.pkl"
+            #                             "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
             return ""
 
         elif args.user == "cluster":
@@ -82,14 +83,13 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/mgfn",
+        project="AAM/anomaly",
         api_token=token,
-        with_id="MGFN-1"
     )
 
-    for i in range(param["max_epoch"]):
-        # param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_AN-110/mgfn{i}-i3d.pkl"
-        param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-1/mgfn{i}-i3d.pkl"
+    for i in range(1, 2):
+        param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_AN-110/mgfn{i}-i3d.pkl"
+        # param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-1/mgfn{i}-i3d.pkl"
         model = Model()
 
         test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname="UCF", modality="RGB", seg_length=32,
@@ -111,8 +111,8 @@ if __name__ == '__main__':
     run.stop()
 
 
-# --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/results/ucf_gt/gt-ucf.npy
-# --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFN-main/results/ucf_gt/gt-ucf.npy
+# --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy
+# --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy
 
 
 # dir = fr"/home/marc/Downloads/UCF_Test_ten_i3d/"
