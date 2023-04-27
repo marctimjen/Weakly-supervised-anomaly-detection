@@ -27,6 +27,8 @@ while True:
 
     command = file[i]
 
+    print("running command:", command)
+    
     p = subprocess.Popen(command, stdout=subprocess.PIPE)
     # text = p.communicate()
     (output, err) = p.communicate()
