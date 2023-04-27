@@ -3,7 +3,7 @@ import subprocess
 
 
 i = 0
-
+tick = 0
 # py_path = "/home/marc/anaconda3/envs/pyt/bin/python3"
 # path = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/process_master/process.txt"
 
@@ -11,6 +11,10 @@ py_path = "/home/cv05f23/.conda/envs/weak/bin/python3"
 path = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/process_master/process.txt"
 
 while True:
+    if tick > 60:
+        print("waited an hour end process now")
+        break
+
     with open(path, "r") as f:
         file = []
         for line in f:
@@ -21,8 +25,10 @@ while True:
     if i >= len(file):
         print("sleeping at iteration:", i)
         time.sleep(60)
+        tick += 1
         continue
     else:
+        tick = 0
         print("At iteration:", i)
 
     command = file[i]
