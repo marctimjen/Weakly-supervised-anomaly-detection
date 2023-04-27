@@ -8,12 +8,10 @@ import argparse
 from models.mgfn import mgfn
 from datasets.dataset import Dataset
 from train import train, val
-from test import test
 import datetime
 import params
 import os
 import neptune
-import gc
 
 # import option
 # args = option.parse_args()

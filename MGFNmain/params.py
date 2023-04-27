@@ -1,5 +1,5 @@
 original = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.001,
-            "w_decay": 0.0005, "lr": 0.001, "batch_size": 8}  # hyper params
+            "w_decay": 0.0005, "lr": 0.001, "batch_size": 16}  # hyper params
 
 dataset_params = {"seg_length": 32,
                   "add_mag_info": False,  # Do not quite know what this does...
@@ -24,7 +24,7 @@ mgfn_params = {"depths1": 3,
                "mag_ratio": 0.1
                }
 
-main = {"max_epoch": 250,  # normally 1000
+main = {"max_epoch": 1000,  # normally 1000
         "pretrained_ckpt": False,
         "model_name": "mgfn"
         }
