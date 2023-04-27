@@ -1,2 +1,2 @@
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u cluster -p params_cheat
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u cluster -p params_cheat
