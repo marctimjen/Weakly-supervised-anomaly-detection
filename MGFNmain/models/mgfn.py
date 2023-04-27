@@ -1,5 +1,8 @@
 import torch
 from torch import nn, einsum
+import sys
+sys.path.append("../..")  # adds higher directory to python modules path
+sys.path.append("..")  # adds higher directory to python modules path
 from MGFNmain.utils.utils import FeedForward, LayerNorm, GLANCE, FOCUS
 
 

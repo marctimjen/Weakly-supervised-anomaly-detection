@@ -1,5 +1,8 @@
 import torch.utils.data as data
 import numpy as np
+import sys
+sys.path.append("../..")  # adds higher directory to python modules path
+sys.path.append("..")  # adds higher directory to python modules path
 from MGFNmain.utils.utils import process_feat
 import torch
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
