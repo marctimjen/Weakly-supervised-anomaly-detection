@@ -1,6 +1,6 @@
-one two
-one two
-one two
-one two
-new line :D
-another
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/process_master/long.py
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/process_master/long.py
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/process_master/long.py
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/process_master/long.py
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u marc -p params_cheat
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u marc -p params_cheat
