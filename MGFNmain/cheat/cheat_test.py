@@ -85,12 +85,12 @@ if __name__ == '__main__':
     run = neptune.init_run(
         project="AAM/mgfn",
         api_token=token,
-        with_id="MGFN-5"
+        with_id="MGFN-6"
     )
 
     for i in range(param["max_epoch"]):
         # param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_AN-110/mgfn{i}-i3d.pkl"
-        param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-5/mgfn{i}-i3d.pkl"
+        param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-6/mgfn{i}-i3d.pkl"
         model = Model()
 
         test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname="UCF", modality="RGB", seg_length=32,
