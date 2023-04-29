@@ -102,6 +102,8 @@ if __name__ == '__main__':
                     mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
                     batch_size=param["batch_size"],
                     dropout_rate=param["dropout_rate"],
+                    dropout=param["dropout"],
+                    attention_dropout=param["attention_dropout"],
                     mag_ratio=param["mag_ratio"]
                     )
 

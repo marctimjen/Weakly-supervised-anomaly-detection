@@ -19,8 +19,6 @@ def test(dataloader, model, params, device):
         pred = torch.zeros(0).cpu()
         # featurelen = []
         for i, (inputs, name) in tqdm(enumerate(dataloader)):
-            print(name)
-            print(inputs.shape)
             inputs = inputs.permute(0, 2, 1, 3)
             # inputs = inputs.to("cpu")
             _, _, _, _, logits = model(inputs)
@@ -39,10 +37,10 @@ def test(dataloader, model, params, device):
         rec_auc = auc(fpr, tpr)
         precision, recall, th = precision_recall_curve(list(gt), pred)
         pr_auc = auc(recall, precision)
-        # print('pr_auc : ' + str(pr_auc))
-        # print('rec_auc : ' + str(rec_auc))
-        # path = params["pretrained_path"][:-4] + "_test.npy"
-        # np.save(path, pred)  # save the prediction file
+        print('pr_auc : ' + str(pr_auc))
+        print('rec_auc : ' + str(rec_auc))
+        path = params["pretrained_path"][:-4] + "_test.npy"
+        np.save(path, pred)  # save the prediction file
         return rec_auc, pr_auc
 
 if __name__ == '__main__':
@@ -64,7 +62,7 @@ if __name__ == '__main__':
             params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
                                         "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
 
-            # params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-60/mgfn7-i3d.pkl"
+            # params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/mgfn7-i3d.pkl"
 
             return "/home/marc/Documents/sandbox"  # path where to wave files
 
@@ -86,7 +84,8 @@ if __name__ == '__main__':
 
     # device = torch.device("cpu")
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    model = Model()
+    model = Model(dropout=0.0, attention_dropout=0.0, dropout_rate=0.0)
+    print(param["pretrained_path"])
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname="UCF", modality="RGB", seg_length=32,
                                         mode="test", shuffle=False),

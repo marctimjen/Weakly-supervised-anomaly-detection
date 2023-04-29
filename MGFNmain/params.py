@@ -18,6 +18,8 @@ mgfn_params = {"depths1": 3,
                "mgfn_type2": "fb",
                "mgfn_type3": "fb",
                "dropout_rate": 0.7,
+               "dropout": 0.0,
+               "attention_dropout": 0.0,
                "mag_ratio": 0.1
                }
 
@@ -56,10 +58,23 @@ paths_cheat = {
 }
 
 
+mgfn_params = {"depths1": 3,
+               "depths2": 3,
+               "depths3": 2,
+               "mgfn_type1": "gb",
+               "mgfn_type2": "fb",
+               "mgfn_type3": "fb",
+               "dropout_rate": 0.5,
+               "dropout": 0.5,
+               "attention_dropout": 0.5,
+               "mag_ratio": 0.1
+               }
+
 HYPERPARAMS = {
     'params_def': params_def | main | mgfn_params | dataset_params | original | paths,
     'params_1': params_def | main | mgfn_params | dataset_params | params_1 | paths,
     'params_cheat': params_def | main | mgfn_params | dataset_params | original | paths_cheat,
+    'params_cheat_req': params_def | main | mgfn_params | dataset_params | original | paths_cheat
 }
 
 
