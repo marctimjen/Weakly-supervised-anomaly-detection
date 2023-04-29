@@ -8,7 +8,7 @@ import argparse
 from models.mgfn import mgfn
 from datasets.dataset import Dataset
 from train import train, val
-from test import test
+# from test import test
 import datetime
 import params
 import os
@@ -105,7 +105,7 @@ if __name__ == '__main__':
                     mag_ratio=param["mag_ratio"]
                     )
 
-    if param["pretrained_ckpt"] is not None:
+    if param["pretrained_ckpt"]:
         model_ckpt = torch.load(param["pretrained_ckpt"])
         model.load_state_dict(model_ckpt)
         print("pretrained loaded")

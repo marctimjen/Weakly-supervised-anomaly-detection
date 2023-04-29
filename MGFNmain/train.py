@@ -25,7 +25,7 @@ class ContrastiveLoss(nn.Module):  # This is used for the three different cases 
         super(ContrastiveLoss, self).__init__()
         self.margin = margin
 
-    def forward(self, output1, output2, label):
+    def forward(self, output1, output2, indicator):
         """
         :param output1 (80 x 3):  - 3 might stem from the value of k
         :param output2 (80 x 3):
@@ -33,8 +33,14 @@ class ContrastiveLoss(nn.Module):  # This is used for the three different cases 
         """
         euclidean_distance = F.pairwise_distance(output1, output2, keepdim=True)  # 80 x 1
                             #  torch.sum((two-one)**2)**(1/2)
-        loss_contrastive = torch.mean((1-label) * torch.pow(euclidean_distance, 2) +
-                                        (label) * torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
+
+        if indicator == 0:
+            loss_contrastive = torch.mean(torch.pow(euclidean_distance, 2))
+        elif indicator == 1:
+            loss_contrastive = torch.mean(torch.pow(torch.clamp(self.margin - euclidean_distance, min=0.0), 2))
+        else:
+            raise KeyError(f"The indicator can only be 0 or 1, in this instance got {indicator}")
+
         return loss_contrastive
 
 # class SigmoidCrossEntropyLoss(nn.Module):  # Maybe (L_SCE)

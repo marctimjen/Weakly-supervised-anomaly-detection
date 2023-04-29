@@ -89,7 +89,7 @@ if __name__ == "__main__":
 #
 # # res = np.load("/home/cv05f23/data/UCF/test_gt/gt-ucf.npy")
 # res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy")
-# res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFM-main/list/gt-ucf.npy")
+# res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/list/gt-ucf.npy")
 # start_of_arr = 0
 # end_of_arr = 0
 #

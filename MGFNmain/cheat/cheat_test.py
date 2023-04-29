@@ -10,9 +10,6 @@ from MGFNmain.datasets.dataset import Dataset
 import os
 import neptune
 
-
-
-
 # import matplotlib.pyplot as plt
 # import option
 # args = option.parse_args()
