@@ -1,10 +1,7 @@
 original = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
             "lambda_1": 8e-4, "alpha": 0.0001}  # hyper params
 
-dataset_params = {"rgb_list": "data/ucf_tencrop_1d/ucf-i3d.list",
-                  "val_rgb_list": "data/ucf_tencrop_1d/ucf-i3d-val.list",
-                  "test_rgb_list": "data/ucf_tencrop_1d/ucf-i3d-test.list",
-                  "datasetname": "UCF",
+dataset_params = {"datasetname": "UCF",
                   "dataset": "UCF",
                   "modality": "RGB",
                   "UCF_train_len": 1449,
@@ -28,8 +25,15 @@ params_def = {
     "plot_freq": 10,
 }
 
+paths = {
+    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-train.list",
+    "val_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-val.list",
+    "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list",
+    "gt": "data/ucf_tencrop_1d/gt-ucf.npy"
+}
+
 
 HYPERPARAMS = {
-    'params_def': params_def | main | test | dataset_params | original,
+    'params_def': params_def | main | test | dataset_params | original | paths,
 
 }

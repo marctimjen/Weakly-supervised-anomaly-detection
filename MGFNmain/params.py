@@ -3,9 +3,6 @@ original = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1
 
 dataset_params = {"seg_length": 32,
                   "add_mag_info": False,  # Do not quite know what this does...
-                  "rgb_list": "data/ucf_tencrop_1d/ucf-i3d.list",
-                  "val_rgb_list": "data/ucf_tencrop_1d/ucf-i3d-val.list",
-                  "test_rgb_list": "data/ucf_tencrop_1d/ucf-i3d-test.list",
                   "datasetname": "UCF",
                   "dataset": "UCF",
                   "modality": "RGB",
