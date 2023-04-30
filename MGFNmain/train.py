@@ -93,8 +93,7 @@ class mgfn_loss(torch.nn.Module):
 
         # loss_total = loss_cls + self.lambda3 * (loss_con + loss_con_a + loss_con_n)  # Last part is MC loss?
         loss_mc = self.lambda3 * (loss_con + loss_con_a + loss_con_n)
-        return loss_cls, loss_mc, loss_con, loss_con_n, loss_con_a
-
+        return loss_cls, loss_mc, self.lambda3 * loss_con, self.lambda3 * loss_con_n, self.lambda3 * loss_con_a
 
 
 def train(nloader, aloader, model, params, optimizer, device, iterator = 0):

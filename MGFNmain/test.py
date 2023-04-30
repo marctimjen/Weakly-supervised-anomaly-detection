@@ -47,7 +47,7 @@ if __name__ == '__main__':
     import argparse
     from torch.utils.data import DataLoader
     import params
-    from models.mgfn import mgfn as Model
+    from models.mgfn import mgfn
 
     def path_inator(params, args):
         if args.user == "marc":
@@ -59,10 +59,10 @@ if __name__ == '__main__':
             #                 "results/ucf_gt/gt-ucf.npy"
             params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
 
-            params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-                                        "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
+            # params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+            #                             "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
 
-            # params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/mgfn7-i3d.pkl"
+            params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-8/mgfn156-i3d.pkl"
 
             return "/home/marc/Documents/sandbox"  # path where to wave files
 
@@ -84,7 +84,15 @@ if __name__ == '__main__':
 
     # device = torch.device("cpu")
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    model = Model(dropout=0.0, attention_dropout=0.0, dropout_rate=0.0)
+    model = mgfn(dims=(param["dims1"], param["dims2"], param["dims3"]),
+                    depths=(param["depths1"], param["depths2"], param["depths3"]),
+                    mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
+                    channels=param["channels"], ff_repe=param["ff_repe"], dim_head=param["dim_head"],
+                    batch_size=param["batch_size"], dropout_rate=0.0,
+                    mag_ratio=param["mag_ratio"], dropout=0.0,
+                    attention_dropout=0.0,
+                    )
+
     print(param["pretrained_path"])
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname="UCF", modality="RGB", seg_length=32,
@@ -93,8 +101,8 @@ if __name__ == '__main__':
     model = model.to("cpu")
 
     di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_path"], map_location="cpu").items()}
-    di["to_logits.weight"] = di.pop("to_logits.0.weight")
-    di["to_logits.bias"] = di.pop("to_logits.0.bias")
+    # di["to_logits.weight"] = di.pop("to_logits.0.weight")
+    # di["to_logits.bias"] = di.pop("to_logits.0.bias")
 
     model_dict = model.load_state_dict(di)
     model = model.to(device)

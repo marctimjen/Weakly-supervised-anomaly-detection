@@ -35,7 +35,6 @@ def path_inator(params, args):
         params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
         # params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
 
-        params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
         return params["save_dir"]  # path where to save files
 
     elif args.user == "cluster":
@@ -96,16 +95,23 @@ if __name__ == '__main__':
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
-    model = mgfn(depths=(param["depths1"], param["depths2"], param["depths3"]),
+    model = mgfn(dims=(param["dims1"], param["dims2"], param["dims3"]),
+                    depths=(param["depths1"], param["depths2"], param["depths3"]),
                     mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
-                    batch_size=param["batch_size"],
-                    dropout_rate=param["dropout_rate"],
-                    mag_ratio=param["mag_ratio"]
+                    channels=param["channels"], ff_repe=param["ff_repe"], dim_head=param["dim_head"],
+                    batch_size=param["batch_size"], dropout_rate=param["dropout_rate"],
+                    mag_ratio=param["mag_ratio"], dropout=param["dropout"],
+                    attention_dropout=param["attention_dropout"],
                     )
 
+    # params["pretrained_ckpt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+    #                             "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
+
     if param["pretrained_ckpt"]:
-        model_ckpt = torch.load(param["pretrained_ckpt"])
-        model.load_state_dict(model_ckpt)
+        di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_ckpt"], map_location="cpu").items()}
+        di["to_logits.weight"] = di.pop("to_logits.0.weight")
+        di["to_logits.bias"] = di.pop("to_logits.0.bias")
+        model_dict = model.load_state_dict(di)
         print("pretrained loaded")
 
     model = model.to(device)
@@ -172,6 +178,8 @@ if __name__ == '__main__':
         if val_info["val_loss"][-1] < best_loss:
             best_loss = val_info["val_loss"][-1]
             save_best_record(val_info, os.path.join(save_path, f'{step}-step-loss.txt'))
+
+        break
 
     torch.save(model.state_dict(), save_path + param["model_name"] + 'final.pkl')
 

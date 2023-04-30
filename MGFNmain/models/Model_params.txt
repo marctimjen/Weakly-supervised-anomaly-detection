@@ -1,0 +1,254 @@
+Using a updated version of : from torchsummary import summary we find that:
+
+For conv1d-1 we have that torch.Size([320, 2048, 32]) turns into torch.Size([320, 64, 32])
+We use the formula (for 2d conv): width m, height n, previous layer’s filters d and account for all such filters k in the current
+layer. Don’t forget the bias term for each of the filter. Number of parameters in a CONV layer would be : ((m * n * d)+1)* k)
+
+For 1 d conv we must have:  (m * d)+1)* k = (3 * 2048 + 1) * 64 = 393280
+
+For Conv1d-2 we have that: before: torch.Size([320, 1, 32]) after: torch.Size([320, 64, 32])
+(m * d)+1)* k = (3 * 1 + 1) * 64 = 256
+
+# https://towardsdatascience.com/understanding-and-calculating-the-number-of-parameters-in-convolution-neural-networks-cnns-fc88790d530d
+
+from torchsummary import summary   summary(model, (10, 32, 2049), batch_size=32)
+
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv1d-1               [32, 64, 32]         393,280   # mgfn class: self.to_tokens
+            Conv1d-2               [32, 64, 32]             256   # mgfn class: self.to_mag  ->  tokens + feature map
+            Conv1d-3               [32, 64, 32]          12,352   # backbone class: scc   ->  Start Glance with depth 3
+         LayerNorm-4               [32, 64, 32]             128     # GLANCE class:  self.norm(x)
+            Conv1d-5              [32, 192, 32]          12,288     # GLANCE class:  self.to_qkv(x)
+            Conv1d-6               [32, 64, 32]           4,160     # GLANCE class:  self.to_out(out)
+            GLANCE-7               [32, 64, 32]               0
+         LayerNorm-8               [32, 64, 32]             128     # backbone class:  ff (FeedForward (function))
+            Conv1d-9              [32, 256, 32]          16,640     # backbone class:  ff (FeedForward (function))
+             GELU-10              [32, 256, 32]               0     # backbone class:  ff (FeedForward (function))
+          Dropout-11              [32, 256, 32]               0     # backbone class:  ff (FeedForward (function))
+           Conv1d-12               [32, 64, 32]          16,448     # backbone class:  ff (FeedForward (function))
+           Conv1d-13               [32, 64, 32]          12,352   # backbone class: scc  - Glance depth 2
+        LayerNorm-14               [32, 64, 32]             128     # GLANCE class:  self.norm(x)
+           Conv1d-15              [32, 192, 32]          12,288     # GLANCE class:  self.to_qkv(x)
+           Conv1d-16               [32, 64, 32]           4,160     # GLANCE class:  self.to_out(out)
+           GLANCE-17               [32, 64, 32]               0
+        LayerNorm-18               [32, 64, 32]             128     # backbone class:  ff (FeedForward (function))
+           Conv1d-19              [32, 256, 32]          16,640     # backbone class:  ff (FeedForward (function))
+             GELU-20              [32, 256, 32]               0     # backbone class:  ff (FeedForward (function))
+          Dropout-21              [32, 256, 32]               0     # backbone class:  ff (FeedForward (function))
+           Conv1d-22               [32, 64, 32]          16,448     # backbone class:  ff (FeedForward (function))
+           Conv1d-23               [32, 64, 32]          12,352    # backbone class: scc  - Glance depth 3
+        LayerNorm-24               [32, 64, 32]             128     # GLANCE class:  self.norm(x)
+           Conv1d-25              [32, 192, 32]          12,288     # GLANCE class:  self.to_qkv(x)
+           Conv1d-26               [32, 64, 32]           4,160     # GLANCE class:  self.to_out(out)
+           GLANCE-27               [32, 64, 32]               0
+        LayerNorm-28               [32, 64, 32]             128     # backbone class:  ff (FeedForward (function))
+           Conv1d-29              [32, 256, 32]          16,640     # backbone class:  ff (FeedForward (function))
+             GELU-30              [32, 256, 32]               0     # backbone class:  ff (FeedForward (function))
+          Dropout-31              [32, 256, 32]               0     # backbone class:  ff (FeedForward (function))
+           Conv1d-32               [32, 64, 32]          16,448     # backbone class:  ff (FeedForward (function))
+         Backbone-33               [32, 64, 32]               0
+        LayerNorm-34               [32, 64, 32]             128     # mgfn class: self.stages[1] : conv in backbone
+           Conv1d-35              [32, 128, 32]           8,320     # mgfn class: self.stages[1] : conv in backbone
+           Conv1d-36              [32, 128, 32]          49,280   # backbone class: scc   ->  Start Focus with depth 3
+      BatchNorm1d-37              [32, 128, 32]             256     # FOCUS class:  self.norm(x)
+           Conv1d-38              [32, 128, 32]          16,384     # FOCUS class:  self.to_v(x)
+           Conv1d-39                [32, 2, 32]              12     # FOCUS class:  self.rel_pos(x)
+           Conv1d-40              [32, 128, 32]          16,512     # FOCUS class:  self.to_out(x)
+            FOCUS-41              [32, 128, 32]               0
+        LayerNorm-42              [32, 128, 32]             256     # backbone class:  ff (FeedForward (function))
+           Conv1d-43              [32, 512, 32]          66,048     # backbone class:  ff (FeedForward (function))
+             GELU-44              [32, 512, 32]               0     # backbone class:  ff (FeedForward (function))
+          Dropout-45              [32, 512, 32]               0     # backbone class:  ff (FeedForward (function))
+           Conv1d-46              [32, 128, 32]          65,664     # backbone class:  ff (FeedForward (function))
+           Conv1d-47              [32, 128, 32]          49,280   # backbone class: scc   -> Focus depth 2
+      BatchNorm1d-48              [32, 128, 32]             256     # FOCUS class:  self.norm(x)
+           Conv1d-49              [32, 128, 32]          16,384     # FOCUS class:  self.to_v(x)
+           Conv1d-50                [32, 2, 32]              12     # FOCUS class:  self.rel_pos(x)
+           Conv1d-51              [32, 128, 32]          16,512     # FOCUS class:  self.to_out(x)
+            FOCUS-52              [32, 128, 32]               0
+        LayerNorm-53              [32, 128, 32]             256     # backbone class:  ff (FeedForward (function))
+           Conv1d-54              [32, 512, 32]          66,048     # backbone class:  ff (FeedForward (function))
+             GELU-55              [32, 512, 32]               0     # backbone class:  ff (FeedForward (function))
+          Dropout-56              [32, 512, 32]               0     # backbone class:  ff (FeedForward (function))
+           Conv1d-57              [32, 128, 32]          65,664     # backbone class:  ff (FeedForward (function))
+           Conv1d-58              [32, 128, 32]          49,280   # backbone class: scc   -> Focus depth 3
+      BatchNorm1d-59              [32, 128, 32]             256     # FOCUS class:  self.norm(x)
+           Conv1d-60              [32, 128, 32]          16,384     # FOCUS class:  self.to_v(x)
+           Conv1d-61                [32, 2, 32]              12     # FOCUS class:  self.rel_pos(x)
+           Conv1d-62              [32, 128, 32]          16,512     # FOCUS class:  self.to_out(x)
+            FOCUS-63              [32, 128, 32]               0
+        LayerNorm-64              [32, 128, 32]             256     # backbone class:  ff (FeedForward (function))
+           Conv1d-65              [32, 512, 32]          66,048     # backbone class:  ff (FeedForward (function))
+             GELU-66              [32, 512, 32]               0     # backbone class:  ff (FeedForward (function))
+          Dropout-67              [32, 512, 32]               0     # backbone class:  ff (FeedForward (function))
+           Conv1d-68              [32, 128, 32]          65,664     # backbone class:  ff (FeedForward (function))
+         Backbone-69              [32, 128, 32]               0
+        LayerNorm-70              [32, 128, 32]             256   # mgfn class: self.stages[1] : conv in backbone
+           Conv1d-71             [32, 1024, 32]         132,096   # mgfn class: self.stages[1] : conv in backbone
+           Conv1d-72             [32, 1024, 32]       3,146,752   # backbone class: scc   ->  Start Focus with depth 2
+      BatchNorm1d-73             [32, 1024, 32]           2,048     # FOCUS class:  self.norm(x)
+           Conv1d-74             [32, 1024, 32]       1,048,576     # FOCUS class:  self.to_v(x)
+           Conv1d-75               [32, 16, 32]              96     # FOCUS class:  self.rel_pos(x)
+           Conv1d-76             [32, 1024, 32]       1,049,600     # FOCUS class:  self.to_out(x)
+            FOCUS-77             [32, 1024, 32]               0
+        LayerNorm-78             [32, 1024, 32]           2,048     # backbone class:  ff (FeedForward (function))
+           Conv1d-79             [32, 4096, 32]       4,198,400     # backbone class:  ff (FeedForward (function))
+             GELU-80             [32, 4096, 32]               0     # backbone class:  ff (FeedForward (function))
+          Dropout-81             [32, 4096, 32]               0     # backbone class:  ff (FeedForward (function))
+           Conv1d-82             [32, 1024, 32]       4,195,328     # backbone class:  ff (FeedForward (function))
+           Conv1d-83             [32, 1024, 32]       3,146,752   # backbone class: scc   ->  Focus depth 2
+      BatchNorm1d-84             [32, 1024, 32]           2,048     # FOCUS class:  self.norm(x)
+           Conv1d-85             [32, 1024, 32]       1,048,576     # FOCUS class:  self.to_v(x)
+           Conv1d-86               [32, 16, 32]              96     # FOCUS class:  self.rel_pos(x)
+           Conv1d-87             [32, 1024, 32]       1,049,600     # FOCUS class:  self.to_out(x)
+            FOCUS-88             [32, 1024, 32]               0
+        LayerNorm-89             [32, 1024, 32]           2,048     # backbone class:  ff (FeedForward (function))
+           Conv1d-90             [32, 4096, 32]       4,198,400     # backbone class:  ff (FeedForward (function))
+             GELU-91             [32, 4096, 32]               0     # backbone class:  ff (FeedForward (function))
+          Dropout-92             [32, 4096, 32]               0     # backbone class:  ff (FeedForward (function))
+           Conv1d-93             [32, 1024, 32]       4,195,328     # backbone class:  ff (FeedForward (function))
+         Backbone-94             [32, 1024, 32]               0
+        LayerNorm-95             [32, 32, 1024]           2,048   # mgfn class: self.to_logits
+           Linear-96                [32, 32, 1]           1,025   # mgfn class: self.fc(x)
+          Sigmoid-97                [32, 32, 1]               0   # mgfn class: self.sigmoid(x)  -> returns the scores
+          Dropout-98                   [32, 32]               0   # mgfn class:  used in MSNSD function
+          Dropout-99                   [32, 32]               0   # mgfn class:  used in MSNSD function
+            mgfn-100                    [-1, 1]               0
+                                        [-1, 1]
+                                  [-1, 3, 1024]
+                                  [-1, 3, 1024]
+                                    [-1, 32, 1]
+================================================================
+Total params: 28,652,773
+Trainable params: 28,652,773
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 80.04
+Forward/backward pass size (MB): 421.78
+Params size (MB): 109.30
+Estimated Total Size (MB): 611.12
+----------------------------------------------------------------
+
+
+
+Save copy:
+
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv1d-1               [32, 64, 32]         393,280
+            Conv1d-2               [32, 64, 32]             256
+            Conv1d-3               [32, 64, 32]          12,352
+         LayerNorm-4               [32, 64, 32]             128
+            Conv1d-5              [32, 192, 32]          12,288
+            Conv1d-6               [32, 64, 32]           4,160
+            GLANCE-7               [32, 64, 32]               0
+         LayerNorm-8               [32, 64, 32]             128
+            Conv1d-9              [32, 256, 32]          16,640
+             GELU-10              [32, 256, 32]               0
+          Dropout-11              [32, 256, 32]               0
+           Conv1d-12               [32, 64, 32]          16,448
+           Conv1d-13               [32, 64, 32]          12,352
+        LayerNorm-14               [32, 64, 32]             128
+           Conv1d-15              [32, 192, 32]          12,288
+           Conv1d-16               [32, 64, 32]           4,160
+           GLANCE-17               [32, 64, 32]               0
+        LayerNorm-18               [32, 64, 32]             128
+           Conv1d-19              [32, 256, 32]          16,640
+             GELU-20              [32, 256, 32]               0
+          Dropout-21              [32, 256, 32]               0
+           Conv1d-22               [32, 64, 32]          16,448
+           Conv1d-23               [32, 64, 32]          12,352
+        LayerNorm-24               [32, 64, 32]             128
+           Conv1d-25              [32, 192, 32]          12,288
+           Conv1d-26               [32, 64, 32]           4,160
+           GLANCE-27               [32, 64, 32]               0
+        LayerNorm-28               [32, 64, 32]             128
+           Conv1d-29              [32, 256, 32]          16,640
+             GELU-30              [32, 256, 32]               0
+          Dropout-31              [32, 256, 32]               0
+           Conv1d-32               [32, 64, 32]          16,448
+         Backbone-33               [32, 64, 32]               0
+        LayerNorm-34               [32, 64, 32]             128
+           Conv1d-35              [32, 128, 32]           8,320
+           Conv1d-36              [32, 128, 32]          49,280
+      BatchNorm1d-37              [32, 128, 32]             256
+           Conv1d-38              [32, 128, 32]          16,384
+           Conv1d-39                [32, 2, 32]              12
+           Conv1d-40              [32, 128, 32]          16,512
+            FOCUS-41              [32, 128, 32]               0
+        LayerNorm-42              [32, 128, 32]             256
+           Conv1d-43              [32, 512, 32]          66,048
+             GELU-44              [32, 512, 32]               0
+          Dropout-45              [32, 512, 32]               0
+           Conv1d-46              [32, 128, 32]          65,664
+           Conv1d-47              [32, 128, 32]          49,280
+      BatchNorm1d-48              [32, 128, 32]             256
+           Conv1d-49              [32, 128, 32]          16,384
+           Conv1d-50                [32, 2, 32]              12
+           Conv1d-51              [32, 128, 32]          16,512
+            FOCUS-52              [32, 128, 32]               0
+        LayerNorm-53              [32, 128, 32]             256
+           Conv1d-54              [32, 512, 32]          66,048
+             GELU-55              [32, 512, 32]               0
+          Dropout-56              [32, 512, 32]               0
+           Conv1d-57              [32, 128, 32]          65,664
+           Conv1d-58              [32, 128, 32]          49,280
+      BatchNorm1d-59              [32, 128, 32]             256
+           Conv1d-60              [32, 128, 32]          16,384
+           Conv1d-61                [32, 2, 32]              12
+           Conv1d-62              [32, 128, 32]          16,512
+            FOCUS-63              [32, 128, 32]               0
+        LayerNorm-64              [32, 128, 32]             256
+           Conv1d-65              [32, 512, 32]          66,048
+             GELU-66              [32, 512, 32]               0
+          Dropout-67              [32, 512, 32]               0
+           Conv1d-68              [32, 128, 32]          65,664
+         Backbone-69              [32, 128, 32]               0
+        LayerNorm-70              [32, 128, 32]             256
+           Conv1d-71             [32, 1024, 32]         132,096
+           Conv1d-72             [32, 1024, 32]       3,146,752
+      BatchNorm1d-73             [32, 1024, 32]           2,048
+           Conv1d-74             [32, 1024, 32]       1,048,576
+           Conv1d-75               [32, 16, 32]              96
+           Conv1d-76             [32, 1024, 32]       1,049,600
+            FOCUS-77             [32, 1024, 32]               0
+        LayerNorm-78             [32, 1024, 32]           2,048
+           Conv1d-79             [32, 4096, 32]       4,198,400
+             GELU-80             [32, 4096, 32]               0
+          Dropout-81             [32, 4096, 32]               0
+           Conv1d-82             [32, 1024, 32]       4,195,328
+           Conv1d-83             [32, 1024, 32]       3,146,752
+      BatchNorm1d-84             [32, 1024, 32]           2,048
+           Conv1d-85             [32, 1024, 32]       1,048,576
+           Conv1d-86               [32, 16, 32]              96
+           Conv1d-87             [32, 1024, 32]       1,049,600
+            FOCUS-88             [32, 1024, 32]               0
+        LayerNorm-89             [32, 1024, 32]           2,048
+           Conv1d-90             [32, 4096, 32]       4,198,400
+             GELU-91             [32, 4096, 32]               0
+          Dropout-92             [32, 4096, 32]               0
+           Conv1d-93             [32, 1024, 32]       4,195,328
+         Backbone-94             [32, 1024, 32]               0
+        LayerNorm-95             [32, 32, 1024]           2,048
+           Linear-96                [32, 32, 1]           1,025
+          Sigmoid-97                [32, 32, 1]               0
+          Dropout-98                   [32, 32]               0
+          Dropout-99                   [32, 32]               0
+            mgfn-100                    [-1, 1]               0
+                                        [-1, 1]
+                                  [-1, 3, 1024]
+                                  [-1, 3, 1024]
+                                    [-1, 32, 1]
+================================================================
+Total params: 28,652,773
+Trainable params: 28,652,773
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 80.04
+Forward/backward pass size (MB): 421.78
+Params size (MB): 109.30
+Estimated Total Size (MB): 611.12
+----------------------------------------------------------------

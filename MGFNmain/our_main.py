@@ -98,13 +98,13 @@ if __name__ == '__main__':
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
-    model = mgfn(depths=(param["depths1"], param["depths2"], param["depths3"]),
+    model = mgfn(dims=(param["dims1"], param["dims2"], param["dims3"]),
+                    depths=(param["depths1"], param["depths2"], param["depths3"]),
                     mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
-                    batch_size=param["batch_size"],
-                    dropout_rate=param["dropout_rate"],
-                    dropout=param["dropout"],
+                    channels=param["channels"], ff_repe=param["ff_repe"], dim_head=param["dim_head"],
+                    batch_size=param["batch_size"], dropout_rate=param["dropout_rate"],
+                    mag_ratio=param["mag_ratio"], dropout=param["dropout"],
                     attention_dropout=param["attention_dropout"],
-                    mag_ratio=param["mag_ratio"]
                     )
 
     if param["pretrained_ckpt"]:
