@@ -179,8 +179,6 @@ if __name__ == '__main__':
             best_loss = val_info["val_loss"][-1]
             save_best_record(val_info, os.path.join(save_path, f'{step}-step-loss.txt'))
 
-        break
-
     torch.save(model.state_dict(), save_path + param["model_name"] + 'final.pkl')
 
     run.stop()
