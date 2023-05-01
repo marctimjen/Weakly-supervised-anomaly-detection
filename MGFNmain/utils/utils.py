@@ -152,8 +152,8 @@ class GLANCE(nn.Module):
         self,
         dim,
         heads,
-        dim_head = 64,
-        dropout = 0.
+        dim_head=64,
+        dropout=0.
     ):
         super().__init__()
         self.heads = heads
@@ -163,18 +163,21 @@ class GLANCE(nn.Module):
         self.to_qkv = nn.Conv1d(dim, inner_dim * 3, 1, bias = False)
         self.to_out = nn.Conv1d(inner_dim, dim, 1)
         self.attn = 0
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
         x = self.norm(x)
         shape, h = x.shape, self.heads
         x = rearrange(x, 'b c ... -> b c (...)')
+        x = self.dropout(x)
         q, k, v = self.to_qkv(x).chunk(3, dim = 1)
         q, k, v = map(lambda t: rearrange(t, 'b (h d) n -> b h n d', h = h), (q, k, v))
         q = q * self.scale
-        sim = einsum('b h i d, b h j d -> b h i j', q, k)
-        self.attn = sim.softmax(dim = -1)
-        out = einsum('b h i j, b h j d -> b h i d', self.attn, v)
+        sim = einsum('b h i d, b h j d -> b h i j', q, k)  # (3)
+        self.attn = sim.softmax(dim = -1)  # (4)
+        out = einsum('b h i j, b h j d -> b h i d', self.attn, v)  # (5)
         out = rearrange(out, 'b h n d -> b (h d) n', h = h)
+        out = self.dropout(out)
         out = self.to_out(out)
 
         return out.view(*shape)
