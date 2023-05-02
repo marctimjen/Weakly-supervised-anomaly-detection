@@ -1,5 +1,9 @@
 import shutil
 
+"""
+This script is used to move the files in the validation files to the new "val" folder.
+"""
+
 # path = rf"C:\Users\Marc\Documents\GitHub\8 semester\Weakly-supervised-anomaly-detection\MGFNmain\UCF_list\\"
 # path = rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/"
 path = rf"/MGFNmain/UCF_list/"

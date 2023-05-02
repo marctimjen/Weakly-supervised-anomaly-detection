@@ -182,14 +182,14 @@ class mgfn(nn.Module):
         self.to_mag = nn.Conv1d(1, init_dim, kernel_size=3, stride=1, padding=1)
 
     def forward(self, video):
-        k = 3
-        bs, ncrops, t, c = video.size()
+        k = 3  # number of features from select top k
+        bs, ncrops, t, c = video.size()  # batch_size, M=P=# crops, T = # clips, C = feature dimension
         x = video.view(bs * ncrops, t, c).permute(0, 2, 1)
         x_f = x[:, :2048, :]
         x_m = x[:, 2048:, :]
         x_f = self.to_tokens(x_f)
-        x_m = self.to_mag(x_m)
-        x_f = x_f + self.mag_ratio * x_m
+        x_m = self.to_mag(x_m)  # make the last
+        x_f = x_f + self.mag_ratio * x_m  # time series + feature map
 
         for backbone, conv in self.stages:
             x_f = backbone(x_f)

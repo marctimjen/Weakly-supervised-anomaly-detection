@@ -1,6 +1,10 @@
 import numpy as np
 import re
 
+"""
+This file is used to do a split of the train dataset for UCF. This creates a validation dataset from the train data.
+"""
+
 np.random.seed(42)  # set seed for random permutation
 
 path = rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFN-main/UCF_list/"

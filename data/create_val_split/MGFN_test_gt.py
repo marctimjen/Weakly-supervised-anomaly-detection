@@ -1,5 +1,10 @@
 import numpy as np
 
+"""
+This is a test-file that is used to validate our gt-file.
+"""
+
+
 # res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy")
 
 res = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")

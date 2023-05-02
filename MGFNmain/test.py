@@ -106,7 +106,7 @@ if __name__ == '__main__':
 
     model_dict = model.load_state_dict(di)
     model = model.to(device)
-    auc = test(test_loader, model, param, device)
+    auc_res = test(test_loader, model, param, device)
 
 
 # --test-rgb-list /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list --gt /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy

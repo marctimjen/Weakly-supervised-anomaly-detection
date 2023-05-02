@@ -56,11 +56,11 @@ class Dataset(data.Dataset):
                     # print(self.list)
             elif self.datasetname == 'XD':
                 if self.is_normal:
-                    self.list = self.list[9525:]
+                    self.list = [i for i in self.list if "_label_A" in i]
                     print('normal list')
                     print(self.list)
                 else:
-                    self.list = self.list[:9525]
+                    self.list = [i for i in self.list if not("_label_A" in i)]
                     print('abnormal list')
                     print(self.list)
 

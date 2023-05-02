@@ -184,10 +184,62 @@ HYPERPARAMS |= {
 
 ####################################### XD-violence data:
 
-paths = {
+original = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.001,
+            "w_decay": 0.0005, "lr": 0.001, "batch_size": 16}  # hyper params
+
+dataset_params_xd = {"seg_length": 32,
+                  "add_mag_info": False,  # Do not quite know what this does...
+                  "datasetname": "XD",
+                  "dataset": "XD",
+                  "modality": "RGB",
+                  "UCF_train_len": 1449,
+                  "UCF_val_len": 161,
+                  "UCF_test_len": 290
+                  }
+
+mgfn_params = {"dims1": 64,
+               "dims2": 128,
+               "dims3": 1024,
+               "depths1": 3,
+               "depths2": 3,
+               "depths3": 2,
+               "mgfn_type1": "gb",
+               "mgfn_type2": "fb",
+               "mgfn_type3": "fb",
+               "channels": 2048,
+               "ff_repe": 4,
+               "dim_head": 64,
+               "dropout": 0.0,
+               "attention_dropout": 0.0,
+               "dropout_rate": 0.7,
+               "mag_ratio": 0.1
+               }
+
+main = {"max_epoch": 1000,  # normally 1000
+        "pretrained_ckpt": False,
+        "model_name": "mgfn"
+        }
+
+params_def = {
+    "feat_extractor": "i3d",
+    "feature_size": 2048,
+    "hiddensize": 512,
+    "comment": "mgfn",
+    "local_con": "static",
+    "head_K": 4,
+    "gpus": 0,
+    "workers": 0,
+    "num_classes": 2,
+    "plot_freq": 10,
+}
+
+paths_xd = {
     "rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgb.list",
     "test_rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgbtest.list",
     "gt": ""
 }
+
+
+
 
 
