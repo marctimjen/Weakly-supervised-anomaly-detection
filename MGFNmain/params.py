@@ -206,7 +206,7 @@ mgfn_params_xd = {"dims1": 64,
                "mgfn_type1": "gb",
                "mgfn_type2": "fb",
                "mgfn_type3": "fb",
-               "channels": 2048,
+               "channels": 1024,
                "ff_repe": 4,
                "dim_head": 64,
                "dropout": 0.0,
@@ -216,9 +216,9 @@ mgfn_params_xd = {"dims1": 64,
                }
 
 main_xd = {"max_epoch": 1000,  # normally 1000
-        "pretrained_ckpt": False,
-        "model_name": "mgfn"
-        }
+            "pretrained_ckpt": False,
+            "model_name": "mgfn"
+            }
 
 params_def_xd = {
     "feat_extractor": "i3d",
@@ -239,7 +239,7 @@ paths_xd = {
     "gt": ""
 }
 
-HYPERPARAMS |= {"params_xd": params_def | main_reg | mgfn_params_net2 | dataset_params | original_reg | paths_cheat}
+HYPERPARAMS |= {"params_xd": params_def_xd | main_xd | mgfn_params_xd | dataset_params_xd | original_xd | paths_xd}
 
 
 
