@@ -7,7 +7,7 @@ name = '/home/cv05f23/data/XD/i3d-features/lists/rgb.list'
 
 with open(name, 'w+') as f:  ## the name of feature list
     for file in files:
-        newline = file+'\n'
+        newline = path+'/'+file+'\n'
         f.write(newline)
 
 
@@ -17,7 +17,7 @@ name = '/home/cv05f23/data/XD/i3d-features/lists/rgbtest.list'
 
 with open(name, 'w+') as f:  ## the name of feature list
     for file in files:
-        newline = file+'\n'
+        newline = path+'/'+file+'\n'
         f.write(newline)
 
 
@@ -27,7 +27,7 @@ name = '/home/cv05f23/data/XD/i3d-features/lists/flowtest.list'
 
 with open(name, 'w+') as f:  ## the name of feature list
     for file in files:
-        newline = file+'\n'
+        newline = path+'/'+file+'\n'
         f.write(newline)
 
 
@@ -37,5 +37,5 @@ name = '/home/cv05f23/data/XD/i3d-features/lists/flow.list'
 
 with open(name, 'w+') as f:  ## the name of feature list
     for file in files:
-        newline = file+'\n'
+        newline = path+'/'+file+'\n'
         f.write(newline)

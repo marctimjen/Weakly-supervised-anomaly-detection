@@ -181,3 +181,13 @@ HYPERPARAMS |= {
 
 
 
+
+####################################### XD-violence data:
+
+paths = {
+    "rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgb.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgbtest.list",
+    "gt": ""
+}
+
+
