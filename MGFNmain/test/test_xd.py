@@ -43,6 +43,9 @@ def test(dataloader, model, params, device):
         return rec_auc, pr_auc
 
 if __name__ == '__main__':
+    import sys
+    sys.path.append("../..")  # adds higher directory to python modules path
+    sys.path.append("..")  # adds higher directory to python modules path
     import argparse
     from torch.utils.data import DataLoader
     import params
