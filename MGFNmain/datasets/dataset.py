@@ -6,6 +6,7 @@ sys.path.append("..")  # adds higher directory to python modules path
 from MGFNmain.utils.utils import process_feat
 import torch
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
+import copy
 # import option
 # args = option.parse_args()
 
@@ -57,12 +58,18 @@ class Dataset(data.Dataset):
             elif self.datasetname == 'XD':
                 if self.is_normal:
                     self.list = [i for i in self.list if "_label_A" in i]
+
+                    list2 = sorted(copy.deepcopy(self.list))
                     print('normal list')
-                    print(self.list)
+                    print(list2 == self.list)
+                    #print(self.list)
                 else:
                     self.list = [i for i in self.list if not("_label_A" in i)]
+
+                    list2 = sorted(copy.deepcopy(self.list))
                     print('abnormal list')
-                    print(self.list)
+                    print(list2 == self.list)
+                    # print(self.list)
 
     def __getitem__(self, idx):
 
