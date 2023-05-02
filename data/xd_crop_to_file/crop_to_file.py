@@ -7,9 +7,11 @@ import torch
 The files from xd violence comes in 5 crops and thus we need to turn these five crops into one file.
 """
 
-crop_path = "/home/cv05f23/data/XD/i3d-features/RGBTest"
+# crop_path = "/home/cv05f23/data/XD/i3d-features/RGBTest"
+# save_file_path = "/home/cv05f23/data/XD/RGBTest"
 
-save_file_path = "/home/cv05f23/data/XD/RGBTest"
+crop_path = "/home/cv05f23/data/XD/i3d-features/RGB"
+save_file_path = "/home/cv05f23/data/XD/RGB"
 
 crop_files = os.listdir(crop_path)  # Find all the crops in the dir
 crop_set = set()
