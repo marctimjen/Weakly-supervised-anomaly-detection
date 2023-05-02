@@ -61,7 +61,7 @@ def create_gt_xd(test_path: str, gt_file_path: str, save_path: str) -> None:
 if __name__ == "__main__":
     create_gt_xd(
         test_path=rf"/home/cv05f23/data/XD/RGBTest",
-        gt_file_path =rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/data/download_features/xd.list",
+        gt_file_path =rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/download_features/xd.list",
         save_path=rf"/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
     )
 
