@@ -184,7 +184,7 @@ HYPERPARAMS |= {
 
 ####################################### XD-violence data:
 
-original = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.001,
+original_xd = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.001,
             "w_decay": 0.0005, "lr": 0.001, "batch_size": 16}  # hyper params
 
 dataset_params_xd = {"seg_length": 32,
@@ -197,7 +197,7 @@ dataset_params_xd = {"seg_length": 32,
                   "UCF_test_len": 290
                   }
 
-mgfn_params = {"dims1": 64,
+mgfn_params_xd = {"dims1": 64,
                "dims2": 128,
                "dims3": 1024,
                "depths1": 3,
@@ -215,12 +215,12 @@ mgfn_params = {"dims1": 64,
                "mag_ratio": 0.1
                }
 
-main = {"max_epoch": 1000,  # normally 1000
+main_xd = {"max_epoch": 1000,  # normally 1000
         "pretrained_ckpt": False,
         "model_name": "mgfn"
         }
 
-params_def = {
+params_def_xd = {
     "feat_extractor": "i3d",
     "feature_size": 2048,
     "hiddensize": 512,
@@ -235,9 +235,11 @@ params_def = {
 
 paths_xd = {
     "rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgb.list",
-    "test_rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgbtest.list",
+    "val_rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgbtest.list",
     "gt": ""
 }
+
+HYPERPARAMS |= {"params_xd": params_def | main_reg | mgfn_params_net2 | dataset_params | original_reg | paths_cheat}
 
 
 
