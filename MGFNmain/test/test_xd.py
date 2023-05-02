@@ -69,10 +69,10 @@ if __name__ == '__main__':
             return "/home/marc/Documents/sandbox"  # path where to wave files
 
         elif args.user == "cluster":
-            params["save_dir"] = ""  # where to save results + model
-            params["rgb_list"] = ""
-            params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
-            params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-test.list"
+            # params["save_dir"] = ""  # where to save results + model
+            # params["rgb_list"] = ""
+            # params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
+            # params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-test.list"
             params["pretrained_path"] = "/home/cv05f23/data/XD/lists/XD_pretrained/mgfn_xd.pkl"
             return ""  # path where to wave files
 
