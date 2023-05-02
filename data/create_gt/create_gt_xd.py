@@ -15,7 +15,7 @@ def create_gt_xd(test_path: str, gt_file_path: str, save_path: str) -> None:
 
     def ano_frames(ls):
         it = int(len(ls) / 2)
-        if not (it % 2 == 0):
+        if not (int(len(ls)) % 2 == 0):
             raise ValueError(f"ls must have even length, but ls has length: {len(ls)}")
 
         for i in range(it):
