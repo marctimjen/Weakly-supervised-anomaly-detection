@@ -93,8 +93,8 @@ class Dataset(data.Dataset):
                 mag = np.linalg.norm(features, axis=2)[:, :, np.newaxis]
                 features = np.concatenate((features, mag), axis=2)
             elif self.datasetname == 'XD':
-                mag = np.linalg.norm(features, axis=2)[:, :, np.newaxis]
-                features = np.concatenate((features, mag), axis=2)
+                mag = np.linalg.norm(features, axis=1)[:, np.newaxis]
+                features = np.concatenate((features, mag), axis=1)
             return features, name
         else:
             if self.datasetname == 'UCF':
