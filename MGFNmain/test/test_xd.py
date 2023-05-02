@@ -2,6 +2,9 @@ import torch
 from sklearn.metrics import auc, roc_curve, precision_recall_curve
 from tqdm import tqdm
 import numpy as np
+import sys
+sys.path.append("../..")  # adds higher directory to python modules path
+sys.path.append("..")  # adds higher directory to python modules path
 from MGFNmain.datasets.dataset import Dataset
 
 # import matplotlib.pyplot as plt
@@ -43,9 +46,6 @@ def test(dataloader, model, params, device):
         return rec_auc, pr_auc
 
 if __name__ == '__main__':
-    import sys
-    sys.path.append("../..")  # adds higher directory to python modules path
-    sys.path.append("..")  # adds higher directory to python modules path
     import argparse
     from torch.utils.data import DataLoader
     import params
