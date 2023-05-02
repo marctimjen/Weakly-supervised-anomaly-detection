@@ -97,9 +97,9 @@ if __name__ == '__main__':
 
     print(param["pretrained_path"])
 
-    test_loader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
+    test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
                                         modality=param["modality"], seg_length=param["seg_length"],
-                                        mode="train", shuffle=False),
+                                        mode="test", shuffle=False),
                                 batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
     model = model.to("cpu")
 
