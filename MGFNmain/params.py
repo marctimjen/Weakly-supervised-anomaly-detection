@@ -235,7 +235,7 @@ params_def_xd = {
 
 paths_xd = {
     "rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgb.list",
-    "val_rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgbtest.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgbtest.list",
     "gt": ""
 }
 
