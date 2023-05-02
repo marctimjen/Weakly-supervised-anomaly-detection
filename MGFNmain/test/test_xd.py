@@ -21,9 +21,7 @@ def test(dataloader, model, params, device):
         pred = torch.zeros(0).cpu()
         # featurelen = []
         for i, (inputs, name) in tqdm(enumerate(dataloader)):
-            print(inputs.shape)
-            print(name)
-            inputs = inputs.permute(0, 2, 1, 3)
+            # inputs = inputs.permute(0, 2, 1, 3)
             # inputs = inputs.to("cpu")
             _, _, _, _, logits = model(inputs)
             logits = torch.squeeze(logits, 1)
