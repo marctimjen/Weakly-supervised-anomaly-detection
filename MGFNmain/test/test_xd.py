@@ -23,6 +23,7 @@ def test(dataloader, model, params, device):
         for i, (inputs, name) in tqdm(enumerate(dataloader)):
             # inputs = inputs.permute(0, 2, 1, 3)
             # inputs = inputs.to("cpu")
+            inputs = inputs[None, ]
             _, _, _, _, logits = model(inputs)
             logits = torch.squeeze(logits, 1)
             logits = torch.mean(logits, 0)
