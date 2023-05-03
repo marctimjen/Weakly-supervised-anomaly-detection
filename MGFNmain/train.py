@@ -119,8 +119,8 @@ def train(nloader, aloader, model, params, optimizer, device, iterator = 0):
             loss_sparse = sparsity(scores[:params["batch_size"], :, :].view(-1), params["lambda_2"])
             # sparsity should be with normal scores
 
-            nlabel = nlabel[0: params["batch_size"]]
-            alabel = alabel[0: params["batch_size"]]
+            nlabel = nlabel[0: params["batch_size"]].to(device)
+            alabel = alabel[0: params["batch_size"]].to(device)
 
             loss_criterion = mgfn_loss(params["lambda_3"])
             loss_sce, loss_mc, loss_con, loss_con_n, loss_con_a = loss_criterion(score_normal, score_abnormal, nlabel,
@@ -167,8 +167,8 @@ def val(nloader, aloader, model, params, device):
             loss_sparse = sparsity(scores[:params["batch_size"], :, :].view(-1), params["lambda_2"])
             # sparsity should be with normal scores
 
-            nlabel = nlabel[0: params["batch_size"]]
-            alabel = alabel[0: params["batch_size"]]
+            nlabel = nlabel[0: params["batch_size"]].to(device)
+            alabel = alabel[0: params["batch_size"]].to(device)
 
             loss_criterion = mgfn_loss(params["lambda_3"])
 
