@@ -8,6 +8,7 @@ import random
 import datetime
 import numpy as np
 import torch.optim as optim
+import neptune
 
 import _init_paths
 
@@ -45,6 +46,14 @@ def main():
         mkdir(args.checkpoint_path.joinpath(args.version))
         mkdir(args.log_path.joinpath(args.version))
         mkdir(args.dictionary_path)
+
+        token = os.getenv('NEPTUNE_API_TOKEN')
+        run = neptune.init_run(
+            project="AAM/s3r",
+            api_token=token,
+        )
+        run_id = run["sys/id"].fetch()
+        run["model"] = "S3R"
 
     if 'shanghaitech' in args.dataset:
         import configs.shanghaitech.shanghaitech_dl as cfg
@@ -226,7 +235,7 @@ def main():
         if (step - 1) % len(train_anomaly_loader) == 0:
             loadera_iter = iter(train_anomaly_loader)
 
-        loss = do_train(loadern_iter, loadera_iter, model, args.batch_size, optimizer, device)
+        loss = do_train(loadern_iter, loadera_iter, model, args.batch_size, optimizer, device, run)
 
         condition = (step % 1 == 0) if args.debug else \
                 (step % args.evaluate_freq == 0 and step > args.evaluate_min_step)
@@ -244,7 +253,8 @@ def main():
             now = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             test_info["now"].append(now)
 
-
+            run["test/epoch"].log(step)
+            run["test/AUC"].log(score)
             statistics.append([step, score])
 
             metric = 'test_{metric}'.format(metric='AUC' if 'xd-violence' not in args.dataset else 'AP')
@@ -302,6 +312,8 @@ def main():
     table = AsciiTable(title + score, ' Performance on {} '.format(args.dataset))
     table.justify_columns[0], table.justify_columns[-1] = 'center', 'center'
     logger.info('Summary Result on {} metric\n{}'.format('AUC', table.table))
+
+    run.stop()
 
 if __name__ == '__main__':
     main()

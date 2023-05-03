@@ -70,7 +70,7 @@ class MacroLoss(nn.Module):
 
         return loss
 
-def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, device):
+def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, device, run):
     with torch.set_grad_enabled(True):
         model.train()
 
@@ -119,6 +119,12 @@ def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, devic
         loss_macro = macro_criterion(macro_scores, macro_label)
 
         cost = loss_magnitude + loss_smooth + loss_sparse + loss_macro
+
+        run["train/loss"].log(cost)
+        run["train/loss_magnitude"].log(loss_magnitude)
+        run["train/loss_smooth"].log(loss_smooth)
+        run["train/loss_sparse"].log(loss_sparse)
+        run["train/loss_macro"].log(loss_macro)
 
         optimizer.zero_grad()
         cost.backward()
