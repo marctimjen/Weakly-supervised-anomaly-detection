@@ -10,6 +10,9 @@ The files from xd violence comes in 5 crops and thus we need to turn these five 
 # crop_path = "/home/cv05f23/data/XD/i3d-features/RGBTest"
 # save_file_path = "/home/cv05f23/data/XD/RGBTest"
 
+# crop_path = "/home/marc/Documents/data/xd/i3d-features/RGB"
+# save_file_path = "/home/marc/Documents/data/xd/RGB"
+
 crop_path = "/home/cv05f23/data/XD/i3d-features/RGB"
 save_file_path = "/home/cv05f23/data/XD/RGB"
 

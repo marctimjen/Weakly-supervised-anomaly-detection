@@ -95,8 +95,8 @@ if __name__ == '__main__':
     )
 
     for i in range(param["max_epoch"]):
-        param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_MGFN-{args.nept_run}/mgfn{i}-i3d.pkl"
-        # param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-{args.nept_run}/mgfn{i}-i3d.pkl"
+        # param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_MGFN-{args.nept_run}/mgfn{i}-i3d.pkl"
+        param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-{args.nept_run}/mgfn{i}-i3d.pkl"
 
         model = mgfn(dims=(param["dims1"], param["dims2"], param["dims3"]),
                         depths=(param["depths1"], param["depths2"], param["depths3"]),
