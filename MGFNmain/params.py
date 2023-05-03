@@ -95,6 +95,9 @@ HYPERPARAMS |= {
 original_reg = copy.deepcopy(original)
 original_reg |= {"w_decay": 0.005}  # more weight decay = L2 norm :).
 
+original_reg2 = copy.deepcopy(original)
+original_reg2 |= {"w_decay": 0.0025}
+
 mgfn_params_2 = copy.deepcopy(mgfn_params)
 mgfn_params_3 = copy.deepcopy(mgfn_params)
 mgfn_params_4 = copy.deepcopy(mgfn_params)
@@ -176,6 +179,15 @@ HYPERPARAMS |= {
 
     'params_cheat_14': params_def | main_reg | mgfn_params_net2 | dataset_params | original | paths_cheat,
     'params_cheat_15': params_def | main_reg | mgfn_params_net2 | dataset_params | original_reg | paths_cheat,
+
+    'params_cheat_16': params_def | main_reg | mgfn_params | dataset_params | original_reg2 | paths_cheat,
+    'params_cheat_17': params_def | main_reg | mgfn_params_2 | dataset_params | original_reg2 | paths_cheat,
+    'params_cheat_18': params_def | main_reg | mgfn_params_3 | dataset_params | original_reg2 | paths_cheat,
+    'params_cheat_19': params_def | main_reg | mgfn_params_4 | dataset_params | original_reg2 | paths_cheat,
+    'params_cheat_20': params_def | main_reg | mgfn_params_5 | dataset_params | original_reg2 | paths_cheat,
+    'params_cheat_21': params_def | main_reg | mgfn_params_6 | dataset_params | original_reg2 | paths_cheat,
+    'params_cheat_22': params_def | main_reg | mgfn_params_net | dataset_params | original_reg2 | paths_cheat,
+    'params_cheat_23': params_def | main_reg | mgfn_params_net2 | dataset_params | original_reg2 | paths_cheat,
 }
 
 

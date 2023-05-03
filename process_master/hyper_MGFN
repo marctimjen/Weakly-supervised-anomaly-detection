@@ -13,3 +13,12 @@ params_cheat_12 :  "depths1": 3,  "depths2": 2,  "depths3": 1,
 params_cheat_13 :  "w_decay": 0.005, "depths1": 3,  "depths2": 2,  "depths3": 1,
 params_cheat_14 :  "depths1": 3,  "depths2": 2,  "depths3": 1, "dropout": 0.5, "attention_dropout": 0.5, "dropout_rate": 0.5,
 params_cheat_15 :  "w_decay": 0.005, "depths1": 3,  "depths2": 2,  "depths3": 1, "dropout": 0.5, "attention_dropout": 0.5, "dropout_rate": 0.5,
+
+params_cheat_16 :  "w_decay": 0.0025
+params_cheat_17 :  "w_decay": 0.0025,  "dropout": 0.0,    "attention_dropout": 0.5,    "dropout_rate": 0.7,
+params_cheat_18 :  "w_decay": 0.0025,  "dropout": 0.5,    "attention_dropout": 0.0,    "dropout_rate": 0.7,
+params_cheat_19 :  "w_decay": 0.0025,  "dropout": 0.5,    "attention_dropout": 0.5,    "dropout_rate": 0.0,
+params_cheat_20 :  "w_decay": 0.0025,  "dropout": 0.5,    "attention_dropout": 0.5,    "dropout_rate": 0.5,
+params_cheat_21 :  "w_decay": 0.0025,  "dropout": 0.5,    "attention_dropout": 0.5,    "dropout_rate": 0.7,
+params_cheat_22 :  "w_decay": 0.0025, "depths1": 3,  "depths2": 2,  "depths3": 1,
+params_cheat_23 :  "w_decay": 0.0025, "depths1": 3,  "depths2": 2,  "depths3": 1, "dropout": 0.5, "attention_dropout": 0.5, "dropout_rate": 0.5,
