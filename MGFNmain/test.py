@@ -83,12 +83,12 @@ if __name__ == '__main__':
     savepath = path_inator(param, args)
 
     # device = torch.device("cpu")
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
     model = mgfn(dims=(param["dims1"], param["dims2"], param["dims3"]),
                     depths=(param["depths1"], param["depths2"], param["depths3"]),
                     mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
                     channels=param["channels"], ff_repe=param["ff_repe"], dim_head=param["dim_head"],
-                    batch_size=param["batch_size"], dropout_rate=0.0,
+                    batch_size=1, dropout_rate=0.0,
                     mag_ratio=param["mag_ratio"], dropout=0.0,
                     attention_dropout=0.0,
                     )

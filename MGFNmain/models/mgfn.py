@@ -16,7 +16,7 @@ def attention(q, k, v):
     out = einsum('b i j, b j d -> b i d', attn, v)
     return out
 
-def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k):
+def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k, device = "cuda:1"):
     #magnitude selection and score prediction
     features = features  # (B*10crop,32,1024)
     bc, t, f = features.size()
@@ -41,8 +41,8 @@ def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k):
         abnormal_scores = normal_scores
         abnormal_features = normal_features
 
-    # select_idx = torch.ones_like(nfea_magnitudes).cuda()
-    select_idx = torch.ones_like(nfea_magnitudes)
+    select_idx = torch.ones_like(nfea_magnitudes).to(device)
+    # select_idx = torch.ones_like(nfea_magnitudes)
     select_idx = drop_out(select_idx)
 
 
@@ -53,7 +53,7 @@ def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k):
     abnormal_features = abnormal_features.view(n_size, ncrops, t, f)
     abnormal_features = abnormal_features.permute(1, 0, 2, 3)
 
-    total_select_abn_feature = torch.zeros(0)
+    total_select_abn_feature = torch.zeros(0).to(device)
     for abnormal_feature in abnormal_features:
         feat_select_abn = torch.gather(abnormal_feature, 1, idx_abn_feat)
         total_select_abn_feature = torch.cat((total_select_abn_feature, feat_select_abn))  #
@@ -62,8 +62,8 @@ def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k):
     score_abnormal = torch.mean(torch.gather(abnormal_scores, 1, idx_abn_score), dim=1)
 
 
-    # select_idx_normal = torch.ones_like(nfea_magnitudes).cuda()
-    select_idx_normal = torch.ones_like(nfea_magnitudes)
+    select_idx_normal = torch.ones_like(nfea_magnitudes).to(device)
+    # select_idx_normal = torch.ones_like(nfea_magnitudes)
 
     select_idx_normal = drop_out(select_idx_normal)
     nfea_magnitudes_drop = nfea_magnitudes * select_idx_normal
@@ -73,7 +73,7 @@ def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k):
     normal_features = normal_features.view(n_size, ncrops, t, f)
     normal_features = normal_features.permute(1, 0, 2, 3)
 
-    total_select_nor_feature = torch.zeros(0)
+    total_select_nor_feature = torch.zeros(0).to(device)
     for nor_fea in normal_features:
         feat_select_normal = torch.gather(nor_fea, 1, idx_normal_feat)
         total_select_nor_feature = torch.cat((total_select_nor_feature, feat_select_normal))
@@ -131,6 +131,7 @@ class mgfn(nn.Module):
     def __init__(
         self,
         *,
+        device,
         dims=(64, 128, 1024),
         depths=(3, 3, 2),
         mgfn_types=("gb", "fb", "fb"),
@@ -144,8 +145,10 @@ class mgfn(nn.Module):
         mag_ratio=0.1
     ):
         super().__init__()
+        self.channels = channels
+        self.device = device
         init_dim, *_, last_dim = dims
-        self.to_tokens = nn.Conv1d(channels, init_dim, kernel_size=3, stride=1, padding=1)
+        self.to_tokens = nn.Conv1d(self.channels, init_dim, kernel_size=3, stride=1, padding=1)
         self.mag_ratio = mag_ratio
 
         mgfn_types = tuple(map(lambda t: t.lower(), mgfn_types))
@@ -185,8 +188,8 @@ class mgfn(nn.Module):
         k = 3  # number of features from select top k
         bs, ncrops, t, c = video.size()  # batch_size, M=P=# crops, T = # clips, C = feature dimension
         x = video.view(bs * ncrops, t, c).permute(0, 2, 1)
-        x_f = x[:, :2048, :]
-        x_m = x[:, 2048:, :]
+        x_f = x[:, :self.channels, :]
+        x_m = x[:, self.channels:, :]
         x_f = self.to_tokens(x_f)
         x_m = self.to_mag(x_m)  # make the last
         x_f = x_f + self.mag_ratio * x_m  # time series + feature map
@@ -201,7 +204,7 @@ class mgfn(nn.Module):
         scores = self.sigmoid(self.fc(x))  # (B*10crop,32,1)
 
         score_abnormal, score_normal, abn_feamagnitude, nor_feamagnitude, scores \
-            = MSNSD(x, scores, bs, self.batch_size, self.drop_out, ncrops, k)
+            = MSNSD(x, scores, bs, self.batch_size, self.drop_out, ncrops, k, self.device)
 
         return score_abnormal, score_normal, abn_feamagnitude, nor_feamagnitude, scores
 

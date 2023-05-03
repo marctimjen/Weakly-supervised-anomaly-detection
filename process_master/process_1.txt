@@ -1,0 +1,5 @@
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_10 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u cluster -p params_cheat_1 -c 1 -n 38
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u cluster -p params_cheat_2 -c 1 -n 39
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u cluster -p params_cheat_3 -c 1 -n 40
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u cluster -p params_cheat_4 -c 1 -n 42

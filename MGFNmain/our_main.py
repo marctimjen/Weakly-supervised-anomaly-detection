@@ -104,7 +104,7 @@ if __name__ == '__main__':
                     channels=param["channels"], ff_repe=param["ff_repe"], dim_head=param["dim_head"],
                     batch_size=param["batch_size"], dropout_rate=param["dropout_rate"],
                     mag_ratio=param["mag_ratio"], dropout=param["dropout"],
-                    attention_dropout=param["attention_dropout"],
+                    attention_dropout=param["attention_dropout"], device=device
                     )
 
     if param["pretrained_ckpt"]:

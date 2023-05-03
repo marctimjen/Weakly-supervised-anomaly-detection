@@ -1,14 +1,27 @@
 import time
 import subprocess
+import argparse
 
+"""
+This scipt is used to run the different model runs on either the cluster or a local machine. It is good if you have alot
+of different models to test.
+"""
 
 i = 0
 tick = 0
-# py_path = "/home/marc/anaconda3/envs/pyt/bin/python3"
-# path = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/process_master/process.txt"
 
-py_path = "/home/cv05f23/.conda/envs/weak/bin/python3"
-path = "/home/cv05f23/git/Weakly-supervised-anomaly-detection/process_master/process.txt"
+parser = argparse.ArgumentParser(description='master process')
+parser.add_argument("-u", '--user', default='cluster', choices=['cluster', 'marc'])  # this gives dir to data and save loc
+parser.add_argument("-l", "--logs", required=True, help="Logs to load")  # which process log to load
+args = parser.parse_args()
+
+if args.user == "marc":
+    py_path = "/home/marc/anaconda3/envs/pyt/bin/python3"
+    path = f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/process_master/process_{args.user}.txt"
+else:
+    py_path = "/home/cv05f23/.conda/envs/weak/bin/python3"
+    path = f"/home/cv05f23/git/Weakly-supervised-anomaly-detection/process_master/process_{args.logs}.txt"
+
 
 while True:
     if tick > 60:

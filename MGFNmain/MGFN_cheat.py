@@ -50,6 +50,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='MGFN')
     parser.add_argument("-u", '--user', default='cluster', choices=['cluster', 'marc'])  # this gives dir to data and save loc
     parser.add_argument("-p", "--params", required=True, help="Params to load")  # which parameters to load
+    parser.add_argument("-c", "--cuda", required=True, help="gpu number")
     args = parser.parse_args()
 
     token = os.getenv('NEPTUNE_API_TOKEN')
@@ -68,7 +69,7 @@ if __name__ == '__main__':
     save_path = path_inator(param, args)
     save_path = save_config(save_path, run_id, params=param)
 
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device(f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu')
     print(device)
 
     train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
@@ -101,7 +102,7 @@ if __name__ == '__main__':
                     channels=param["channels"], ff_repe=param["ff_repe"], dim_head=param["dim_head"],
                     batch_size=param["batch_size"], dropout_rate=param["dropout_rate"],
                     mag_ratio=param["mag_ratio"], dropout=param["dropout"],
-                    attention_dropout=param["attention_dropout"],
+                    attention_dropout=param["attention_dropout"], device=device,
                     )
 
     # params["pretrained_ckpt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \

@@ -20,19 +20,37 @@ def test(dataloader, model, params, device):
         model.eval()
         pred = torch.zeros(0).cpu()
         # featurelen = []
-        for i, (inputs, name) in tqdm(enumerate(dataloader)):
-            # inputs = inputs.to("cpu")
-            inputs = inputs[None, ]
-            # inputs = inputs.permute(0, 2, 1, 3)
-            print(inputs.shape)
-            _, _, _, _, logits = model(inputs)
-            logits = torch.squeeze(logits, 1)
-            logits = torch.mean(logits, 0)
-            sig = logits.detach().cpu()
+        # for i, (inputs, name) in tqdm(enumerate(dataloader)):
 
-            # featurelen.append(len(sig))
-            pred = torch.cat((pred, sig))
-            torch.cuda.empty_cache()
+        path1 = '/home/marc/Downloads/A.Beautiful.Mind.2001__00-25-20_00-29-20_label_A__0.npy'
+        path2 = '/home/marc/Downloads/A.Beautiful.Mind.2001__00-25-20_00-29-20_label_A__1.npy'
+        path3 = '/home/marc/Downloads/A.Beautiful.Mind.2001__00-25-20_00-29-20_label_A__2.npy'
+        path4 = '/home/marc/Downloads/A.Beautiful.Mind.2001__00-25-20_00-29-20_label_A__3.npy'
+        path5 = '/home/marc/Downloads/A.Beautiful.Mind.2001__00-25-20_00-29-20_label_A__4.npy'
+
+        file1 = np.load(path1)
+        file2 = np.load(path2)
+        file3 = np.load(path3)
+        file4 = np.load(path4)
+        file5 = np.load(path5)
+
+        features = np.concatenate((file1[None, ], file2[None, ], file3[None, ], file4[None, ], file5[None, ]), axis=0)
+        features = torch.Tensor(features).permute(1, 0, 2).cpu()
+        features = np.array(features, dtype=np.float32)
+
+        # inputs = inputs.to("cpu")
+        inputs = torch.Tensor(features[None, ])
+        inputs = inputs.permute(0, 2, 1, 3)
+        print(inputs.shape)
+        inputs = inputs.to(device)
+        _, _, _, _, logits = model(inputs)
+        logits = torch.squeeze(logits, 1)
+        logits = torch.mean(logits, 0)
+        sig = logits.detach().cpu()
+
+        # featurelen.append(len(sig))
+        pred = torch.cat((pred, sig))
+        torch.cuda.empty_cache()
 
         gt = np.load(params["gt"])
         pred = list(pred.cpu().detach().numpy())
@@ -87,12 +105,12 @@ if __name__ == '__main__':
     savepath = path_inator(param, args)
 
     # device = torch.device("cpu")
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
     model = mgfn(dims=(param["dims1"], param["dims2"], param["dims3"]),
                     depths=(param["depths1"], param["depths2"], param["depths3"]),
                     mgfn_types=(param["mgfn_type1"], param["mgfn_type2"], param["mgfn_type3"]),
                     channels=param["channels"], ff_repe=param["ff_repe"], dim_head=param["dim_head"],
-                    batch_size=param["batch_size"], dropout_rate=0.0,
+                    batch_size=1, dropout_rate=0.0,
                     mag_ratio=param["mag_ratio"], dropout=0.0,
                     attention_dropout=0.0,
                     )

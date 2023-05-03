@@ -180,8 +180,6 @@ HYPERPARAMS |= {
 
 
 
-
-
 ####################################### XD-violence data:
 
 original_xd = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.001,
@@ -222,7 +220,7 @@ main_xd = {"max_epoch": 1000,  # normally 1000
 
 params_def_xd = {
     "feat_extractor": "i3d",
-    "feature_size": 2048,
+    "feature_size": 1024,
     "hiddensize": 512,
     "comment": "mgfn",
     "local_con": "static",
