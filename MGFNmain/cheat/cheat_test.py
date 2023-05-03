@@ -29,7 +29,7 @@ def test(dataloader, model, params, device):
             _, _, _, _, logits = model(inputs)
             logits = torch.squeeze(logits, 1)
             logits = torch.mean(logits, 0)
-            sig = logits.detach()
+            sig = logits.detach().cpu()
             # featurelen.append(len(sig))
             pred = torch.cat((pred, sig))
             torch.cuda.empty_cache()
