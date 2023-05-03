@@ -21,15 +21,15 @@ def test(dataloader, model, params, device):
     # model = model.to("cpu")
     with torch.no_grad():
         model.eval()
-        pred = torch.zeros(0)
+        pred = torch.zeros(0).cpu()
         # featurelen = []
         for i, (inputs, name) in tqdm(enumerate(dataloader)):
             inputs = inputs.permute(0, 2, 1, 3)
-            # inputs = inputs.to("cpu")
+            inputs = inputs.to(device)
             _, _, _, _, logits = model(inputs)
             logits = torch.squeeze(logits, 1)
             logits = torch.mean(logits, 0)
-            sig = logits.detach()
+            sig = logits.detach().cpu()
             # featurelen.append(len(sig))
             pred = torch.cat((pred, sig))
             torch.cuda.empty_cache()
@@ -95,8 +95,8 @@ if __name__ == '__main__':
     )
 
     for i in range(param["max_epoch"]):
-        param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_MGFN-{args.nept_run}/mgfn{i}-i3d.pkl"
-        # param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-{args.nept_run}/mgfn{i}-i3d.pkl"
+        # param["pretrained_path"] = f"/home/marc/Documents/sandbox/mgfn/nept_id_MGFN-{args.nept_run}/mgfn{i}-i3d.pkl"
+        param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-{args.nept_run}/mgfn{i}-i3d.pkl"
 
         model = mgfn(dims=(param["dims1"], param["dims2"], param["dims3"]),
                         depths=(param["depths1"], param["depths2"], param["depths3"]),
