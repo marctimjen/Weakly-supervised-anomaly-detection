@@ -123,6 +123,16 @@ def train(nloader, aloader, model, params, optimizer, device, iterator = 0):
             alabel = alabel[0: params["batch_size"]].to(device)
 
             loss_criterion = mgfn_loss(params["lambda_3"])
+
+
+
+            print("score_normal", score_normal.get_device())
+            print("score_abnormal", score_abnormal.get_device())
+            print("nlabel", nlabel.get_device())
+            print("alabel", alabel.get_device())
+            print("nor_feamagnitude",nor_feamagnitude.get_device())
+            print("abn_feamagnitude",abn_feamagnitude.get_device())
+
             loss_sce, loss_mc, loss_con, loss_con_n, loss_con_a = loss_criterion(score_normal, score_abnormal, nlabel,
                                                                                     alabel, nor_feamagnitude,
                                                                                     abn_feamagnitude)
