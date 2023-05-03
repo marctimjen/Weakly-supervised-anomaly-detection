@@ -53,12 +53,13 @@ class ContrastiveLoss(nn.Module):  # This is used for the three different cases 
 #         return torch.abs(torch.mean(- x * target + torch.clamp(x, min=0) + torch.log(tmp)))
 
 class mgfn_loss(torch.nn.Module):
-    def __init__(self, lambda3):
+    def __init__(self, lambda3, device):
         super(mgfn_loss, self).__init__()
         # self.sigmoid = torch.nn.Sigmoid()
         self.lambda3 = lambda3
         self.criterion = torch.nn.BCELoss()  # Sigmoid - should be combined with BCE to create the L_SCE loss.
         self.contrastive = ContrastiveLoss()  # L_MC
+        self.device = device
 
     def forward(self, score_normal, score_abnormal, nlabel, alabel, nor_feamagnitude, abn_feamagnitude):
         """
@@ -74,7 +75,7 @@ class mgfn_loss(torch.nn.Module):
         label = torch.cat((nlabel, alabel), 0)
         score = torch.cat((score_normal, score_abnormal), 0)
         score = score.squeeze()
-        label = label.cuda()
+        label = label.to(self.device)
         seperate = len(abn_feamagnitude) / 2
 
         loss_cls = self.criterion(score, label)  # L_SCE loss (Maybe) ?????
@@ -122,16 +123,7 @@ def train(nloader, aloader, model, params, optimizer, device, iterator = 0):
             nlabel = nlabel[0: params["batch_size"]].to(device)
             alabel = alabel[0: params["batch_size"]].to(device)
 
-            loss_criterion = mgfn_loss(params["lambda_3"])
-
-
-
-            print("score_normal", score_normal.get_device())
-            print("score_abnormal", score_abnormal.get_device())
-            print("nlabel", nlabel.get_device())
-            print("alabel", alabel.get_device())
-            print("nor_feamagnitude",nor_feamagnitude.get_device())
-            print("abn_feamagnitude",abn_feamagnitude.get_device())
+            loss_criterion = mgfn_loss(params["lambda_3"], device=device)
 
             loss_sce, loss_mc, loss_con, loss_con_n, loss_con_a = loss_criterion(score_normal, score_abnormal, nlabel,
                                                                                     alabel, nor_feamagnitude,
@@ -180,7 +172,7 @@ def val(nloader, aloader, model, params, device):
             nlabel = nlabel[0: params["batch_size"]].to(device)
             alabel = alabel[0: params["batch_size"]].to(device)
 
-            loss_criterion = mgfn_loss(params["lambda_3"])
+            loss_criterion = mgfn_loss(params["lambda_3"], device=device)
 
             loss_sce, loss_mc, loss_con, loss_con_n, loss_con_a = loss_criterion(score_normal, score_abnormal, nlabel,
                                                                                     alabel, nor_feamagnitude,
