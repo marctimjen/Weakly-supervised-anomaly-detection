@@ -21,7 +21,7 @@ def test(dataloader, model, params, device):
     # model = model.to("cpu")
     with torch.no_grad():
         model.eval()
-        pred = torch.zeros(0)
+        pred = torch.zeros(0).cpu()
         # featurelen = []
         for i, (inputs, name) in tqdm(enumerate(dataloader)):
             inputs = inputs.permute(0, 2, 1, 3)
