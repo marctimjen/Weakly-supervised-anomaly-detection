@@ -105,7 +105,8 @@ def main():
             shuffle=True,
             num_workers=args.workers,
             pin_memory=False,
-            drop_last=True)
+            drop_last=True,
+            generator=torch.Generator(device='cuda'),)
 
     train_anomaly_loader = DataLoader(
             train_anomaly_set,
@@ -113,13 +114,15 @@ def main():
             shuffle=True,
             num_workers=args.workers,
             pin_memory=False,
-            drop_last=True)
+            drop_last=True,
+            generator=torch.Generator(device='cuda'),)
     test_loader = DataLoader(
             test_set,
             batch_size=1,
             shuffle=False,
             num_workers=args.workers,
-            pin_memory=False)
+            pin_memory=False,
+            generator=torch.Generator(device='cuda'),)
 
     model = S3R(
             args.feature_size,
