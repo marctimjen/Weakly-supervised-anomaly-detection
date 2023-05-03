@@ -24,12 +24,13 @@ def path_inator(params, args):
             return "/home/marc/Documents/sandbox"  # path where to wave files
 
         elif args.user == "cluster":
+            params["save_dir"] = f"/home/cv05f23/data/xd/results/{params['model_name']}"
             # params["save_dir"] = ""  # where to save results + model
             # params["rgb_list"] = ""
             # params["gt"] = ""
             # params["test_rgb_list"] = ""
             # params["pretrained_path"] = ""
-            return ""  # path where to wave files
+            return params["save_dir"]  # path where to wave files
 
     elif dataset_name.lower() == "ucf":
         if args.user == "marc":
@@ -49,11 +50,11 @@ def path_inator(params, args):
             return "/home/marc/Documents/sandbox"  # path where to wave files
 
         elif args.user == "cluster":
-            params["save_dir"] = ""  # where to save results + model
+            params["save_dir"] = f"/home/cv05f23/data/UCF/results/{params['model_name']}"  # where to save results + model
             params["rgb_list"] = ""
             params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
             params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-test.list"
             params["pretrained_path"] = "/home/cv05f23/data/UCF/lists/UCF_pretrained/mgfn_ucf.pkl"
-            return ""  # path where to wave files
+            return params["save_dir"]  # path where to wave files
     else:
         raise ValueError("Dataset should be UCF og XD")
