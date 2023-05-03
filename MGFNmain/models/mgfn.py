@@ -24,10 +24,10 @@ def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k, device = "cuda:
     scores = scores.view(bs, ncrops, -1).mean(1)  # (B,32)
     scores = scores.unsqueeze(dim=2)  # (B,32,1)
 
-    normal_features = features[0:batch_size * 10]  # [b/2*ten,32,1024]
+    normal_features = features[0:batch_size * ncrops]  # [b/2*ten,32,1024]
     normal_scores = scores[0:batch_size]  # [b/2, 32,1]
 
-    abnormal_features = features[batch_size * 10:]
+    abnormal_features = features[batch_size * ncrops:]
     abnormal_scores = scores[batch_size:]
 
     feat_magnitudes = torch.norm(features, p=2, dim=2)  # [b*ten,32]

@@ -1,4 +1,2 @@
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u marc -p params_cheat_12 -c 0 -n 43
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test.py -u marc -p params_cheat_13 -c 0 -n 44
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u marc -p params_cheat_14 -c 0
 /home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u marc -p params_cheat_15 -c 0
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u marc -p params_cheat_14 -c 0 -n 51

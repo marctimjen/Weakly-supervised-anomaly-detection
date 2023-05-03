@@ -93,11 +93,11 @@ class Dataset(data.Dataset):
                 mag = np.linalg.norm(features, axis=2)[:, :, np.newaxis]
                 features = np.concatenate((features, mag), axis=2)
             elif self.datasetname == 'XD':
-                mag = np.linalg.norm(features, axis=1)[:, np.newaxis]
-                features = np.concatenate((features, mag), axis=1)
+                mag = np.linalg.norm(features, axis=2)[:, :, np.newaxis]
+                features = np.concatenate((features, mag), axis=2)
             return features, name
         else:
-            if self.datasetname == 'UCF':
+            if self.datasetname == 'UCF' or self.datasetname == 'XD':
                 features = features.transpose(1, 0, 2)  # [10, T, F]
                 divided_features = []
                 divided_mag = []
@@ -110,12 +110,30 @@ class Dataset(data.Dataset):
                 divided_features = np.concatenate((divided_features, divided_mag), axis=2)
                 return divided_features, label
 
-            elif self.datasetname == 'XD':
-                feature = process_feat(features, 32)
-                if self.add_mag_info == True:
-                    feature_mag = np.linalg.norm(feature, axis=1)[:, np.newaxis]
-                    feature = np.concatenate((feature, feature_mag), axis=1)
-                return feature, label
+            # elif self.datasetname == 'XD':
+            #     # feature = process_feat(features, 32)
+            #
+            #     if self.add_mag_info == True:
+            #         features = features.transpose(1, 0, 2)  # [10, T, F]
+            #         divided_features = []
+            #         divided_mag = []
+            #         for feature in features:
+            #             feature = process_feat(feature, self.seg_length)  # ucf(32, 2048)
+            #             divided_features.append(feature)
+            #             divided_mag.append(np.linalg.norm(feature, axis=1)[:, np.newaxis])
+            #         divided_features = np.array(divided_features, dtype=np.float32)
+            #         divided_mag = np.array(divided_mag, dtype=np.float32)
+            #         divided_features = np.concatenate((divided_features, divided_mag), axis=2)
+            #         return divided_features, label
+            #
+            #     features = features.transpose(1, 0, 2)  # [10, T, F]
+            #     divided_features = []
+            #     for feature in features:
+            #         feature = process_feat(feature, self.seg_length)  # ucf(32, 2048)
+            #         divided_features.append(feature)
+            #     divided_features = np.array(divided_features, dtype=np.float32)
+
+                return divided_features, label
 
     def __len__(self):
         return len(self.list)

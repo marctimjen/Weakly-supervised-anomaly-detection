@@ -8,3 +8,52 @@ class Config(object):
         attr_lst = sorted(attrs.keys())
         return '\n'.join("- %s: %s" % (item, attrs[item]) for item in attr_lst if item != 'lr')
 
+def path_inator(params, args):
+
+    dataset_name = params.get("datasetname")
+    if dataset_name.lower() == "xd":
+        if args.user == "marc":
+            params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
+            params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
+            params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
+            params["gt"] = "/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy"
+
+            params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+                                        + "MGFNmain/results/XD_pretrained/mgfn_xd.pkl"
+
+            return "/home/marc/Documents/sandbox"  # path where to wave files
+
+        elif args.user == "cluster":
+            # params["save_dir"] = ""  # where to save results + model
+            # params["rgb_list"] = ""
+            # params["gt"] = ""
+            # params["test_rgb_list"] = ""
+            # params["pretrained_path"] = ""
+            return ""  # path where to wave files
+
+    elif dataset_name.lower() == "ucf":
+        if args.user == "marc":
+            params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
+            params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
+            params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
+            params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
+            # params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/" \
+            #                 "results/ucf_gt/gt-ucf.npy"
+            params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
+
+            # params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+            #                             "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
+
+            params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-8/mgfn156-i3d.pkl"
+
+            return "/home/marc/Documents/sandbox"  # path where to wave files
+
+        elif args.user == "cluster":
+            params["save_dir"] = ""  # where to save results + model
+            params["rgb_list"] = ""
+            params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
+            params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-test.list"
+            params["pretrained_path"] = "/home/cv05f23/data/UCF/lists/UCF_pretrained/mgfn_ucf.pkl"
+            return ""  # path where to wave files
+    else:
+        raise ValueError("Dataset should be UCF og XD")

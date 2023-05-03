@@ -202,9 +202,8 @@ dataset_params_xd = {"seg_length": 32,
                   "datasetname": "XD",
                   "dataset": "XD",
                   "modality": "RGB",
-                  "UCF_train_len": 1449,
-                  "UCF_val_len": 161,
-                  "UCF_test_len": 290
+                  "xd_train_len": 3954,
+                  "xd_test_len": 800
                   }
 
 mgfn_params_xd = {"dims1": 64,
@@ -244,14 +243,59 @@ params_def_xd = {
 }
 
 paths_xd = {
-    "rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgb.list",
-    "test_rgb_list": "/home/cv05f23/data/XD/i3d-features/lists/rgbtest.list",
-    "gt": ""
+    "rgb_list": "/home/cv05f23/data/XD/lists/rgb.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
+    "gt": "/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
 }
 
 HYPERPARAMS |= {"params_xd": params_def_xd | main_xd | mgfn_params_xd | dataset_params_xd | original_xd | paths_xd}
 
 
+main_xd_reg = copy.deepcopy(main_xd)
+main_xd_reg |= {"max_epoch": 100}
+
+original_xd_reg = copy.deepcopy(original_xd)
+original_xd_reg |= {"w_decay": 0.005}  # more weight decay = L2 norm :).
+
+original_xd_reg2 = copy.deepcopy(original_xd)
+original_xd_reg2 |= {"w_decay": 0.0025}
+
+mgfn_params_xd_2 = copy.deepcopy(mgfn_params_xd)
+mgfn_params_xd_4 = copy.deepcopy(mgfn_params_xd)
+mgfn_params_xd_5 = copy.deepcopy(mgfn_params_xd)
 
 
+# Try different hyper-params of dropout
+mgfn_params_xd_2 |= {
+    "dropout": 0.0,
+    "attention_dropout": 0.5,
+    "dropout_rate": 0.7,
+                    }
+
+mgfn_params_xd_4 |= {
+    "dropout": 0.5,
+    "attention_dropout": 0.5,
+    "dropout_rate": 0.0,
+                    }
+
+mgfn_params_xd_5 |= {
+    "dropout": 0.5,
+    "attention_dropout": 0.5,
+    "dropout_rate": 0.5,
+                    }
+
+HYPERPARAMS |= {
+    "params_xd_reg_1": params_def_xd | main_xd_reg | mgfn_params_xd | dataset_params_xd | original_xd | paths_xd,
+    "params_xd_reg_2": params_def_xd | main_xd_reg | mgfn_params_xd | dataset_params_xd | original_xd_reg | paths_xd,
+    "params_xd_reg_3": params_def_xd | main_xd_reg | mgfn_params_xd | dataset_params_xd | original_xd_reg2 | paths_xd,
+    "params_xd_reg_4": params_def_xd | main_xd_reg | mgfn_params_xd_2 | dataset_params_xd | original_xd | paths_xd,
+    "params_xd_reg_5": params_def_xd | main_xd_reg | mgfn_params_xd_2 | dataset_params_xd | original_xd_reg | paths_xd,
+    "params_xd_reg_6": params_def_xd | main_xd_reg | mgfn_params_xd_2 | dataset_params_xd | original_xd_reg2 | paths_xd,
+    "params_xd_reg_7": params_def_xd | main_xd_reg | mgfn_params_xd_4 | dataset_params_xd | original_xd | paths_xd,
+    "params_xd_reg_8": params_def_xd | main_xd_reg | mgfn_params_xd_4 | dataset_params_xd | original_xd_reg | paths_xd,
+    "params_xd_reg_9": params_def_xd | main_xd_reg | mgfn_params_xd_4 | dataset_params_xd | original_xd_reg2 | paths_xd,
+    "params_xd_reg_10": params_def_xd | main_xd_reg | mgfn_params_xd_5 | dataset_params_xd | original_xd | paths_xd,
+    "params_xd_reg_11": params_def_xd | main_xd_reg | mgfn_params_xd_5 | dataset_params_xd | original_xd_reg | paths_xd,
+    "params_xd_reg_12": params_def_xd | main_xd_reg | mgfn_params_xd_5 | dataset_params_xd | original_xd_reg2 | paths_xd,
+                }
 
