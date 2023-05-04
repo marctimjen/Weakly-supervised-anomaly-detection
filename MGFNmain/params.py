@@ -284,6 +284,30 @@ mgfn_params_xd_5 |= {
     "dropout_rate": 0.5,
                     }
 
+
+
+mgfn_params_net = copy.deepcopy(mgfn_params_xd)
+mgfn_params_net |= {
+               "depths1": 3,
+               "depths2": 2,
+               "depths3": 1,
+               "mgfn_type1": "gb",
+               "mgfn_type2": "fb",
+               "mgfn_type3": "fb",
+               }
+
+mgfn_params_net2 = copy.deepcopy(mgfn_params_xd_5)
+mgfn_params_net2 |= {
+               "depths1": 3,
+               "depths2": 2,
+               "depths3": 1,
+               "mgfn_type1": "gb",
+               "mgfn_type2": "fb",
+               "mgfn_type3": "fb",
+               }
+
+
+
 HYPERPARAMS |= {
     "params_xd_reg_1": params_def_xd | main_xd_reg | mgfn_params_xd | dataset_params_xd | original_xd | paths_xd,
     "params_xd_reg_2": params_def_xd | main_xd_reg | mgfn_params_xd | dataset_params_xd | original_xd_reg | paths_xd,
@@ -297,5 +321,11 @@ HYPERPARAMS |= {
     "params_xd_reg_10": params_def_xd | main_xd_reg | mgfn_params_xd_5 | dataset_params_xd | original_xd | paths_xd,
     "params_xd_reg_11": params_def_xd | main_xd_reg | mgfn_params_xd_5 | dataset_params_xd | original_xd_reg | paths_xd,
     "params_xd_reg_12": params_def_xd | main_xd_reg | mgfn_params_xd_5 | dataset_params_xd | original_xd_reg2 | paths_xd,
+    "params_xd_reg_13": params_def_xd | main_xd_reg | mgfn_params_net | dataset_params_xd | original_xd | paths_xd,
+    "params_xd_reg_14": params_def_xd | main_xd_reg | mgfn_params_net | dataset_params_xd | original_xd_reg | paths_xd,
+    "params_xd_reg_15": params_def_xd | main_xd_reg | mgfn_params_net | dataset_params_xd | original_xd_reg2 | paths_xd,
+    "params_xd_reg_16": params_def_xd | main_xd_reg | mgfn_params_net2 | dataset_params_xd | original_xd | paths_xd,
+    "params_xd_reg_17": params_def_xd | main_xd_reg | mgfn_params_net2 | dataset_params_xd | original_xd_reg | paths_xd,
+    "params_xd_reg_18": params_def_xd | main_xd_reg | mgfn_params_net2 | dataset_params_xd | original_xd_reg2 | paths_xd,
                 }
 
