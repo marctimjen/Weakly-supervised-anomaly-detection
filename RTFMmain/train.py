@@ -30,13 +30,14 @@ class SigmoidMAELoss(torch.nn.Module):
         return self.__l1_loss__(pred, target)
 
 class RTFM_loss(torch.nn.Module):
-    def __init__(self, alpha, margin):
+    def __init__(self, alpha, margin, device):
         super(RTFM_loss, self).__init__()
         self.alpha = alpha
         self.margin = margin
         self.sigmoid = torch.nn.Sigmoid()
         self.mae_criterion = SigmoidMAELoss()
         self.criterion = torch.nn.BCELoss()
+        self.device = device
 
     def forward(self, score_normal, score_abnormal, nlabel, alabel, feat_n, feat_a):
         label = torch.cat((nlabel, alabel), 0)
@@ -45,7 +46,7 @@ class RTFM_loss(torch.nn.Module):
 
         score = torch.cat((score_normal, score_abnormal), 0)
         score = score.squeeze()
-        label = label.cuda()
+        label = label.to(self.device)
         loss_cls = self.criterion(score, label)  # BCE loss in the score space
 
         loss_abn = torch.abs(self.margin - torch.norm(torch.mean(feat_a, dim=1), p=2, dim=1))
@@ -76,7 +77,7 @@ def train(nloader, aloader, model, params, optimizer, viz, device):
             nlabel = nlabel[0:params["batch_size"]]
             alabel = alabel[0:params["batch_size"]]
 
-            loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"])
+            loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"], device=device)
 
             loss_cls, loss_rtfm = \
                 loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
@@ -116,7 +117,7 @@ def val(nloader, aloader, model, params, device):
             nlabel = nlabel[0:params["batch_size"]]
             alabel = alabel[0:params["batch_size"]]
 
-            loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"])
+            loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"], device=device)
 
             loss_cls, loss_rtfm = \
                 loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
@@ -130,8 +131,6 @@ def val(nloader, aloader, model, params, device):
             loss_rtfm_sum += loss_rtfm.item()
 
         return total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum
-
-
 
 
 

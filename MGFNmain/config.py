@@ -1,3 +1,6 @@
+import os
+import datetime
+
 class Config(object):
     def __init__(self, args):
         self.lr = eval(args.lr)
@@ -37,7 +40,9 @@ def path_inator(params, args):
             params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
             params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
             params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
+            params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
             params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
+
             # params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/" \
             #                 "results/ucf_gt/gt-ucf.npy"
             params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
@@ -58,3 +63,14 @@ def path_inator(params, args):
             return params["save_dir"]  # path where to wave files
     else:
         raise ValueError("Dataset should be UCF og XD")
+
+
+def save_config(save_path, nept_id, params):
+    path = save_path + '/nept_id_' + nept_id + "/"
+    os.makedirs(path, exist_ok=True)
+    f = open(path + f"config_{datetime.datetime.now()}.txt", 'w')
+    for key in params.keys():
+        f.write(f'{key}: {params[key]}')
+        f.write('\n')
+
+    return path

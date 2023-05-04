@@ -12,21 +12,11 @@ import datetime
 import params
 import os
 import neptune
-from config import path_inator
+from config import path_inator, save_config
 
 # import option
 # args = option.parse_args()
 # os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
-
-def save_config(save_path, nept_id, params):
-    path = save_path + '/nept_id_' + nept_id + "/"
-    os.makedirs(path, exist_ok=True)
-    f = open(path + f"config_{datetime.datetime.now()}.txt", 'w')
-    for key in params.keys():
-        f.write(f'{key}: {params[key]}')
-        f.write('\n')
-
-    return path
 
 # try:
 #      set_start_method('spawn')

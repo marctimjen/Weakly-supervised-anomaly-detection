@@ -11,7 +11,7 @@ from utils import save_best_record
 from dataset import Dataset
 from train import train, val
 import neptune
-
+from MGFNmain.config import path_inator
 # from config import *
 # from test_10crop import test
 # from utils import Visualizer
@@ -28,20 +28,6 @@ def save_config(save_path, nept_id, params):
 
     return path
 
-def path_inator(params, args):
-    if args.user == "marc":
-        params["save_dir"] = "/home/marc/Documents/sandbox/rftm"  # where to save results + model
-        params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
-        params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
-        params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-        params["gt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/" \
-                        "results/ucf_gt/gt-ucf.npy"
-        return params["save_dir"]  # path where to save files
-
-    elif args.user == "cluster":
-        params["save_dir"] = "/home/cv05f23/data/UCF/results/rftm"  # where to save results + model
-        return params["save_dir"]  # path where to save files
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='RFTM')
     parser.add_argument("-u", '--user', default='cluster',
@@ -51,7 +37,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/rftm",
+        project="AAM/anomaly",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()
