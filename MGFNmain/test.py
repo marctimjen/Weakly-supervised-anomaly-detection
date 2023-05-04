@@ -54,8 +54,8 @@ def test(dataloader, model, params, device):
         print('recall : ' + str(recall))
         print('ap : ' + str(ap))
 
-        # path = params["pretrained_path"][:-4] + "_test.npy"
-        # np.save(path, pred)  # save the prediction file
+        path = params["pretrained_path"][:-4] + "_test.npy"
+        np.save(path, pred)  # save the prediction file
         return rec_auc, pr_auc
 
 if __name__ == '__main__':
