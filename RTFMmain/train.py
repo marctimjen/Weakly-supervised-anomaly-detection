@@ -57,14 +57,13 @@ class RTFM_loss(torch.nn.Module):
 
         # loss_total = loss_cls + self.alpha * loss_rtfm
 
-        return loss_cls, self.alpha * loss_rtfm, self.alpha * loss_abn, self.alpha * loss_nor
+        return loss_cls, self.alpha * loss_rtfm
 
 
 def train(nloader, aloader, model, params, optimizer, viz, device):
     with torch.set_grad_enabled(True):
         model.train()
         total_cost, loss_cls_sum, loss_rtfm_sum, loss_sparse_sum, loss_smooth_sum = 0, 0, 0, 0, 0
-        loss_abn_sum, loss_nor_sum = 0, 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
             input = torch.cat((ninput, ainput), 0).to(device)
 
@@ -80,7 +79,7 @@ def train(nloader, aloader, model, params, optimizer, viz, device):
 
             loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"], device=device)
 
-            loss_cls, loss_rtfm, loss_abn, loss_nor = \
+            loss_cls, loss_rtfm = \
                 loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
 
             cost = loss_smooth + loss_sparse + loss_cls + loss_rtfm
@@ -97,17 +96,14 @@ def train(nloader, aloader, model, params, optimizer, viz, device):
             loss_smooth_sum += loss_smooth.item()
             loss_cls_sum += loss_cls.item()
             loss_rtfm_sum += loss_rtfm.item()
-            loss_abn_sum += loss_abn.item()
-            loss_nor_sum += loss_nor.item()
 
-        return total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum, loss_abn_sum, loss_nor_sum
+        return total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum
 
 
 def val(nloader, aloader, model, params, device):
     with torch.set_grad_enabled(False):
         model.eval()
         total_cost, loss_cls_sum, loss_rtfm_sum, loss_sparse_sum, loss_smooth_sum = 0, 0, 0, 0, 0
-        loss_abn_sum, loss_nor_sum = 0, 0
         for _, ((ninput, nlabel), (ainput, alabel)) in tqdm(enumerate(zip(nloader, aloader))):
             input = torch.cat((ninput, ainput), 0).to(device)
 
@@ -123,7 +119,7 @@ def val(nloader, aloader, model, params, device):
 
             loss_criterion = RTFM_loss(alpha=params["alpha"], margin=params["margin"], device=device)
 
-            loss_cls, loss_rtfm, loss_abn, loss_nor = \
+            loss_cls, loss_rtfm = \
                 loss_criterion(score_normal, score_abnormal, nlabel, alabel, feat_select_normal, feat_select_abn)
 
             cost = loss_smooth + loss_sparse + loss_cls + loss_rtfm
@@ -133,10 +129,8 @@ def val(nloader, aloader, model, params, device):
             loss_smooth_sum += loss_smooth.item()
             loss_cls_sum += loss_cls.item()
             loss_rtfm_sum += loss_rtfm.item()
-            loss_abn_sum += loss_abn.item()
-            loss_nor_sum += loss_nor.item()
 
-        return total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum, loss_abn_sum, loss_nor_sum
+        return total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum
 
 
 
