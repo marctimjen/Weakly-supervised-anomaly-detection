@@ -9,8 +9,12 @@ import os
 from utils import save_best_record
 from train import train, val
 import neptune
+import sys
+sys.path.append("../..")  # adds higher directory to python modules path
+sys.path.append("..")  # adds higher directory to python modules path
 from MGFNmain.config import path_inator, save_config
 from dataset import Dataset
+
 # from config import *
 # from test_10crop import test
 # from utils import Visualizer
