@@ -98,20 +98,20 @@ if __name__ == '__main__':
         total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
             = train(train_nloader, train_aloader, model, param, optimizer, viz, device)
 
-        run["train/loss"].log(total_cost/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_cls"].log(loss_cls_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_sparse"].log(loss_sparse_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_smooth"].log(loss_smooth_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_rtfm"].log(loss_rtfm_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss"].log(total_cost/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_cls"].log(loss_cls_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_sparse"].log(loss_sparse_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_smooth"].log(loss_smooth_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_rtfm"].log(loss_rtfm_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
         val_loss, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
             = val(val_nloader, val_aloader, model, param, device)
 
-        run["test/loss"].log(val_loss/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["test/loss_cls"].log(loss_cls_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["test/loss_sparse"].log(loss_sparse_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["test/loss_smooth"].log(loss_smooth_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["test/loss_rtfm"].log(loss_rtfm_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["test/loss"].log(val_loss/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["test/loss_cls"].log(loss_cls_sum/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["test/loss_sparse"].log(loss_sparse_sum/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["test/loss_smooth"].log(loss_smooth_sum/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["test/loss_rtfm"].log(loss_rtfm_sum/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
         # val_info["epoch"].append(step)
         # val_info["val_loss"].append(val_loss)

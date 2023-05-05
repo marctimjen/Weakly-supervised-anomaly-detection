@@ -9,6 +9,8 @@ dataset_params = {"datasetname": "UCF",
                   "UCF_test_len": 290,
                   "seg_length": 32,
                   "add_mag_info": False,
+                  "ncrop": 10,
+                  "num_segments": 32,
                   }
 
 main = {"max_epoch": 1000,
@@ -58,7 +60,9 @@ dataset_params_xd = {"seg_length": 32,
                   "dataset": "XD",
                   "modality": "RGB",
                   "xd_train_len": 3954,
-                  "xd_test_len": 800
+                  "xd_test_len": 800,
+                  "ncrop": 5,
+                  "num_segments":32,
                   }
 
 original_xd = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
@@ -145,3 +149,29 @@ HYPERPARAMS |= {
     'params_xd_15': params_def_xd | main_xd_reg | dataset_params_xd | original_xd15 | paths_xd,
 }
 
+
+paths_cheat = {
+    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-train_cheat.list",
+    "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list",
+    "UCF_train_cheat_len": 1610,
+}
+
+paths |= paths_cheat
+
+HYPERPARAMS |= {
+    'params_ucf_1': params_def | main_xd_reg | dataset_params | original_xd1 | paths,
+    'params_ucf_2': params_def | main_xd_reg | dataset_params | original_xd2 | paths,
+    'params_ucf_3': params_def | main_xd_reg | dataset_params | original_xd3 | paths,
+    'params_ucf_4': params_def | main_xd_reg | dataset_params | original_xd4 | paths,
+    'params_ucf_5': params_def | main_xd_reg | dataset_params | original_xd5 | paths,
+    'params_ucf_6': params_def | main_xd_reg | dataset_params | original_xd6 | paths,
+    'params_ucf_7': params_def | main_xd_reg | dataset_params | original_xd7 | paths,
+    'params_ucf_8': params_def | main_xd_reg | dataset_params | original_xd8 | paths,
+    'params_ucf_9': params_def | main_xd_reg | dataset_params | original_xd9 | paths,
+    'params_ucf_10': params_def | main_xd_reg | dataset_params | original_xd10 | paths,
+    'params_ucf_11': params_def | main_xd_reg | dataset_params | original_xd11 | paths,
+    'params_ucf_12': params_def | main_xd_reg | dataset_params | original_xd12 | paths,
+    'params_ucf_13': params_def | main_xd_reg | dataset_params | original_xd13 | paths,
+    'params_ucf_14': params_def | main_xd_reg | dataset_params | original_xd14 | paths,
+    'params_ucf_15': params_def | main_xd_reg | dataset_params | original_xd15 | paths,
+}
