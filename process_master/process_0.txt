@@ -1,8 +1,15 @@
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_16 -c 0
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_17 -c 0
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_18 -c 0
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_2 -c 0 -n 3
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_3 -c 0 -n 5
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_4 -c 0 -n 7
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_5 -c 0 -n 9
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_6 -c 0 -n 11
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_1 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_2 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_3 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_4 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_5 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_6 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_7 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_8 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_9 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_10 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_11 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_12 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_13 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_14 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_15 -c 1
