@@ -90,7 +90,7 @@ if __name__ == '__main__':
         # if (step - 1) % len(train_aloader) == 0:
         #     loadera_iter = iter(train_aloader)
 
-        total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
+        total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum, loss_abn_sum, loss_nor_sum \
             = train(train_nloader, train_aloader, model, param, optimizer, viz, device)
 
         run["train/loss"].log(total_cost/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
@@ -98,8 +98,10 @@ if __name__ == '__main__':
         run["train/loss_sparse"].log(loss_sparse_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_smooth"].log(loss_smooth_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_rtfm"].log(loss_rtfm_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_abn"].log(loss_abn_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_nor"].log(loss_nor_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
-        val_loss, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
+        val_loss, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum, loss_abn_sum, loss_nor_sum \
             = val(val_nloader, val_aloader, model, param, device)
 
         run["test/loss"].log(val_loss/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
@@ -107,6 +109,8 @@ if __name__ == '__main__':
         run["test/loss_sparse"].log(loss_sparse_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["test/loss_smooth"].log(loss_smooth_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["test/loss_rtfm"].log(loss_rtfm_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["test/loss_abn"].log(loss_abn_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["test/loss_nor"].log(loss_nor_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
         val_info["epoch"].append(step)
         val_info["val_loss"].append(val_loss)
