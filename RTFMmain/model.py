@@ -171,7 +171,7 @@ class Aggregate(nn.Module):
             return out
 
 class Model(nn.Module):
-    def __init__(self, n_features, batch_size, num_segments, ncrop):
+    def __init__(self, n_features, batch_size, num_segments, ncrop, drop):
         super(Model, self).__init__()
         self.batch_size = batch_size
         self.num_segments = num_segments
@@ -184,7 +184,7 @@ class Model(nn.Module):
         self.fc2 = nn.Linear(512, 128)
         self.fc3 = nn.Linear(128, 1)
 
-        self.drop_out = nn.Dropout(0.7)
+        self.drop_out = nn.Dropout(drop)
         self.relu = nn.ReLU()
         self.sigmoid = nn.Sigmoid()
         self.apply(weight_init)

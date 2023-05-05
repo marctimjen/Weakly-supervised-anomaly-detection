@@ -67,7 +67,7 @@ if __name__ == '__main__':
                                 pin_memory=False, drop_last=True)
 
 
-    model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=32, ncrop=5)
+    model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=32, ncrop=5, drop=param["drop"])
 
     for name, value in model.named_parameters():
         print(name)
