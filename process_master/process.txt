@@ -115,3 +115,16 @@
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_xd.py -u cluster -p params_xd_15 -c 0
 
 
+
+
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_16 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_17 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_18 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_19 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_20 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_21 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_22 -c 1
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat.py -u cluster -p params_cheat_23 -c 1
+
+
+
