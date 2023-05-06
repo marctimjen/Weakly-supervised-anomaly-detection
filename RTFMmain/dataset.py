@@ -8,7 +8,6 @@ import torch
 from torch.utils.data import DataLoader
 torch.set_default_tensor_type('torch.FloatTensor')
 
-
 class Dataset(data.Dataset):
     def __init__(self, rgb_list, datasetname="UCF", is_normal=True, transform=None, mode="train", seg_length=32,
                     shuffle=True):
@@ -22,8 +21,9 @@ class Dataset(data.Dataset):
         self.labels = None
         self.seg_length = seg_length
         self.datasetname = datasetname
-        self.shuffle = shuffle
         self._parse_list()
+        self.shuffle = shuffle
+        self.idx_list = self.randomizer(shuffle=self.shuffle, length=len(self.list))
 
     def _parse_list(self):
         self.list = list(open(self.rgb_list_file))
@@ -58,7 +58,12 @@ class Dataset(data.Dataset):
                     # print('abnormal list')
                     # print(self.list)
 
-    def __getitem__(self, index):
+    def __getitem__(self, idx):
+
+        self.i += 1
+        index = self.idx_list[idx]
+        if self.i % self.__len__() == 0 and self.shuffle:
+            self.idx_list = self.randomizer(shuffle=self.shuffle, length=len(self.list))
 
         label = self.get_label()  # get video level label 0/1
         features = np.load(self.list[index].strip('\n'), allow_pickle=True)
@@ -93,3 +98,9 @@ class Dataset(data.Dataset):
 
     def get_num_frames(self):
         return self.num_frame
+
+    def randomizer(self, shuffle: bool, length: int) -> np.array:
+        if shuffle:
+            return np.random.permutation(length)
+        else:
+            return np.arange(length)

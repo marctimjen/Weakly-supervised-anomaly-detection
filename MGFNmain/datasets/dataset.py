@@ -40,7 +40,7 @@ class Dataset(data.Dataset):
 
         self.i = 0  # iterater when to stop the data-loading
         self.shuffle = shuffle
-        self.idx_list = self.randomizer(shuffle=self.shuffle, lenght=len(self.list))
+        self.idx_list = self.randomizer(shuffle=self.shuffle, length=len(self.list))
 
     def _parse_list(self):
         self.list = list(open(self.rgb_list_file))
@@ -69,7 +69,7 @@ class Dataset(data.Dataset):
         self.i += 1
         index = self.idx_list[idx]
         if self.i % self.__len__() == 0 and self.shuffle:
-            self.idx_list = self.randomizer(shuffle=self.shuffle, lenght=len(self.list))
+            self.idx_list = self.randomizer(shuffle=self.shuffle, length=len(self.list))
 
         if self.is_normal:  # get video level label 0/1
             label = torch.tensor(0.0)
@@ -138,11 +138,11 @@ class Dataset(data.Dataset):
     def __len__(self):
         return len(self.list)
 
-    def randomizer(self, shuffle: bool, lenght: int) -> np.array:
+    def randomizer(self, shuffle: bool, length: int) -> np.array:
         if shuffle:
-            return np.random.permutation(lenght)
+            return np.random.permutation(length)
         else:
-            return np.arange(lenght)
+            return np.arange(length)
 
     def get_num_frames(self):
         return self.num_frame
