@@ -81,7 +81,7 @@ if __name__ == '__main__':
         with_id=f"RTFM-{args.nept_run}"
     )
 
-    for i in range(param["max_epoch"]):
+    for i in range(1, param["max_epoch"] + 1):
         param["pretrained_path"] = f"/home/cv05f23/data/xd/results/rftm/nept_id_RTFM-{args.nept_run}/rftm{i}-i3d.pkl"
 
         model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
