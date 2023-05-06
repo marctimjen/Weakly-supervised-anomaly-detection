@@ -22,6 +22,7 @@ class Dataset(data.Dataset):
         self.seg_length = seg_length
         self.datasetname = datasetname
         self._parse_list()
+        self.i = 0  # iterater when to stop the data-loading
         self.shuffle = shuffle
         self.idx_list = self.randomizer(shuffle=self.shuffle, length=len(self.list))
 
