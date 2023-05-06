@@ -49,6 +49,12 @@ def test(dataloader, model, params, device):
         recall = recall_score(gt, np.rint(pred))
         ap = average_precision_score(gt, pred)
 
+        print('pr_auc : ' + str(pr_auc))
+        print('rec_auc : ' + str(rec_auc))
+
+        if True:
+            raise ValueError("Good")
+
         # print('pr_auc : ' + str(pr_auc))
         # print('rec_auc : ' + str(rec_auc))
         # path = params["pretrained_path"][:-4] + "_test.npy"
