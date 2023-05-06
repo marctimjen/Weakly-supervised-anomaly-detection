@@ -62,9 +62,10 @@ if __name__ == '__main__':
     import argparse
     from torch.utils.data import DataLoader
     from RTFMmain import params
-    from model import Model
+    from RTFMmain.model import Model
+    from RTFMmain.dataset import Dataset
+
     from MGFNmain.config import path_inator
-    from dataset import Dataset
 
 
     parser = argparse.ArgumentParser(description='MGFN')
