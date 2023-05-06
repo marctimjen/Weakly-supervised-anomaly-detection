@@ -26,6 +26,9 @@ def test(dataloader, model, params, device):
             inputs = inputs.to(device)
             inputs = inputs.permute(0, 2, 1, 3)
 
+            if i > 630:
+                print(i.shape)
+
             score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, \
                 feat_select_normal_bottom, logits, scores_nor_bottom, scores_nor_abn_bag, \
                 feat_magnitudes = model(inputs=inputs)
