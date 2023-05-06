@@ -52,12 +52,6 @@ def test(dataloader, model, params, device):
         recall = recall_score(gt, np.rint(pred))
         ap = average_precision_score(gt, pred)
 
-        print('pr_auc : ' + str(pr_auc))
-        print('rec_auc : ' + str(rec_auc))
-
-        if True:
-            raise ValueError("Good")
-
         # print('pr_auc : ' + str(pr_auc))
         # print('rec_auc : ' + str(rec_auc))
         # path = params["pretrained_path"][:-4] + "_test.npy"
@@ -96,7 +90,7 @@ if __name__ == '__main__':
         param["pretrained_path"] = f"/home/cv05f23/data/xd/results/rftm/nept_id_RTFM-{args.nept_run}/rftm{i}-i3d.pkl"
 
         model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
-                    ncrop=param["ncrop"], drop=param["drop"])
+                    ncrop=param["ncrop"], drop=param["drop"], k_abn=3, k_nor=3)
 
         test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
                                             seg_length=param["seg_length"], mode="test", shuffle=False),

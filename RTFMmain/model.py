@@ -171,14 +171,21 @@ class Aggregate(nn.Module):
             return out
 
 class Model(nn.Module):
-    def __init__(self, n_features, batch_size, num_segments, ncrop, drop):
+    def __init__(self, n_features, batch_size, num_segments, ncrop, drop, k_abn=False, k_nor=False):
         super(Model, self).__init__()
         self.batch_size = batch_size
         self.num_segments = num_segments
-        # self.k_abn = self.num_segments // ncrop
-        # self.k_nor = self.num_segments // ncrop
-        self.k_abn = 3
-        self.k_nor = 3
+
+        if k_abn:
+            self.k_abn = k_abn
+        else:
+            self.k_abn = self.num_segments // ncrop
+
+        if k_nor:
+            self.k_nor = k_nor
+        else:
+            self.k_nor = self.num_segments // ncrop
+
         self.ncrop = ncrop
 
         self.Aggregate = Aggregate(len_feature=n_features)
