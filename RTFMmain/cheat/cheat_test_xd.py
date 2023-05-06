@@ -22,16 +22,18 @@ def test(dataloader, model, params, device):
         model.eval()
         pred = torch.zeros(0).cpu()
         # featurelen = []
-        for i, (inputs, name) in tqdm(enumerate(dataloader)):
-            inputs = inputs.permute(0, 2, 1, 3)
+        for i, inputs in tqdm(enumerate(dataloader)):
             inputs = inputs.to(device)
-            _, _, _, _, logits = model(inputs)
+            inputs = inputs.permute(0, 2, 1, 3)
+
+            score_abnormal, score_normal, feat_select_abn, feat_select_normal, feat_abn_bottom, \
+                feat_select_normal_bottom, logits, scores_nor_bottom, scores_nor_abn_bag, \
+                feat_magnitudes = model(inputs=inputs)
             logits = torch.squeeze(logits, 1)
             logits = torch.mean(logits, 0)
             sig = logits.detach().cpu()
             # featurelen.append(len(sig))
             pred = torch.cat((pred, sig))
-            torch.cuda.empty_cache()
 
         gt = np.load(params["gt"])
         pred = list(pred.cpu().detach().numpy())
