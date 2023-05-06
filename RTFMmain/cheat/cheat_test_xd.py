@@ -88,8 +88,7 @@ if __name__ == '__main__':
                     ncrop=param["ncrop"], drop=param["drop"])
 
         test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
-                                            seg_length=param["seg_length"], modality=param["modality"],
-                                            mode="test", shuffle=False),
+                                            seg_length=param["seg_length"], mode="test", shuffle=False),
                                     batch_size=1, shuffle=False, num_workers=0, pin_memory=False)
         model = model.to("cpu")
 
