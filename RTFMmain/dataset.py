@@ -1,6 +1,9 @@
 import torch.utils.data as data
 import numpy as np
-from utils import process_feat
+import sys
+sys.path.append("../..")  # adds higher directory to python modules path
+sys.path.append("..")  # adds higher directory to python modules path
+from RTFMmain.utils import process_feat
 import torch
 from torch.utils.data import DataLoader
 torch.set_default_tensor_type('torch.FloatTensor')
