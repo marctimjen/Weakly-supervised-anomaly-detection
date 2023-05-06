@@ -175,8 +175,10 @@ class Model(nn.Module):
         super(Model, self).__init__()
         self.batch_size = batch_size
         self.num_segments = num_segments
-        self.k_abn = self.num_segments // ncrop
-        self.k_nor = self.num_segments // ncrop
+        # self.k_abn = self.num_segments // ncrop
+        # self.k_nor = self.num_segments // ncrop
+        self.k_abn = 3
+        self.k_nor = 3
         self.ncrop = ncrop
 
         self.Aggregate = Aggregate(len_feature=n_features)
