@@ -1,3 +1,4 @@
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u cluster -p params_ucf_9 -c 0
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u cluster -p params_ucf_10 -c 0
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u cluster -p params_ucf_11 -c 0
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u cluster -p params_ucf_12 -c 0
