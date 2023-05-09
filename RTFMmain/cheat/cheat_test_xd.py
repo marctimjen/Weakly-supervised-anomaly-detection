@@ -87,11 +87,11 @@ if __name__ == '__main__':
         with_id=f"RTFM-{args.nept_run}"
     )
 
-    for i in range(1, param["max_epoch"] + 1):
+    for i in range(param["max_epoch"]):
         param["pretrained_path"] = f"/home/cv05f23/data/xd/results/rftm/nept_id_RTFM-{args.nept_run}/rftm{i}-i3d.pkl"
 
         model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
-                    ncrop=param["ncrop"], drop=param["drop"], k_abn=3, k_nor=3)
+                    ncrop=param["ncrop"], drop=param["drop"], k_abn=param["k_abn"], k_nor=param["k_nor"])
 
         test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
                                             seg_length=param["seg_length"], mode="test", shuffle=False),

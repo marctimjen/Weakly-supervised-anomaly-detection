@@ -1,5 +1,5 @@
 original = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 dataset_params = {"datasetname": "UCF",
                   "dataset": "UCF",
@@ -66,7 +66,7 @@ dataset_params_xd = {"seg_length": 32,
                   }
 
 original_xd = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 paths_xd = {
     "rgb_list": "/home/cv05f23/data/XD/lists/rgb.list",

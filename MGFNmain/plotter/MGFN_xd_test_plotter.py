@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 network = "mgfn7"
 
 gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy")
-pred = np.load(f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd_test.npy")
+#pred = np.load(f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd_test.npy")
+
+pred = np.load(f"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d_test.npy")
 
 # pred = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf_test.npy")
 
@@ -16,7 +18,6 @@ val.sort()  # make sure to sort the values!
 
 start = "/home/marc/Documents/data/xd/RGBTest/"
 end = ".npy"
-
 
 nept = False
 
@@ -52,7 +53,7 @@ for i in val:
 
     # path = f"/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/{network}/" + string[:-3] + ".jpg"
     # path = f"/home/marc/Documents/data/UCF/results/MGFN/Plots_their/" + string[:-3] + ".jpg"
-    path = f"/home/marc/Documents/data/xd/results/MGFN/Plots_their/" + string + ".jpg"
+    path = f"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8/" + string + ".jpg"
     plt.savefig(path, bbox_inches='tight')
     plt.close()
 

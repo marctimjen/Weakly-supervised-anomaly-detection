@@ -84,6 +84,7 @@ if __name__ == '__main__':
                     attention_dropout=0.0, device=device,
                     )
 
+    param["pretrained_path"] = "/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d.pkl"
     print(param["pretrained_path"])
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
@@ -93,8 +94,8 @@ if __name__ == '__main__':
     model = model.to("cpu")
 
     di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_path"], map_location="cpu").items()}
-    di["to_logits.weight"] = di.pop("to_logits.0.weight")
-    di["to_logits.bias"] = di.pop("to_logits.0.bias")
+    # di["to_logits.weight"] = di.pop("to_logits.0.weight")
+    # di["to_logits.bias"] = di.pop("to_logits.0.bias")
 
     model_dict = model.load_state_dict(di)
     model = model.to(device)
