@@ -84,8 +84,12 @@ mgfn_params_reg |= {
 # original_reg |= {"w_decay": 0.0005}  # more weight decay = L2 norm :).
 
 
+original_def = copy.deepcopy(original)
+original_def |= {"batch_size": 8}
+
 HYPERPARAMS |= {
     'params_cheat': params_def | main | mgfn_params | dataset_params | original | paths_cheat,
+    'params_def_cheat': params_def | main | mgfn_params | dataset_params | original_def | paths_cheat,
     'params_cheat_reg': params_def | main | mgfn_params_reg | dataset_params | original | paths_cheat
 }
 
@@ -248,7 +252,12 @@ paths_xd = {
     "gt": "/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
 }
 
-HYPERPARAMS |= {"params_xd": params_def_xd | main_xd | mgfn_params_xd | dataset_params_xd | original_xd | paths_xd}
+original_xd_def = copy.deepcopy(original_xd)
+original_xd_def |= {"batch_size": 8}
+
+HYPERPARAMS |= {"params_xd": params_def_xd | main_xd | mgfn_params_xd | dataset_params_xd | original_xd | paths_xd,
+                "params_xd_def_cheat": params_def_xd | main_xd | mgfn_params_xd | dataset_params_xd | original_xd_def | paths_xd,
+                }
 
 
 main_xd_reg = copy.deepcopy(main_xd)

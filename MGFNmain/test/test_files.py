@@ -8,6 +8,8 @@ This script is for comparing two files: The Ground Truth file (GT) and a predict
 
 gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy")
 pred = np.load(f"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d_test.npy")
+# pred = np.load(f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd_test.npy")
+
 
 
 fpr, tpr, threshold = roc_curve(list(gt), pred)
@@ -15,11 +17,17 @@ rec_auc = auc(fpr, tpr)
 precision, recall, th = precision_recall_curve(list(gt), pred)
 pr_auc = auc(recall, precision)
 
-f1 = f1_score(gt, np.rint(pred))
-f1_macro = f1_score(gt, np.rint(pred), average="macro")
-acc = accuracy_score(gt, np.rint(pred))
-prec = precision_score(gt, np.rint(pred))
-recall = recall_score(gt, np.rint(pred))
+# calculate the g-mean for each threshold
+gmeans = np.sqrt(tpr * (1-fpr))
+
+ix = np.argmax(gmeans)
+print('Best Threshold=%f, G-Mean=%.3f' % (threshold[ix], gmeans[ix]))
+
+f1 = f1_score(gt, pred > threshold[ix])
+f1_macro = f1_score(gt, pred > threshold[ix], average="macro")
+acc = accuracy_score(gt, pred > threshold[ix])
+prec = precision_score(gt, pred > threshold[ix])
+recall = recall_score(gt, pred > threshold[ix])
 ap = average_precision_score(gt, pred)
 
 print('pr_auc : ' + str(pr_auc))
@@ -47,12 +55,24 @@ RocCurveDisplay.from_predictions(
     color="darkorange",
 )
 plt.plot([0, 1], [0, 1], "k--", label="chance level (AUC = 0.5)")
+plt.scatter(fpr[ix], tpr[ix], marker='o', color='black', label='Best')
 plt.axis("square")
 plt.xlabel("False Positive Rate")
 plt.ylabel("True Positive Rate")
 plt.title("One-vs-Rest ROC curves:\nVirginica vs (Setosa & Versicolor)")
 plt.legend()
 plt.show()
+
+# # plot the roc curve for the model
+# plt.plot([0,1], [0,1], linestyle='--', label='No Skill')
+# plt.plot(fpr, tpr, marker='.', label='Logistic')
+# plt.scatter(fpr[ix], tpr[ix], marker='o', color='black', label='Best')
+# # axis labels
+# plt.xlabel('False Positive Rate')
+# plt.ylabel('True Positive Rate')
+# plt.legend()
+# # show the plot
+# plt.show()
 
 
 print("Fraction of anomaly frames:", np.sum(gt)/len(gt))

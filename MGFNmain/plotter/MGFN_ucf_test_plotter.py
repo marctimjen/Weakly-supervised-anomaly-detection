@@ -1,9 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+This script is used for creating the plots for a specific UCF model.
+"""
+
+
 network = "mgfn7"
 
 gt = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")
+
 pred = np.load(f"/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/{network}-i3d_test.npy")
 
 # pred = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf_test.npy")
@@ -18,7 +24,7 @@ start = "/home/marc/Documents/data/UCF/test/"
 end = "_i3d.npy"
 
 
-nept = True
+nept = False
 
 if nept:
     import neptune
@@ -50,8 +56,8 @@ for i in val:
     plt.xlabel('frame number')
     plt.ylabel('anomaly score')
 
-    path = f"/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/{network}/" + string[:-3] + ".jpg"
-    # path = f"/home/marc/Documents/data/UCF/results/MGFN/Plots_their/" + string[:-3] + ".jpg"
+    # path = f"/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/{network}/" + string[:-3] + ".jpg"
+    path = f"/home/marc/Documents/data/UCF/results/MGFN/Plots_their2/" + string[:-3] + ".jpg"
     plt.savefig(path, bbox_inches='tight')
     plt.close()
 
@@ -62,8 +68,8 @@ for i in val:
     if nept:
         run[f"test_pics/{network}/{string[:-3]}"].upload(path)
 
-
-run.stop()
+if nept:
+    run.stop()
 
 
 

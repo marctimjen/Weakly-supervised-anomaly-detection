@@ -62,7 +62,7 @@ for i in val:
 
 
     if nept:
-        run[f"test_pics/{network}/{string[:-3]}"].upload(path)
+        run[f"test_pics/{network}/{string}"].upload(path)
 
 if nept:
     run.stop()
