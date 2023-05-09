@@ -84,51 +84,51 @@ main_xd_reg = {"max_epoch": 100,
         }
 
 original_xd1 = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd2 = {"margin": 100, "w_decay": 0.005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd3 = {"margin": 100, "w_decay": 0.0025, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd4 = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.0}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.0, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd5 = {"margin": 100, "w_decay": 0.005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.0}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.0, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd6 = {"margin": 100, "w_decay": 0.0025, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.0}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.0, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd7 = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.35}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.35, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd8 = {"margin": 100, "w_decay": 0.005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd9 = {"margin": 100, "w_decay": 0.0025, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.35}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.35, "k_abn": 3, "k_nor": 3}  # hyper params
 
 
 original_xd10 = {"margin": 100, "w_decay": 0.0005, "lr": 0.01, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd11 = {"margin": 100, "w_decay": 0.005, "lr": 0.01, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd12 = {"margin": 100, "w_decay": 0.0025, "lr": 0.01, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 
 original_xd13 = {"margin": 100, "w_decay": 0.0005, "lr": 0.0005, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd14 = {"margin": 100, "w_decay": 0.005, "lr": 0.0005, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 original_xd15 = {"margin": 100, "w_decay": 0.0025, "lr": 0.0005, "batch_size": 32, "lambda_2": 8e-3,
-            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7}  # hyper params
+            "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 
 HYPERPARAMS |= {
