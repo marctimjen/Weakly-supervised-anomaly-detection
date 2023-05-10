@@ -37,7 +37,7 @@ def path_inator(params, args):
 
     elif dataset_name.lower() == "ucf":
         if args.user == "marc":
-            params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
+            params["save_dir"] = f"/home/marc/Documents/data/xd/results/{params['model_name']}"  # where to save results + model
             params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
             params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
             params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
@@ -51,8 +51,7 @@ def path_inator(params, args):
             #                             "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
 
             params["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-8/mgfn156-i3d.pkl"
-
-            return "/home/marc/Documents/sandbox"  # path where to wave files
+            return params["save_dir"]  # path where to wave files
 
         elif args.user == "cluster":
             params["save_dir"] = f"/home/cv05f23/data/UCF/results/{params['model_name']}"  # where to save results + model

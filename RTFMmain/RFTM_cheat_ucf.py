@@ -84,7 +84,7 @@ if __name__ == '__main__':
     # val_info = {"epoch": [], "val_loss": []}
     # best_val_loss = float("inf")
 
-    for step in tqdm(range(1, param["max_epoch"] + 1), total=param["max_epoch"], dynamic_ncols=True):
+    for step in tqdm(range(0, param["max_epoch"]), total=param["max_epoch"], dynamic_ncols=True):
         # if step > 1 and param["lr"][step - 1] != param["lr"][step - 2]:
         #     for param_group in optimizer.param_groups:
         #         param_group["lr"] = param["lr"][step - 1]

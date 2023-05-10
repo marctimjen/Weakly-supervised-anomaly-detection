@@ -199,7 +199,7 @@ HYPERPARAMS |= {
 ####################################### XD-violence data:
 
 original_xd = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.001,
-            "w_decay": 0.0005, "lr": 0.001, "batch_size": 16}  # hyper params
+                "w_decay": 0.0005, "lr": 0.001, "batch_size": 16}  # hyper params
 
 dataset_params_xd = {"seg_length": 32,
                   "add_mag_info": False,  # Do not quite know what this does...
@@ -337,4 +337,50 @@ HYPERPARAMS |= {
     "params_xd_reg_17": params_def_xd | main_xd_reg | mgfn_params_net2 | dataset_params_xd | original_xd_reg | paths_xd,
     "params_xd_reg_18": params_def_xd | main_xd_reg | mgfn_params_net2 | dataset_params_xd | original_xd_reg2 | paths_xd,
                 }
+
+# New hopt of the MGFN on the XD dataset:
+
+
+import itertools
+
+j = 19
+
+w = [0.003, 0.0003, 0.00003]  # The different weight_decays:
+l = [0.001, 0.01]  # the different lambda_3 values to test:
+d = [0.4, 0.7]  # dropout
+a_d = [0.3, 0.7]  # attention_dropout
+d_r = [0.4, 0.7]  # dropout_rate
+
+net_config = [0, 1]  # small or big network
+
+ls = [w, l, d, a_d, d_r, net_config]
+res = list(itertools.product(*ls))
+
+for i in res:
+    w, l, d, a_d, d_r, net_config = i
+
+    original_xd_iter = copy.deepcopy(original_xd_def)
+    original_xd_iter |= {"w_decay": w, "lambda_1": 0.5, "lambda_2": 1, "lambda_3": l}
+
+    mgfn_params_xd_iter = copy.deepcopy(mgfn_params_xd)
+    mgfn_params_xd_iter |= {"dropout": d, "attention_dropout": a_d, "dropout_rate": d_r}
+
+    if net_config == 0:  # small network
+        mgfn_params_xd_iter |= {
+               "depths1": 3,
+               "depths2": 2,
+               "depths3": 1,
+               "mgfn_type1": "gb",
+               "mgfn_type2": "fb",
+               "mgfn_type3": "fb",
+               }
+
+    HYPERPARAMS |= {
+        f"params_xd_reg_{j}": params_def_xd | main_xd_reg | mgfn_params_xd_iter | dataset_params_xd | original_xd_iter | paths_xd,}
+
+    j += 1
+
+
+
+
 
