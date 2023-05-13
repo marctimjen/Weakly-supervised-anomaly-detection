@@ -170,10 +170,7 @@ def main():
 
             # >> Performance
             title = [['Dataset', 'Method', 'Feature', 'REC AUC (%)', 'PR AUC (%)', 'F1', 'F1 macro', 'accuracy', 'precision', 'recall', 'average precision']]
-            score = [[args.dataset, args.model_name.upper(), args.backbone.upper(), f'{score['"rec_auc"']*100.:.3f}',\
-                    f'{score['pr_auc']*100.:.3f}', f'{score['f1']*100.:.3f}', f'{score['f1_macro']*100.:.3f}', f'{score['accuracy']*100.:.3f}',\
-                    f'{score['precision']*100.:.3f}', f'{score['recall']*100.:.3f}', f'{score['average_precision']*100.:.3f}',
-                    ]]
+            score = [[args.dataset, args.model_name.upper(), args.backbone.upper(), f'{score['"rec_auc"']*100.:.3f}', f'{score['pr_auc']*100.:.3f}', f'{score['f1']*100.:.3f}', f'{score['f1_macro']*100.:.3f}', f'{score['accuracy']*100.:.3f}', f'{score['precision']*100.:.3f}', f'{score['recall']*100.:.3f}', f'{score['average_precision']*100.:.3f}']]
 
             table = AsciiTable(title + score, ' Performance on {} '.format(args.dataset))
             for i in range(len(title[0])):
