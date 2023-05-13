@@ -2,9 +2,9 @@ import torch
 import numpy as np
 import os.path as osp
 
-from sklearn.metrics import auc, roc_curve, precision_recall_curve, average_precision_score
+from sklearn.metrics import auc, roc_curve, precision_recall_curve, average_precision_score, roc_curve, f1_score, accuracy_score, precision_score, recall_score
 
-def inference(dataloader, model, args, device):
+def inference(dataloader, model, args, device, rec_auc_only=True):
     with torch.no_grad():
         model.eval()
         pred = torch.zeros(0).to(device)
@@ -48,7 +48,27 @@ def inference(dataloader, model, args, device):
 
         fpr, tpr, threshold = roc_curve(list(gt), pred)
         rec_auc = auc(fpr, tpr)
-        score = rec_auc
+
+        if rec_auc_only:
+            return rec_auc
+
+        precision, recall, th = precision_recall_curve(list(gt), pred)
+        pr_auc = auc(recall, precision)
+
+        f1 = f1_score(gt, np.rint(pred))
+        f1_macro = f1_score(gt, np.rint(pred), average="macro")
+        acc = accuracy_score(gt, np.rint(pred))
+        prec = precision_score(gt, np.rint(pred))
+        recall = recall_score(gt, np.rint(pred))
+        ap = average_precision_score(gt, pred)
+
+        score = {"rec_auc": rec_auc,
+                 "pr_auc": pr_auc,
+                 "f1": f1,
+                 "f1_macro": f1_macro,
+                 "accuracy": acc,
+                 "precision": prec,
+                 "recall": recall,
+                 "average_precision": ap}
 
         return score
-
