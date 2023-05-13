@@ -168,10 +168,11 @@ def main():
 
 
             score = inference(test_loader, model, args, device, rec_auc_only=False)
+            rec_auc, pr_auc, f1, f1_macro, acc, prec, recall, ap = score.values()
 
             # >> Performance
             title = [['Dataset', 'Method', 'Feature', 'REC AUC (%)', 'PR AUC (%)', 'F1', 'F1 macro', 'accuracy', 'precision', 'recall', 'average precision']]
-            scores = [[args.dataset, args.model_name.upper(), args.backbone.upper(), f'{score['rec_auc']*100.:.3f}', f'{score['pr_auc']*100.:.3f}', f'{score['f1']*100.:.3f}', f'{score['f1_macro']*100.:.3f}', f'{score['accuracy']*100.:.3f}', f'{score['precision']*100.:.3f}', f'{score['recall']*100.:.3f}', f'{score['average_precision']*100.:.3f}']]
+            scores = [[args.dataset, args.model_name.upper(), args.backbone.upper(), f'{rec_auc*100.:.3f}', f'{pr_auc*100.:.3f}', f'{f1*100.:.3f}', f'{f1_macro*100.:.3f}', f'{acc*100.:.3f}', f'{prec*100.:.3f}', f'{recall*100.:.3f}', f'{ap*100.:.3f}']]
 
             table = AsciiTable(title + scores, ' Performance on {} '.format(args.dataset))
             for i in range(len(title[0])):
