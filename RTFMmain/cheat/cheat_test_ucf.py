@@ -85,7 +85,7 @@ if __name__ == '__main__':
     )
 
     for i in range(param["max_epoch"]):
-        param["pretrained_path"] = f"/home/cv05f23/data/xd/results/rftm/nept_id_RTFMUC-{args.nept_run}/rftm{i}-i3d.pkl"
+        param["pretrained_path"] = f"/home/cv05f23/data/UCF/results/rftm/nept_id_RTFMUC-{args.nept_run}/rftm{i}-i3d.pkl"
         # param["pretrained_path"] = f"/home/marc/Documents/data/xd/results/rftm/nept_id_RTFMUC-{args.nept_run}/rftm{i}-i3d.pkl"
 
         model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
