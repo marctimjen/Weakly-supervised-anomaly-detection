@@ -87,11 +87,11 @@ def main():
     train_anomaly_dataset_cfg = data.train.anomaly
     test_dataset_cfg = data.test
 
-    # >> regular (normal) videos for the training set 
+    # >> regular (normal) videos for the training set
     train_regular_set = Dataset(**train_regular_dataset_cfg)
     dictionary = train_regular_set.dictionary
 
-    # >> anomaly (abnormal) videos for the training set 
+    # >> anomaly (abnormal) videos for the training set
     train_anomaly_dataset_cfg.dictionary = dictionary
     train_anomaly_set = Dataset(**train_anomaly_dataset_cfg)
 
@@ -156,13 +156,24 @@ def main():
             checkpoint = torch.load(args.resume)
             model.load_state_dict(checkpoint)
             print('>>> Checkpoint {} loaded.'.format(color(args.resume)))
-            auc = inference(test_loader, model, args, device)
+
+            # score = {"rec_auc": rec_auc,
+            #          "pr_auc": pr_auc,
+            #          "f1": f1,
+            #          "f1_macro": f1_macro,
+            #          "accuracy": acc,
+            #          "precision": prec,
+            #          "recall": recall,
+            #          "average_precision": ap}
+
+
+            score = inference(test_loader, model, args, device, rec_auc_only=False)
 
             # >> Performance
-            title = [['Dataset', 'Method', 'Feature', 'AUC (%)']]
-            score = [[args.dataset, args.model_name.upper(), args.backbone.upper(), f'{auc*100.:.3f}']]
+            title = [['Dataset', 'Method', 'Feature', 'REC AUC (%)', 'PR AUC (%)', 'F1', 'F1 macro', 'accuracy', 'precision', 'recall', 'average precision']]
+            scores = [[args.dataset, args.model_name.upper(), args.backbone.upper(), f'{score['rec_auc']*100.:.3f}', f'{score['pr_auc']*100.:.3f}', f'{score['f1']*100.:.3f}', f'{score['f1_macro']*100.:.3f}', f'{score['accuracy']*100.:.3f}', f'{score['precision']*100.:.3f}', f'{score['recall']*100.:.3f}', f'{score['average_precision']*100.:.3f}']]
 
-            table = AsciiTable(title + score, ' Performance on {} '.format(args.dataset))
+            table = AsciiTable(title + scores, ' Performance on {} '.format(args.dataset))
             for i in range(len(title[0])):
                 table.justify_columns[i] = 'center'
             logger.info('Summary Result on {} metric\n{}'.format('AUC', table.table))
@@ -177,7 +188,6 @@ def main():
         - dataset:\t {dataset}
         - version:\t {ver}
         - description:\t {descr}
-        - initial {metric} score: {score:.3f} %
         - initial learning rate: {lr:.4f}
     """.format(
         title=color('Video Anomaly Detection', 'magenta'),
@@ -185,7 +195,6 @@ def main():
         ver=args.version,
         descr=color(' '.join(args.descr)),
         metric='AUC' if 'xd-violence' not in args.dataset else 'AP',
-        score=score * 100.,
         lr=config.lr[0]
     )
 
