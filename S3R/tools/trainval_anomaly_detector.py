@@ -251,8 +251,9 @@ def main():
         # loss = do_train(loadern_iter, loadera_iter, model, args.batch_size, optimizer, device, run)
         loss = do_train(train_regular_loader, train_anomaly_loader, model, args.batch_size, optimizer, device, run)
 
-        condition = (step % 1 == 0) if args.debug else \
-                (step % args.evaluate_freq == 0 and step > args.evaluate_min_step)
+        # condition = (step % 1 == 0) if args.debug else \
+        #         (step % args.evaluate_freq == 0 and step > args.evaluate_min_step)
+        condition = True
 
         if condition:
 
