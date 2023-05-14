@@ -10,7 +10,7 @@ except ImportError:
     from typing_extensions import Literal
 
 class S3RArgumentParser(Tap):
-    # =============== 
+    # ===============
     # network setting
     # ---------------
     backbone: Literal['i3d', 'c3d'] = 'i3d' # default backbone
@@ -22,11 +22,11 @@ class S3RArgumentParser(Tap):
     model_name: str = 's3r' # name to save model
     dataset: Literal['shanghaitech', 'ucf-crime', 'xd-violence'] = 'shanghaitech' # dataset to train
     plot_freq: int = 10 # frequency of plotting (default: 10)
-    max_epoch: int = 15000 # maximum iteration to train (default: 15000)
+    max_epoch: int = 10 # maximum iteration to train (default: 15000)
     dropout: float = 0.7 # dropout ratio
     quantize_size: int = 32 # new temporal size for training
 
-    # ============ 
+    # ============
     # path setting
     # ------------
     root_path: Path = 'data' # Directory path of data
@@ -35,13 +35,13 @@ class S3RArgumentParser(Tap):
     dictionary_path: Path ='dictionary' # Directory path of dictionary
     resume: Optional[str] = None # trained checkpoint path
 
-    # ========== 
+    # ==========
     # evaluation
     # ----------
     evaluate_freq: int = 1 # frequency of running evaluation (default: 1)
     evaluate_min_step: int = 5000 # frequency of running evaluation (default: 5000)
 
-    # ==== 
+    # ====
     # misc
     # ----
     seed: Optional[int] = -1 # random seed

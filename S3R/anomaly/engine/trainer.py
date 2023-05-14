@@ -79,6 +79,66 @@ def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, devic
             - size: [bs, n=10, t=32, c=2048]
         """
 
+        for _, ((regular_video, regular_label, macro_video, macro_label), (anomaly_video, anomaly_label, macro_video, macro_label)) in tqdm(enumerate(zip(nloader, aloader))):
+
+        # regular_video, regular_label, macro_video, macro_label = next(regular_loader)
+        # anomaly_video, anomaly_label, macro_video, macro_label = next(anomaly_loader)
+
+            video = torch.cat((regular_video, anomaly_video), 0).to(device)
+            macro = torch.cat((macro_video, macro_video), 0).to(device)
+
+            outputs = model(video, macro)
+
+            # >> parse outputs
+            anomaly_score = outputs['anomaly_score']
+            regular_score = outputs['regular_score']
+            anomaly_crest = outputs['feature_select_anomaly']
+            regular_crest = outputs['feature_select_regular']
+            video_scores = outputs['video_scores']
+            macro_scores = outputs['macro_scores']
+
+            video_scores = video_scores.view(batch_size * 32 * 2, -1)
+
+            video_scores = video_scores.squeeze()
+            abn_scores = video_scores[batch_size * 32:]
+
+            regular_label = regular_label[0:batch_size]
+            anomaly_label = anomaly_label[0:batch_size]
+
+            loss_criterion = RTFM_loss(0.0001, 100)
+            loss_magnitude = loss_criterion(
+                regular_score,
+                anomaly_score,
+                regular_label,
+                anomaly_label,
+                regular_crest,
+                anomaly_crest)
+
+            loss_sparse = sparsity_loss(abn_scores, batch_size, 8e-3)
+            loss_smooth = smooth_loss(abn_scores, 8e-4)
+
+            macro_criterion = MacroLoss()
+            loss_macro = macro_criterion(macro_scores, macro_label)
+
+            cost = loss_magnitude + loss_smooth + loss_sparse + loss_macro
+
+            run["train/loss"].log(cost)
+            run["train/loss_magnitude"].log(loss_magnitude)
+            run["train/loss_smooth"].log(loss_smooth)
+            run["train/loss_sparse"].log(loss_sparse)
+            run["train/loss_macro"].log(loss_macro)
+
+            optimizer.zero_grad()
+            cost.backward()
+            optimizer.step()
+
+    return cost
+
+
+def do_val(regular_loader, anomaly_loader, model, batch_size, optimizer, device, run):
+    with torch.set_grad_enabled(True):
+        model.eval()
+
         regular_video, regular_label, macro_video, macro_label = next(regular_loader)
         anomaly_video, anomaly_label, macro_video, macro_label = next(anomaly_loader)
 
@@ -120,16 +180,10 @@ def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, devic
 
         cost = loss_magnitude + loss_smooth + loss_sparse + loss_macro
 
-        run["train/loss"].log(cost)
-        run["train/loss_magnitude"].log(loss_magnitude)
-        run["train/loss_smooth"].log(loss_smooth)
-        run["train/loss_sparse"].log(loss_sparse)
-        run["train/loss_macro"].log(loss_macro)
-
-        optimizer.zero_grad()
-        cost.backward()
-        optimizer.step()
+        run["val/loss"].log(cost)
+        run["val/loss_magnitude"].log(loss_magnitude)
+        run["val/loss_smooth"].log(loss_smooth)
+        run["val/loss_sparse"].log(loss_sparse)
+        run["val/loss_macro"].log(loss_macro)
 
     return cost
-
-

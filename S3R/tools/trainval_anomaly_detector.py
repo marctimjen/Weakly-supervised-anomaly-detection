@@ -242,13 +242,14 @@ def main():
             for param_group in optimizer.param_groups:
                 param_group["lr"] = config.lr[step - 1]
 
-        if (step - 1) % len(train_regular_loader) == 0:
-            loadern_iter = iter(train_regular_loader)
+        # if (step - 1) % len(train_regular_loader) == 0:
+        #     loadern_iter = iter(train_regular_loader)
+        #
+        # if (step - 1) % len(train_anomaly_loader) == 0:
+        #     loadera_iter = iter(train_anomaly_loader)
 
-        if (step - 1) % len(train_anomaly_loader) == 0:
-            loadera_iter = iter(train_anomaly_loader)
-
-        loss = do_train(loadern_iter, loadera_iter, model, args.batch_size, optimizer, device, run)
+        # loss = do_train(loadern_iter, loadera_iter, model, args.batch_size, optimizer, device, run)
+        loss = do_train(train_regular_loader, train_anomaly_loader, model, args.batch_size, optimizer, device, run)
 
         condition = (step % 1 == 0) if args.debug else \
                 (step % args.evaluate_freq == 0 and step > args.evaluate_min_step)
@@ -295,20 +296,20 @@ def main():
         process_time.update(time.time() - end)
         end = time.time()
 
-        # plot progress
-        info = \
-            '({cnt}/{num})' \
-            ' time: {pt:.3f}s, total: {total:}, eta: {eta:},' \
-            ' lr: {lr}, loss: {loss:.4f}, {metric}: {score:.3f}' \
-            .format(
-                cnt = step, num=args.max_epoch,
-                pt = process_time.val,
-                total = bar.elapsed_td,
-                eta = bar.eta_td,
-                lr = optimizer.param_groups[0]['lr'],
-                loss = loss,
-                metric='AUC' if 'xd-violence' not in args.dataset else 'AP',
-                score = score * 100.)
+        # # plot progress
+        # info = \
+        #     '({cnt}/{num})' \
+        #     ' time: {pt:.3f}s, total: {total:}, eta: {eta:},' \
+        #     ' lr: {lr}, loss: {loss:.4f}, {metric}: {score:.3f}' \
+        #     .format(
+        #         cnt = step, num=args.max_epoch,
+        #         pt = process_time.val,
+        #         total = bar.elapsed_td,
+        #         eta = bar.eta_td,
+        #         lr = optimizer.param_groups[0]['lr'],
+        #         loss = loss,
+        #         metric='AUC' if 'xd-violence' not in args.dataset else 'AP',
+        #         score = score * 100.)
 
         bar.suffix = info
         bar.next()
