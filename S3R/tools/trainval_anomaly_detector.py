@@ -300,7 +300,7 @@ def main():
         info = \
             '({cnt}/{num})' \
             ' time: {pt:.3f}s, total: {total:}, eta: {eta:},' \
-            ' lr: {lr}, loss: {loss:.4f} \
+            ' lr: {lr}, loss: {loss:.4f}' \
             .format(
                 cnt = step, num=args.max_epoch,
                 pt = process_time.val,
@@ -309,7 +309,7 @@ def main():
                 lr = optimizer.param_groups[0]['lr'],
                 loss = loss,
                 metric='AUC' if 'xd-violence' not in args.dataset else 'AP',
-                )
+                score = score * 100.)
 
         bar.suffix = info
         bar.next()
