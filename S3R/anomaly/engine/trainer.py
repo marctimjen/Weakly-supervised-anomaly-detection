@@ -81,7 +81,7 @@ def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, devic
             - size: [bs, n=10, t=32, c=2048]
         """
 
-        for _, ((regular_video, regular_label, macro_video, macro_label), (anomaly_video, anomaly_label, macro_video, macro_label)) in tqdm(enumerate(zip(nloader, aloader))):
+        for _, ((regular_video, regular_label, macro_video, macro_label), (anomaly_video, anomaly_label, macro_video, macro_label)) in tqdm(enumerate(zip(regular_loader, anomaly_loader))):
 
         # regular_video, regular_label, macro_video, macro_label = next(regular_loader)
         # anomaly_video, anomaly_label, macro_video, macro_label = next(anomaly_loader)
