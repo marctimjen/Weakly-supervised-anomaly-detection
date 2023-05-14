@@ -297,19 +297,19 @@ def main():
         end = time.time()
 
         # # plot progress
-        # info = \
-        #     '({cnt}/{num})' \
-        #     ' time: {pt:.3f}s, total: {total:}, eta: {eta:},' \
-        #     ' lr: {lr}, loss: {loss:.4f}, {metric}: {score:.3f}' \
-        #     .format(
-        #         cnt = step, num=args.max_epoch,
-        #         pt = process_time.val,
-        #         total = bar.elapsed_td,
-        #         eta = bar.eta_td,
-        #         lr = optimizer.param_groups[0]['lr'],
-        #         loss = loss,
-        #         metric='AUC' if 'xd-violence' not in args.dataset else 'AP',
-        #         score = score * 100.)
+        info = \
+            '({cnt}/{num})' \
+            ' time: {pt:.3f}s, total: {total:}, eta: {eta:},' \
+            ' lr: {lr}, loss: {loss:.4f} \
+            .format(
+                cnt = step, num=args.max_epoch,
+                pt = process_time.val,
+                total = bar.elapsed_td,
+                eta = bar.eta_td,
+                lr = optimizer.param_groups[0]['lr'],
+                loss = loss,
+                metric='AUC' if 'xd-violence' not in args.dataset else 'AP',
+                )
 
         bar.suffix = info
         bar.next()
