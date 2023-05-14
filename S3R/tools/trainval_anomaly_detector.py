@@ -255,11 +255,14 @@ def main():
 
         if condition:
 
-            score = inference(test_loader, model, args, device)
+            score = inference(test_loader, model, args, device, rec_auc_only=False)
+            rec_auc, pr_auc, f1, f1_macro, acc, prec, recall, ap = score.values()
+
+            # score = inference(test_loader, model, args, device)
 
             test_info["epoch"].append(step)
             test_info["test_{metric}".format(
-                metric='AUC' if 'xd-violence' not in args.dataset else 'AP')].append(score)
+                metric='AUC' if 'xd-violence' not in args.dataset else 'AP')].append(rec_auc)
             test_info["train_loss"].append(loss)
 
             test_info["elapsed"].append(str(datetime.timedelta(seconds = time.time() - start_time)))
@@ -267,7 +270,15 @@ def main():
             test_info["now"].append(now)
 
             run["test/epoch"].log(step)
-            run["test/AUC"].log(score)
+            run["test/rec_auc"].log(rec_auc)
+            run["test/pr_auc"].log(pr_auc)
+            run["test/f1"].log(f1)
+            run["test/f1_macro"].log(f1_macro)
+            run["test/accuracy"].log(acc)
+            run["test/precision"].log(prec)
+            run["test/recall"].log(recall)
+            run["test/average_precision"].log(ap)
+
             statistics.append([step, score])
 
             metric = 'test_{metric}'.format(metric='AUC' if 'xd-violence' not in args.dataset else 'AP')
