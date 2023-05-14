@@ -281,7 +281,7 @@ def main():
             run["test/recall"].log(recall)
             run["test/average_precision"].log(ap)
 
-            statistics.append([step, score])
+            statistics.append([step, rec_auc])
 
             metric = 'test_{metric}'.format(metric='AUC' if 'xd-violence' not in args.dataset else 'AP')
             if test_info[metric][-1] > best_AUC:
