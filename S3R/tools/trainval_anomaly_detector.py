@@ -309,7 +309,7 @@ def main():
                 lr = optimizer.param_groups[0]['lr'],
                 loss = loss,
                 metric='AUC' if 'xd-violence' not in args.dataset else 'AP',
-                score = score * 100.)
+                )
 
         bar.suffix = info
         bar.next()
