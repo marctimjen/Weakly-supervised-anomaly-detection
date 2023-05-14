@@ -3,6 +3,8 @@ import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 
+from tqdm import tqdm
+
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 from torch.nn import L1Loss, MSELoss, Sigmoid
