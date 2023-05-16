@@ -37,7 +37,7 @@ def path_inator(params, args):
 
     elif dataset_name.lower() == "ucf":
         if args.user == "marc":
-            params["save_dir"] = f"/home/marc/Documents/data/xd/results/{params['model_name']}"  # where to save results + model
+            params["save_dir"] = f"/home/marc/Documents/data/UCF/results/{params['model_name']}"  # where to save results + model
             params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
             params["test_rgb_val"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"
             params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-val.list"

@@ -1,7 +1,7 @@
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u marc -p params_ucf_1 -c 0
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u marc -p params_ucf_2 -c 0
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u marc -p params_ucf_3 -c 0
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u marc -p params_ucf_4 -c 0
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u marc -p params_ucf_5 -c 0
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u marc -p params_ucf_6 -c 0
-/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/RFTM_cheat_ucf.py -u marc -p params_ucf_7 -c 0
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/cheat/cheat_test_ucf.py -u marc -p params_ucf_1 -c 0 -n 22
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/cheat/cheat_test_ucf.py -u marc -p params_ucf_2 -c 0 -n 23
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/cheat/cheat_test_ucf.py -u marc -p params_ucf_3 -c 0 -n 24
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/cheat/cheat_test_ucf.py -u marc -p params_ucf_4 -c 0 -n 25
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/cheat/cheat_test_ucf.py -u marc -p params_ucf_5 -c 0 -n 26
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/cheat/cheat_test_ucf.py -u marc -p params_ucf_6 -c 0 -n 27
+/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/cheat/cheat_test_ucf.py -u marc -p params_ucf_7 -c 0 -n 28
