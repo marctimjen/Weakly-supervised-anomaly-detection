@@ -33,6 +33,7 @@ if __name__ == '__main__':
     parser.add_argument("-u", '--user', default='cluster',
                         choices=['cluster', 'marc'])  # this gives dir to data and save loc
     parser.add_argument("-p", "--params", required=True, help="Params to load")  # which parameters to load
+    parser.add_argument("-c", "--cuda", required=True, help="gpu number")
     args = parser.parse_args()
 
     token = os.getenv('NEPTUNE_API_TOKEN')
@@ -51,33 +52,34 @@ if __name__ == '__main__':
     save_path = path_inator(param, args)
     save_path = save_config(save_path, run_id, params=param)
 
-    train_nloader = DataLoader(Dataset(dataset=param["dataset"], rgb_list=param["rgb_list"], mode="train",
-                                        is_normal=True),
-                                batch_size=param["batch_size"], shuffle=True,
-                                num_workers=0, pin_memory=False, drop_last=True)
+    train_nloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
+                                        seg_length=param["seg_length"], mode="train", is_normal=True, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
 
-    train_aloader = DataLoader(Dataset(dataset=param["dataset"], rgb_list=param["rgb_list"], mode="train",
-                                        is_normal=False),
-                                batch_size=param["batch_size"], shuffle=True,
-                                num_workers=0, pin_memory=False, drop_last=True)
+    train_aloader = DataLoader(Dataset(rgb_list=param["rgb_list"], datasetname=param["datasetname"],
+                                        seg_length=param["seg_length"], mode="train", is_normal=False, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
 
-    val_nloader = DataLoader(Dataset(dataset=param["dataset"], rgb_list=param["val_rgb_list"], mode="val",
-                                        is_normal=True),
-                                batch_size=param["batch_size"], shuffle=True,
-                                num_workers=0, pin_memory=False, drop_last=True)
+    val_nloader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
+                                        seg_length=param["seg_length"], mode="val", is_normal=True, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
 
-    val_aloader = DataLoader(Dataset(dataset=param["dataset"], rgb_list=param["val_rgb_list"], mode="val",
-                                        is_normal=False),
-                                batch_size=param["batch_size"], shuffle=True,
-                                num_workers=0, pin_memory=False, drop_last=True)
+    val_aloader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],
+                                        seg_length=param["seg_length"], mode="val", is_normal=False, shuffle=True),
+                                batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
+                                pin_memory=False, drop_last=True)
 
 
-    model = Model(n_features=param["feature_size"], batch_size=param["batch_size"])
+    model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
+                    ncrop=param["ncrop"], drop=param["drop"])
 
     for name, value in model.named_parameters():
         print(name)
 
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device(f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu')
     print(device)
     print("batch-size", param["batch_size"])
 
@@ -89,15 +91,6 @@ if __name__ == '__main__':
     best_val_loss = float("inf")
 
     for step in tqdm(range(1, param["max_epoch"] + 1), total=param["max_epoch"], dynamic_ncols=True):
-        # if step > 1 and param["lr"][step - 1] != param["lr"][step - 2]:
-        #     for param_group in optimizer.param_groups:
-        #         param_group["lr"] = param["lr"][step - 1]
-
-        # if (step - 1) % len(train_nloader) == 0:
-        #     loadern_iter = iter(train_nloader)
-        #
-        # if (step - 1) % len(train_aloader) == 0:
-        #     loadera_iter = iter(train_aloader)
 
         total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
             = train(train_nloader, train_aloader, model, param, optimizer, viz, device)
