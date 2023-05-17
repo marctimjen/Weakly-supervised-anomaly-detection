@@ -13,9 +13,9 @@ dataset.
 
 
 gt_file = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")
+# gt_file = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/list/gt-ucf.npy")
 
-
-model = "random_thr"
+model = "Shanghai"
 
 if model[-3:] == "thr":
     use_thresholding = True
@@ -37,6 +37,7 @@ model_data = {
     "RTFM_38_val_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm168-i3d_test.npy",
     "random": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/result_uploader/rando.npy",
     "random_thr": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/result_uploader/rando.npy",
+    "Shanghai": "/home/marc/Documents/data/shanghai/shanghai_best_ckpt_test.npy"
 }
 
 pred_file = np.load(model_data.get(model))

@@ -7,14 +7,16 @@ This is a test-file that is used to validate our gt-file.
 
 # res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/ucf_gt/gt-ucf.npy")
 
-res = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")
+# res = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")
+
+res = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/list/gt-ucf.npy")
 
 path = rf"/home/marc/Documents/data/UCF/UCF_list/"
 with open(path + rf"ucf-i3d-test.list", 'r') as f:  # use a context manager to safely opening and closing files
     val = [line.strip() for line in f.readlines()]  # use strip to get rid of the \n at the end of string
 val.sort()  # make sure to sort the values!
 
-gt_file_path = rf"/MGFNmain/UCF_list/Temporal_Anomaly_Annotation_for_Testing_Videos.txt"
+gt_file_path = rf"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/Temporal_Anomaly_Annotation_for_Testing_Videos.txt"
 
 with open(gt_file_path, 'r') as f:  # use a context manager to safely opening and closing files
     gt_values = [line.strip() for line in f.readlines()]  # use strip to get rid of the \n at the end of string
@@ -48,6 +50,7 @@ for i in val:
 
     if any(arr != res[start_of_arr: end_of_arr]):
         print(string)
+        print(np.min(np.where(res[start_of_arr: end_of_arr])), np.max(np.where(res[start_of_arr: end_of_arr])))
 
     start_of_arr = end_of_arr
 

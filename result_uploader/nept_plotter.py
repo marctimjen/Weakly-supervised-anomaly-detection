@@ -47,6 +47,7 @@ ids = ids | {
     # "RTFM_38_val_thr": "RES-27",
     "random": "RES-35",
     "random_thr": "RES-38",
+    "Shanghai": "RES-40",
 }
 
 

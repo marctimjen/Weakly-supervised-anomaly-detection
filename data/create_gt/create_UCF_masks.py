@@ -2,7 +2,8 @@ import numpy as np
 
 
 """
-This script is used to create masks for the different classes that the model is predicting.
+This script is used to create masks for the different classes in the UCF-dataset. The masks are specifically for the gt 
+file. This makes it possible to get an AUC score for the different classes.
 """
 
 

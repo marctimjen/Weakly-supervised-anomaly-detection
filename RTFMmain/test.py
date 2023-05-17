@@ -76,7 +76,8 @@ if __name__ == '__main__':
     # device = torch.device("cpu")
     device = torch.device(f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu')
 
-    param["pretrained_path"] = f"/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm168-i3d.pkl"
+    # param["pretrained_path"] = f"/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm168-i3d.pkl"
+    param["pretrained_path"] = f"/home/marc/Documents/data/shanghai/shanghai_best_ckpt.pkl"
 
     model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
                 ncrop=param["ncrop"], drop=param["drop"], k_abn=param["k_abn"], k_nor=param["k_nor"])
