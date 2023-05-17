@@ -39,4 +39,19 @@ The structure of the code is as follows:
 
 - [params.py](MGFNmain%2Fparams.py): This file is used to set the hyper-parameteres of the model.
 - [train.py](MGFNmain%2Ftrain.py): This file contain the loss functions, train and validation functions for the training for the network.
-- 
+
+[process_master](process_master): This dir is used to run different processes - starting training/testing of networks.
+- [delete_failed_data.py](process_master%2Fdelete_failed_data.py): This file deletes the testing results on neptune if the data-upload has failed.
+- [process.txt](process_master%2Fprocess.txt): Contain some note on some runs that has succeeded.
+- [process_0.txt](process_master%2Fprocess_0.txt)/[process_1.txt](process_master%2Fprocess_1.txt)/[process_2.txt](process_master%2Fprocess_2.txt): Is used to define which runs to start on the cluster.
+- [process_marc.txt](process_master%2Fprocess_marc.txt): Is used for running code locally.
+- [process_master.py](process_master%2Fprocess_master.py): This scripts starts the code in chronological order. The process_master waits for the current process to finish before starting a new process.
+
+[result_uploader](result_uploader): This dir is used to upload results of the different networks to neptune. This only counts for the models used on the UCF-dataset.
+- [nept_plotter.py](result_uploader%2Fnept_plotter.py): This script plots a histogram for each class in the UCF-data for the models specified.
+- [rando.npy](result_uploader%2Frando.npy): This file contain the results of a random model.
+- [random_predictor.py](result_uploader%2Frandom_predictor.py): Is used to make the [rando.npy](result_uploader%2Frando.npy) file.
+- [res_no_file_upload_UCF.py](result_uploader%2Fres_no_file_upload_UCF.py): This file is used to upload data from cpkt_models that is not available to us.
+- [res_uploader_UCF.py](result_uploader%2Fres_uploader_UCF.py): This file use prediction file from the different networks tested and upload the result data to neptune.
+
+[test](test): This dir contain old files that has been used for testing/production of code.
