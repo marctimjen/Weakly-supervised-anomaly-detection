@@ -90,24 +90,3 @@
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_108 -c 0
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_109 -c 0
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_110 -c 0
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_111 -c 0
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_112 -c 0
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_113 -c 0
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/MGFN_cheat_xd.py -u cluster -p params_xd_reg_114 -c 0
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_108 -c 0 -n 116
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_109 -c 0 -n 117
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_110 -c 0 -n 118
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_111 -c 0 -n 119
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_112 -c 0 -n 120
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_113 -c 0 -n 121
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_114 -c 0 -n 122
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_95 -c 0 -n 103
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_96 -c 0 -n 104
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_97 -c 0 -n 105
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_98 -c 0 -n 106
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_103 -c 0 -n 111
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_104 -c 0 -n 112
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_105 -c 0 -n 113
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_106 -c 0 -n 114
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_107 -c 0 -n 115
-/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_94 -c 0 -n 102
