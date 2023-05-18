@@ -55,3 +55,10 @@ The structure of the code is as follows:
 - [res_uploader_UCF.py](result_uploader%2Fres_uploader_UCF.py): This file use prediction file from the different networks tested and upload the result data to neptune.
 
 [test](test): This dir contain old files that has been used for testing/production of code.
+
+
+How to upload data for the MGFN model to neptune?
+
+Firstly we run the [MGFN_UCF_upload.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_UCF_upload.py) file to get a neptuen run + the loss of the model at the current iteration. Remember to set the path to the correct model and set the parameters for this model correctly.
+Then we run the [MGFN_UCF_test.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_UCF_test.py) file to get the results of the model. These results are also uploaded to neptune (remember to set the -n for neptune run argument).
+Lastly we can upload the plots using the test-file create before and the script: [MGFN_test_plotter.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_test_plotter.py).
