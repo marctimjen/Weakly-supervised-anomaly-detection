@@ -1,2 +1,4 @@
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_49 -c 0 -n 57
 /home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_51 -c 0 -n 59
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/del_nept_files.py -n 37
+/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/cheat/cheat_test_xd.py -u cluster -p params_xd_reg_37 -c 0 -n 45
