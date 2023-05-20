@@ -46,14 +46,14 @@ val = sorted([*val])
 print("Amount of train files", len(train))
 print("Amount of validation files", len(val))
 
-name = "/home/cv05f23/data/XD/lists/lists/rgb_train.list"
+name = "/home/cv05f23/data/XD/lists/rgb_train.list"
 # name = "/home/marc/Documents/data/xd/lists/rgb_train.list"
 with open(name, 'w+') as f:  ## the name of feature list
     for file in train:
         newline = path+'/'+file+'\n'
         f.write(newline)
 
-name = "/home/cv05f23/data/XD/lists/lists/rgb_val.list"
+name = "/home/cv05f23/data/XD/lists/rgb_val.list"
 # name = "/home/marc/Documents/data/xd/lists/rgb_val.list"
 with open(name, 'w+') as f:  ## the name of feature list
     for file in val:
