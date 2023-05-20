@@ -70,8 +70,11 @@ if __name__ == '__main__':
         if args.user == "marc":
             params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
             params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
-            param["pretrained_path"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-                                        + "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
+            # param["pretrained_path"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+            #                             + "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
+            # param["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-38/mgfn95-i3d.pkl"  # params_cheat_1
+            param["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfn50-i3d.pkl"  # params_def
+
             return ""
 
 
@@ -110,8 +113,8 @@ if __name__ == '__main__':
         model = model.to("cpu")
 
         di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_path"], map_location="cpu").items()}
-        di["to_logits.weight"] = di.pop("to_logits.0.weight")
-        di["to_logits.bias"] = di.pop("to_logits.0.bias")
+        # di["to_logits.weight"] = di.pop("to_logits.0.weight")
+        # di["to_logits.bias"] = di.pop("to_logits.0.bias")
 
         model_dict = model.load_state_dict(di)
         model = model.to(device)

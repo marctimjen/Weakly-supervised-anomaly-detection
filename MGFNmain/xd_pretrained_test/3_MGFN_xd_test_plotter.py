@@ -13,9 +13,13 @@ This script is used for creating the plots for a specific xd model (mainly used 
 """
 
 gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy")
-pred = np.load(f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd_test.npy")
+# pred = np.load(f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd_test.npy")
+# pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d_test.npy")  # params_xd_reg_11
+# pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d_test.npy")  # params_xd_reg_22
+pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d_test.npy")  # params_xd_reg_105
 
 path = "/home/marc/Documents/data/xd/lists/rgbtest.list"
+
 with open(path, 'r') as f:  # use a context manager to safely opening and closing files
     val = [line.strip() for line in f.readlines()]  # use strip to get rid of the \n at the end of string
 val.sort()  # make sure to sort the values!
@@ -34,9 +38,8 @@ if nept:
     run = neptune.init_run(
         project="AAM/mgfnxd",
         api_token=token,
-        with_id="MGFNXD-25"
+        with_id="MGFNXD-127"
     )
-
 
 leng = 0
 

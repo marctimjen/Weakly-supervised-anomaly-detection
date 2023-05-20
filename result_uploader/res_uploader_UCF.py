@@ -11,11 +11,10 @@ dataset.
 """
 
 
-
 gt_file = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")
 # gt_file = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/list/gt-ucf.npy")
 
-model = "Shanghai"
+model = "random"
 
 if model[-3:] == "thr":
     use_thresholding = True
@@ -25,19 +24,25 @@ else:
 model_data = {
     "Pretrained_MGFN": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf_test.npy",
     "Pretrained_MGFN_thr": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf_test.npy",
-    "RTFM_UCF_22": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d_test.npy",
-    "RTFM_UCF_22_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d_test.npy",
-    "RTFM_UCF_22_0": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm0-i3d_test.npy",
-    "RTFM_UCF_22_0_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm0-i3d_test.npy",
     "MGFN_AN46": "/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-43/mgfnfinal_test.npy",
     "MGFN_AN46_thr": "/home/marc/Documents/data/UCF/results/MGFN/nept_id_AN-43/mgfnfinal_test.npy",
     "MGFN_63_val": "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfn50-i3d_test.npy",
     "MGFN_63_val_thr": "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfn50-i3d_test.npy",
-    "RTFM_38_val": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm168-i3d_test.npy",
-    "RTFM_38_val_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm168-i3d_test.npy",
+    "MGFN_63_final": "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfnfinal_test.npy",
+    "MGFN_63_final_thr": "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfnfinal_test.npy",
     "random": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/result_uploader/rando.npy",
     "random_thr": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/result_uploader/rando.npy",
-    "Shanghai": "/home/marc/Documents/data/shanghai/shanghai_best_ckpt_test.npy"
+    "Shanghai": "/home/marc/Documents/data/shanghai/shanghai_best_ckpt_test.npy",
+    "MGFN_best_cheat": "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-38/mgfn95-i3d_test.npy",
+
+    "RTFM_UCF_22": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d_test.npy",
+    "RTFM_UCF_22_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d_test.npy",
+    "RTFM_UCF_22_0": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm0-i3d_test.npy",
+    "RTFM_UCF_22_0_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm0-i3d_test.npy",
+    "RTFM_38_val": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm168-i3d_test.npy",
+    "RTFM_38_val_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm168-i3d_test.npy",
+    "RTFM_38_771_val": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d_test.npy",
+    "RTFM_38_771_val_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d_test.npy",
 }
 
 pred_file = np.load(model_data.get(model))
@@ -177,5 +182,37 @@ run["f1"] = f1_res
 run["accuarcy"] = accuarcy_res
 run["fdr"] = fdr_res
 run["use_thresholding"] = use_thresholding
+
+
+fpr, tpr, threshold = roc_curve(list(gt_file), pred_file)
+rec_auc = auc(fpr, tpr)
+precision, recall, th = precision_recall_curve(list(gt_file), pred_file)
+pr_auc = auc(recall, precision)
+
+f1 = f1_score(gt_file, np.rint(pred_file))
+f1_macro = f1_score(gt_file, np.rint(pred_file), average="macro")
+acc = accuracy_score(gt_file, np.rint(pred_file))
+prec = precision_score(gt_file, np.rint(pred_file))
+recall = recall_score(gt_file, np.rint(pred_file))
+ap = average_precision_score(gt_file, pred_file)
+
+print('pr_auc : ' + str(pr_auc))
+print('rec_auc : ' + str(rec_auc))
+print('f1_macro : ' + str(f1_macro))
+print('f1 : ' + str(f1))
+print('acc : ' + str(acc))
+print('prec : ' + str(prec))
+print('recall : ' + str(recall))
+print('ap : ' + str(ap))
+
+run["test/auc"].log(rec_auc)
+run["test/pr"].log(pr_auc)
+run["test/f1"].log(f1)
+run["test/f1_macro"].log(f1_macro)
+run["test/accuracy"].log(acc)
+run["test/precision"].log(prec)
+run["test/recall"].log(recall)
+run["test/average_precision"].log(ap)
+
 
 run.stop()

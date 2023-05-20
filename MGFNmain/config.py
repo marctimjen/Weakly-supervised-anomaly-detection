@@ -17,12 +17,12 @@ def path_inator(params, args):
     if dataset_name.lower() == "xd":
         if args.user == "marc":
             params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
-            params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
-            params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
-            params["gt"] = "/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy"
-
-            params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
-                                        + "MGFNmain/results/XD_pretrained/mgfn_xd.pkl"
+            # params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
+            # params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
+            # params["gt"] = "/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy"
+            #
+            # params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
+            #                             + "MGFNmain/results/XD_pretrained/mgfn_xd.pkl"
 
             return "/home/marc/Documents/sandbox"  # path where to wave files
 

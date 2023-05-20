@@ -18,14 +18,14 @@ def attention(q, k, v):
 
 def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k, device = "cuda:1"):
     #magnitude selection and score prediction
-    features = features  # (B*10crop,32,1024)
+    features = features  # [160, 32, 1024]: (B*10crop,32,1024)
     bc, t, f = features.size()
 
-    scores = scores.view(bs, ncrops, -1).mean(1)  # (B,32)
-    scores = scores.unsqueeze(dim=2)  # (B,32,1)
+    scores = scores.view(bs, ncrops, -1).mean(1)  # (B, 32)
+    scores = scores.unsqueeze(dim=2)  # (B, 32, 1)
 
     normal_features = features[0:batch_size * ncrops]  # [b/2*ten,32,1024]
-    normal_scores = scores[0:batch_size]  # [b/2, 32,1]
+    normal_scores = scores[0:batch_size]  # [b/2, 32, 1]
 
     abnormal_features = features[batch_size * ncrops:]
     abnormal_scores = scores[batch_size:]
@@ -47,14 +47,14 @@ def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k, device = "cuda:
 
 
     afea_magnitudes_drop = afea_magnitudes * select_idx
-    idx_abn = torch.topk(afea_magnitudes_drop, k, dim=1)[1]
+    idx_abn = torch.topk(afea_magnitudes_drop, k, dim=1)[1]  # Index of the top k largest feature magnitudes
     idx_abn_feat = idx_abn.unsqueeze(2).expand([-1, -1, abnormal_features.shape[2]])
 
     abnormal_features = abnormal_features.view(n_size, ncrops, t, f)
     abnormal_features = abnormal_features.permute(1, 0, 2, 3)
 
     total_select_abn_feature = torch.zeros(0).to(device)
-    for abnormal_feature in abnormal_features:
+    for abnormal_feature in abnormal_features:  # go through each crop
         feat_select_abn = torch.gather(abnormal_feature, 1, idx_abn_feat)
         total_select_abn_feature = torch.cat((total_select_abn_feature, feat_select_abn))  #
 
@@ -68,13 +68,13 @@ def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k, device = "cuda:
     select_idx_normal = drop_out(select_idx_normal)
     nfea_magnitudes_drop = nfea_magnitudes * select_idx_normal
     idx_normal = torch.topk(nfea_magnitudes_drop, k, dim=1)[1]
-    idx_normal_feat = idx_normal.unsqueeze(2).expand([-1, -1, normal_features.shape[2]])
+    idx_normal_feat = idx_normal.unsqueeze(2).expand([-1, -1, normal_features.shape[2]])  # [8, 3, 1024]
 
-    normal_features = normal_features.view(n_size, ncrops, t, f)
-    normal_features = normal_features.permute(1, 0, 2, 3)
+    normal_features = normal_features.view(n_size, ncrops, t, f)  # [80, 32, 1024] -> [8, 10, 32, 1024]
+    normal_features = normal_features.permute(1, 0, 2, 3)  # [8, 10, 32, 1024] -> [10, 8, 32, 1024]
 
     total_select_nor_feature = torch.zeros(0).to(device)
-    for nor_fea in normal_features:
+    for nor_fea in normal_features:  # [8, 32, 1024]
         feat_select_normal = torch.gather(nor_fea, 1, idx_normal_feat)
         total_select_nor_feature = torch.cat((total_select_nor_feature, feat_select_normal))
 
@@ -85,6 +85,15 @@ def MSNSD(features, scores, bs, batch_size, drop_out, ncrops, k, device = "cuda:
     nor_feamagnitude = total_select_nor_feature
 
     return score_abnormal, score_normal, abn_feamagnitude, nor_feamagnitude, scores
+
+    # score_abnormal & score_normal size: [b/2, 1]
+    # score_normal + score_abnormal -> BCELOSS
+
+    # abn_feamagnitude & nor_feamagnitude size: [80, 3, 1024]: [ncrop * b/2, k, f]
+    # abn_feamagnitude + nor_feamagnitude -> contrastive loss
+
+    # scores size: [16, 32, 1]: [b, t, 1]
+    # scores: predictions -> smooth + sparsity
 
 class Backbone(nn.Module):
     def __init__(
@@ -184,7 +193,7 @@ class mgfn(nn.Module):
 
         self.to_mag = nn.Conv1d(1, init_dim, kernel_size=3, stride=1, padding=1)
 
-    def forward(self, video):
+    def forward(self, video):  # video input: testing: [1, 10, 149, 2049],  training : [16, 10, 32, 2049]
         k = 3  # number of features from select top k
         bs, ncrops, t, c = video.size()  # batch_size, M=P=# crops, T = # clips, C = feature dimension
         x = video.view(bs * ncrops, t, c).permute(0, 2, 1)

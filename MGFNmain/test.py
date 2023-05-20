@@ -84,7 +84,7 @@ if __name__ == '__main__':
                     attention_dropout=0.0, device=device,
                     )
 
-    param["pretrained_path"] = "/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d.pkl"
+    param["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-38/mgfn95-i3d.pkl"
     print(param["pretrained_path"])
 
     test_loader = DataLoader(Dataset(rgb_list=param["test_rgb_list"], datasetname=param["datasetname"],

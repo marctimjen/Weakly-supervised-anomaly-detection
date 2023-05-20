@@ -65,7 +65,7 @@ if __name__ == '__main__':
     from MGFNmain.config import path_inator
 
 
-    parser = argparse.ArgumentParser(description='MGFN')
+    parser = argparse.ArgumentParser(description='RTFM')
     parser.add_argument("-u", '--user', default='cluster', choices=['cluster', 'marc'])  # this gives dir to data and save loc
     parser.add_argument("-p", "--params", required=True, help="Params to load")  # which parameters to load
     parser.add_argument("-c", "--cuda", required=True, help="gpu number")
@@ -76,8 +76,8 @@ if __name__ == '__main__':
     # device = torch.device("cpu")
     device = torch.device(f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu')
 
-    # param["pretrained_path"] = f"/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm168-i3d.pkl"
-    param["pretrained_path"] = f"/home/marc/Documents/data/shanghai/shanghai_best_ckpt.pkl"
+    param["pretrained_path"] = f"/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d.pkl"
+    # param["pretrained_path"] = f"/home/marc/Documents/data/shanghai/shanghai_best_ckpt.pkl"
 
     model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
                 ncrop=param["ncrop"], drop=param["drop"], k_abn=param["k_abn"], k_nor=param["k_nor"])

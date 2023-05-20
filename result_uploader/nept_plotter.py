@@ -25,8 +25,8 @@ ids = {
 # metric = "auc"
 # metric = "pr"
 # metric = "ap"
-metric = "recall"
-# metric = "precision"
+# metric = "recall"
+metric = "precision"
 # metric = "f1_macro"
 # metric = "f1"
 # metric = "accuarcy"
@@ -35,19 +35,23 @@ metric = "recall"
 ids = ids | {
     # "MGFN_AN46": "RES-13",
     # "MGFN_AN46_thr": "RES-21",
-    "Pretrained_MGFN": "RES-36",
+    # "Pretrained_MGFN": "RES-36",
     # "Pretrained_MGFN_thr": "RES-16",
     # "RTFM_UCF_22": "RES-17",
     # "RTFM_UCF_22_thr": "RES-18",
     # "RTFM_UCF_22_0": "RES-19",
     # "RTFM_UCF_22_0_thr": "RES-20",
-    "MGFN_63_val": "RES-37",
+    # "MGFN_63_val": "RES-37",
     # "MGFN_63_val_thr": "RES-25",
-    # "RTFM_38_val": "RES-26",
+    "RTFM_38_val": "RES-26",
     # "RTFM_38_val_thr": "RES-27",
     "random": "RES-35",
-    "random_thr": "RES-38",
-    "Shanghai": "RES-40",
+    # "random_thr": "RES-38",
+    # "Shanghai": "RES-40",
+    # "MGFN_63_final": "RES-41",
+    # "MGFN_63_final_thr": "RES-42",
+    # "MGFN_best_cheat": "RES-46",
+    "RTFM_38_771_val": "RES-47",
 }
 
 

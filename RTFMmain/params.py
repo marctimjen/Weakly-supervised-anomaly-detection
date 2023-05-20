@@ -1,3 +1,5 @@
+import copy
+
 original = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
             "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
@@ -65,7 +67,7 @@ dataset_params_xd = {"seg_length": 32,
                   "num_segments":32,
                   }
 
-original_xd = {"margin": 100, "w_decay": 0.0005, "lr": 0.001, "batch_size": 32, "lambda_2": 8e-3,
+original_xd = {"margin": 100, "w_decay": 0.0005, "lr": 0.0001, "batch_size": 32, "lambda_2": 8e-3,
             "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 paths_xd = {
@@ -74,8 +76,20 @@ paths_xd = {
     "gt": "/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
 }
 
+paths_xd_val = {
+    "rgb_list": "/home/marc/Documents/data/xd/lists/rgb_train.list",
+    "val_rgb_list": "/home/marc/Documents/data/xd/lists/rgb_val.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
+    "gt": "/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
+}
+
+dataset_params_xd_val = copy.deepcopy(dataset_params_xd)
+dataset_params_xd_val |= {"xd_train_len": 3164, "xd_val_len": 790}
+
+
 HYPERPARAMS |= {
     'params_xd': params_def_xd | main_xd | dataset_params_xd | original_xd | paths_xd,
+    'params_xd_val': params_def_xd | main_xd | dataset_params_xd_val | original_xd | paths_xd_val,
 }
 
 main_xd_reg = {"max_epoch": 100,

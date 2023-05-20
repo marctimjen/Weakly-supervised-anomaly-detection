@@ -41,9 +41,12 @@ def save_config(save_path, nept_id, params):
 def path_inator(params, args):
     if args.user == "marc":
         params["save_dir"] = "/home/marc/Documents/sandbox/mgfn"  # where to save results + model
-        params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train_cheat.list"
+        # params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train_cheat.list"
+        params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
         params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-        param["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
+        # param["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
+        # param["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-38/mgfn95-i3d.pkl"  # params_cheat_1
+        param["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfn50-i3d.pkl"  # params_def
         # params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
         return params["save_dir"]  # path where to save files
 
@@ -111,8 +114,8 @@ if __name__ == '__main__':
 
     if param["pretrained_ckpt"]:
         di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_ckpt"], map_location="cpu").items()}
-        di["to_logits.weight"] = di.pop("to_logits.0.weight")
-        di["to_logits.bias"] = di.pop("to_logits.0.bias")
+        # di["to_logits.weight"] = di.pop("to_logits.0.weight")
+        # di["to_logits.bias"] = di.pop("to_logits.0.bias")
         model_dict = model.load_state_dict(di)
         print("pretrained loaded")
 
@@ -127,17 +130,17 @@ if __name__ == '__main__':
     for step in tqdm(range(0, param["max_epoch"]), total=param["max_epoch"], dynamic_ncols=True):
 
         loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum\
-            = train(train_nloader, train_aloader, model, param, optimizer, device, iterator)
+            = val(nloader=train_nloader, aloader=train_aloader, model=model, params=param, device=device)
 
-        run["train/loss"].log(loss_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_sce"].log(sce_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_mc"].log(mc_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_smooth"].log(smooth_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_sparse"].log(sparse_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss"].log(loss_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_sce"].log(sce_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_mc"].log(mc_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_smooth"].log(smooth_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_sparse"].log(sparse_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
-        run["train/loss_con_sum"].log(con_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_con_n_sum"].log(con_n_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        run["train/loss_con_a_sum"].log(con_a_sum/(param["UCF_train_cheat_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_con_sum"].log(con_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_con_n_sum"].log(con_n_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
+        run["train/loss_con_a_sum"].log(con_a_sum/(param["UCF_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
 
         # if step % 1 == 0 and step > 0:
         loss, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum = \

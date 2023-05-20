@@ -43,7 +43,10 @@ def path_inator(params, args):
         params["save_dir"] = "/home/marc/Documents/sandbox/mgfn"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
-        param["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd.pkl"
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd.pkl"
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d.pkl"  # params_xd_reg_11
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d.pkl"  # params_xd_reg_22
+        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d.pkl"  # params_xd_reg_105
         return params["save_dir"]  # path where to save files
 
 if __name__ == '__main__':
@@ -110,8 +113,8 @@ if __name__ == '__main__':
 
     if param["pretrained_ckpt"]:
         di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_ckpt"], map_location="cpu").items()}
-        di["to_logits.weight"] = di.pop("to_logits.0.weight")
-        di["to_logits.bias"] = di.pop("to_logits.0.bias")
+        # di["to_logits.weight"] = di.pop("to_logits.0.weight")
+        # di["to_logits.bias"] = di.pop("to_logits.0.bias")
         model_dict = model.load_state_dict(di)
         print("pretrained loaded")
 
