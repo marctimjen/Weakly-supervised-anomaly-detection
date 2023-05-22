@@ -60,16 +60,16 @@ def create_gt_xd(test_path: str, gt_file_path: str, save_path: str) -> None:
 
 
 if __name__ == "__main__":
-    # create_gt_xd(
-    #     test_path=rf"/home/cv05f23/data/XD/RGBTest",
-    #     gt_file_path =rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/download_features/xd.list",
-    #     save_path=rf"/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
-    # )
-
     create_gt_xd(
-        test_path=rf"/home/marc/Documents/data/xd/RGBTest",
-        gt_file_path=rf"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/download_features/xd.list",
-        save_path=rf"/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy"
+        test_path=rf"/home/cv05f23/data/XD/RGBTest",
+        gt_file_path =rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/download_features/xd.list",
+        save_path=rf"/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
     )
+
+    # create_gt_xd(
+    #     test_path=rf"/home/marc/Documents/data/xd/RGBTest",
+    #     gt_file_path=rf"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/download_features/xd.list",
+    #     save_path=rf"/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy"
+    # )
 
 
