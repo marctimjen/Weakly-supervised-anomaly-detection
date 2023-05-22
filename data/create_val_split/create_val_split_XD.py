@@ -17,8 +17,10 @@ anomal_files = set(f for f in files if not("label_A" in f))
 if normal_files.intersection(anomal_files) or anomal_files.intersection(normal_files):
     raise ValueError("One or more files cannot exist in normal_files and anomal_files")
 
-normal = np.random.permutation(np.array([*normal_files]))  # permute the data to make it random!
-anomal = np.random.permutation(np.array([*anomal_files]))  # permute the data to make it random!
+normal = sorted(np.array([*normal_files]))
+anomal = sorted(np.array([*anomal_files]))
+normal = np.random.permutation(normal)  # permute the data to make it random!
+anomal = np.random.permutation(anomal)  # permute the data to make it random!
 
 print("Amount of normal files:", len(normal))
 print("Amount of anomaly files:", len(anomal))
