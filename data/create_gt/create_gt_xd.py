@@ -33,6 +33,7 @@ def create_gt_xd(test_path: str, gt_file_path: str, save_path: str) -> None:
         info[values[0]] = [i for i in map(int, values[1:])]
 
     array_dict = dict()
+
     for i in test_files:
         load_path = test_path + "/" + i
         length = np.load(load_path).shape[0] * 16
@@ -41,34 +42,34 @@ def create_gt_xd(test_path: str, gt_file_path: str, save_path: str) -> None:
         string = i[:-4]
         contain_anomaly = info.get(string, False)
 
-        if contain_anomaly:
+        if "label_A" not in i:
             it = iter(ano_frames(contain_anomaly))
             for start, end in it:
                 arr[start: end + 1] = 1
 
         array_dict[string] = arr
 
-        file_names = [i for i in array_dict.keys()]
-        file_names.sort()
+    gt = np.array([])
+    file_names = [i for i in array_dict.keys()]
+    file_names.sort()
 
-        gt = np.array([])
-        for i in file_names:
-            gt = np.append(gt, array_dict[i])
+    for i in file_names:
+        gt = np.append(gt, array_dict[i])
 
-        np.save(save_path, gt)
+    np.save(save_path, gt)
 
 
 if __name__ == "__main__":
     # create_gt_xd(
     #     test_path=rf"/home/cv05f23/data/XD/RGBTest",
     #     gt_file_path =rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/download_features/xd.list",
-    #     save_path=rf"/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
+    #     save_path=rf"/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
     # )
 
     create_gt_xd(
         test_path=rf"/home/marc/Documents/data/xd/RGBTest",
         gt_file_path=rf"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/download_features/xd.list",
-        save_path=rf"/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy"
+        save_path=rf"/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy"
     )
 
 

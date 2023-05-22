@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 network = "mgfn7"
 
-gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy")
+gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy")
 #pred = np.load(f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd_test.npy")
 
 pred = np.load(f"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d_test.npy")

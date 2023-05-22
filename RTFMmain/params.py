@@ -73,14 +73,14 @@ original_xd = {"margin": 100, "w_decay": 0.0005, "lr": 0.0001, "batch_size": 32,
 paths_xd = {
     "rgb_list": "/home/cv05f23/data/XD/lists/rgb.list",
     "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
-    "gt": "/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
+    "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
 }
 
 paths_xd_val = {
     "rgb_list": "/home/marc/Documents/data/xd/lists/rgb_train.list",
     "val_rgb_list": "/home/marc/Documents/data/xd/lists/rgb_val.list",
     "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
-    "gt": "/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
+    "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
 }
 
 dataset_params_xd_val = copy.deepcopy(dataset_params_xd)

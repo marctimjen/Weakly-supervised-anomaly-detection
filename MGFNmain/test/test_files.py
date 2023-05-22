@@ -6,7 +6,7 @@ from sklearn.metrics import auc, roc_curve, precision_recall_curve, f1_score, ac
 This script is for comparing two files: The Ground Truth file (GT) and a prediction file from a model:
 """
 
-gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy")
+gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy")
 pred = np.load(f"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d_test.npy")
 # pred = np.load(f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd_test.npy")
 

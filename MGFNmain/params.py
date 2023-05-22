@@ -248,16 +248,26 @@ params_def_xd = {
 paths_xd = {
     "rgb_list": "/home/cv05f23/data/XD/lists/rgb.list",
     "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
-    "gt": "/home/cv05f23/data/XD/test_gt/gt-ucf_our.npy"
+    "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
+}
+
+paths_xd_val = {
+    "rgb_list": "/home/marc/Documents/data/xd/lists/rgb_train.list",
+    "val_rgb_list": "/home/marc/Documents/data/xd/lists/rgb_val.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
+    "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
 }
 
 original_xd_def = copy.deepcopy(original_xd)
 original_xd_def |= {"batch_size": 8}
 
+original_xd_def_val = copy.deepcopy(original_xd_def)
+original_xd_def_val |= {"xd_train_len": 3164, "xd_val_len": 790}
+
 HYPERPARAMS |= {"params_xd": params_def_xd | main_xd | mgfn_params_xd | dataset_params_xd | original_xd | paths_xd,
                 "params_xd_def_cheat": params_def_xd | main_xd | mgfn_params_xd | dataset_params_xd | original_xd_def | paths_xd,
+                "params_xd_val": params_def_xd | main_xd | mgfn_params_xd | dataset_params_xd | original_xd_def_val | paths_xd_val,
                 }
-
 
 main_xd_reg = copy.deepcopy(main_xd)
 main_xd_reg |= {"max_epoch": 100}
@@ -378,6 +388,9 @@ for i in res:
         f"params_xd_reg_{j}": params_def_xd | main_xd_reg | mgfn_params_xd_iter | dataset_params_xd | original_xd_iter | paths_xd,}
 
     j += 1
+
+
+
 
 
 

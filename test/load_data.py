@@ -5,8 +5,10 @@ import imageio
 import skvideo.io
 
 
-dir = r'/home/marc/Downloads/UCF_Train_ten_i3d'
-dir_vid = r"/home/marc/Documents/data/crime/Anomaly-Videos-Part-1/Abuse/Abuse018_x264.mp4"
+# dir = r'/home/marc/Downloads/UCF_Train_ten_i3d'
+# dir_vid = r"/home/marc/Documents/data/crime/Anomaly-Videos-Part-1/Abuse/Abuse018_x264.mp4"
+dir_vid = r'/home/marc/Downloads/videos/Brick.Mansions.2014__#00-16-26_00-17-12_label_B1-0-0.mp4'
+
 vid = imageio.get_reader(dir_vid,  'ffmpeg')
 frame_vid = vid.get_data(0)
 

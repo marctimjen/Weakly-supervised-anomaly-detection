@@ -43,7 +43,9 @@ def path_inator(params, args):
         params["save_dir"] = "/home/marc/Documents/sandbox/rtfm"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
-        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d.pkl"  # params_xd_2
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d.pkl"  # params_xd_2
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-38/rftm280-i3d.pkl"  # params_xd_val
+        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-41/rftm218-i3d.pkl"  # params_xd_val
 
         return params["save_dir"]  # path where to save files
 

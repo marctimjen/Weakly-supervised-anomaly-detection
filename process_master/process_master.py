@@ -58,3 +58,5 @@ while True:
     time.sleep(1)
     i += 1
 
+
+# ["cd", "/home/marc/Documents/data/xd/results/MGFN/Plots_thier2", "rm *"]

@@ -12,8 +12,10 @@ mpl.use('Qt5Agg')  # or can use 'TkAgg', whatever you have/prefer
 This script is used for creating the plots for a specific xd model (mainly used for the pretrained model).
 """
 
-gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-ucf_our.npy")
-pred = np.load(f"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d_test.npy")
+gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy")
+# pred = np.load(f"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d_test.npy")
+
+pred = np.load(fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-41/rftm218-i3d_test.npy")
 
 path = "/home/marc/Documents/data/xd/lists/rgbtest.list"
 with open(path, 'r') as f:  # use a context manager to safely opening and closing files
@@ -34,7 +36,7 @@ if nept:
     run = neptune.init_run(
         project="AAM/rtfm",
         api_token=token,
-        with_id="RTFM-34"
+        with_id="RTFM-43"
     )
 
 

@@ -76,26 +76,26 @@ class _NonLocalBlockND(nn.Module):
 
         batch_size = x.size(0)
 
-        g_x = self.g(x).view(batch_size, self.inter_channels, -1)
+        g_x = self.g(x).view(batch_size, self.inter_channels, -1)  # right most conv after pink
         g_x = g_x.permute(0, 2, 1)
 
-        theta_x = self.theta(x).view(batch_size, self.inter_channels, -1)
+        theta_x = self.theta(x).view(batch_size, self.inter_channels, -1)  # left or middel conv after pink
         theta_x = theta_x.permute(0, 2, 1)
-        phi_x = self.phi(x).view(batch_size, self.inter_channels, -1)
+        phi_x = self.phi(x).view(batch_size, self.inter_channels, -1)  # left or middel conv after pink
 
-        f = torch.matmul(theta_x, phi_x)
+        f = torch.matmul(theta_x, phi_x)  # transpose multiplication
         N = f.size(-1)
         f_div_C = f / N
 
-        y = torch.matmul(f_div_C, g_x)
+        y = torch.matmul(f_div_C, g_x)  # brown T -> T box multiplication with right most conv (g)
         y = y.permute(0, 2, 1).contiguous()
         y = y.view(batch_size, self.inter_channels, *x.size()[2:])
-        W_y = self.W(y)
-        z = W_y + x
+        W_y = self.W(y)  # Last conv before purple in the right block
+        z = W_y + x  # input pink added to the convolutions
 
         if return_nl_map:
             return z, f_div_C
-        return z
+        return z  # return purple
 
 
 class NONLocalBlock1D(_NonLocalBlockND):
@@ -139,7 +139,7 @@ class Aggregate(nn.Module):
         )
         self.conv_5 = nn.Sequential(
             nn.Conv1d(in_channels=2048, out_channels=len_feature, kernel_size=3,
-                      stride=1, padding=1, bias=False), # should we keep the bias?
+                      stride=1, padding=1, bias=False),  # should we keep the bias?
             nn.ReLU(),
             nn.BatchNorm1d(len_feature),
             # nn.dropout(0.7)
@@ -153,22 +153,23 @@ class Aggregate(nn.Module):
             out = x.permute(0, 2, 1)
             residual = out
 
-            out1 = self.conv_1(out)
-            out2 = self.conv_2(out)
-
-            out3 = self.conv_3(out)
-            out_d = torch.cat((out1, out2, out3), dim = 1)
+            out1 = self.conv_1(out)  # constitute the green dashed box.
+            out2 = self.conv_2(out)  # constitute the green dashed box.
+            out3 = self.conv_3(out)  # constitute the green dashed box.
+            out_d = torch.cat((out1, out2, out3), dim=1)  # left block (d = dilution block) <-  PDC network
             #torch.Size([64, 10, 32, 2048])  ->   torch.Size([64, 5, 32, 1024])
             #torch.Size([640, 1536, 32])  -> torch.Size([320, 1536, 32])
-            out = self.conv_4(out)
-            out = self.non_local(out)
-            out = torch.cat((out_d, out), dim=1)
-            out = self.conv_5(out)   # fuse all the features together
-            out = out + residual
+
+            out = self.conv_4(out)  # belive the first conv1d on right block  - the first conv in MTN network
+            out = self.non_local(out)  # rest of stuff in the dashed blue -> The rest of the MTN network.
+            out = torch.cat((out_d, out), dim=1)  # Orange concat?
+
+            out = self.conv_5(out)   # fuse all the features together  -> Do conv after orange box
+            out = out + residual  # Add blue to green (solid box)
             out = out.permute(0, 2, 1)
             # out: (B, T, 1)
 
-            return out
+            return out  # return green
 
 class Model(nn.Module):
     def __init__(self, n_features, batch_size, num_segments, ncrop, drop, k_abn=False, k_nor=False):
@@ -208,8 +209,7 @@ class Model(nn.Module):
 
         out = out.view(-1, t, f)
 
-        out = self.Aggregate(out)
-
+        out = self.Aggregate(out)  # The two blocks + concat (dashed)
         out = self.drop_out(out)
 
         features = out
