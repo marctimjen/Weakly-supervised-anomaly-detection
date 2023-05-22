@@ -63,7 +63,7 @@ if __name__ == "__main__":
     create_gt_xd(
         test_path=rf"/home/cv05f23/data/XD/RGBTest",
         gt_file_path =rf"/home/cv05f23/git/Weakly-supervised-anomaly-detection/download_features/xd.list",
-        save_path=rf"/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
+        save_path=rf"/home/cv05f23/data/XD/test_gt/gt-xd_our.npy"
     )
 
     # create_gt_xd(
