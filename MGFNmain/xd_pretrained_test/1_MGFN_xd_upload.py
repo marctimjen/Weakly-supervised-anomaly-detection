@@ -45,8 +45,8 @@ def path_inator(params, args):
         params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd.pkl"  # params_xd_def_cheat
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d.pkl"  # params_xd_reg_11
-        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d.pkl"  # params_xd_reg_22
-        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d.pkl"  # params_xd_reg_105
+        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d.pkl"  # params_xd_reg_22
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d.pkl"  # params_xd_reg_105
         return params["save_dir"]  # path where to save files
 
 if __name__ == '__main__':
@@ -129,8 +129,8 @@ if __name__ == '__main__':
     for step in tqdm(range(0, param["max_epoch"]), total=param["max_epoch"], dynamic_ncols=True):
 
         loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum\
-            = train(train_nloader, train_aloader, model, param, optimizer, device, iterator)
-
+            = val(nloader=train_nloader, aloader=train_aloader, model=model, params=param, device=device)
+        
         run["train/loss"].log(loss_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_sce"].log(sce_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["train/loss_mc"].log(mc_sum/(param["xd_train_len"]//(param["batch_size"]*2)*param["batch_size"]))
@@ -163,7 +163,7 @@ if __name__ == '__main__':
         run["test/loss_con_a_sum"].log(
             con_a_sum / (param["xd_test_len"] // (param["batch_size"] * 2) * param["batch_size"]))
 
-        break
+        # break
 
     run.stop()
 

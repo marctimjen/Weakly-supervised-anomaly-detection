@@ -14,9 +14,9 @@ This script is used for creating the plots for a specific xd model (mainly used 
 
 gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy")
 # pred = np.load(f"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd_test.npy")
-# pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d_test.npy")  # params_xd_reg_11
+pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d_test.npy")  # params_xd_reg_11
 # pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d_test.npy")  # params_xd_reg_22
-pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d_test.npy")  # params_xd_reg_105
+# pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d_test.npy")  # params_xd_reg_105
 
 path = "/home/marc/Documents/data/xd/lists/rgbtest.list"
 
