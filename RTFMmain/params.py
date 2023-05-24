@@ -77,8 +77,10 @@ paths_xd = {
 }
 
 paths_xd_val = {
-    "rgb_list": "/home/marc/Documents/data/xd/lists/rgb_train.list",
-    "val_rgb_list": "/home/marc/Documents/data/xd/lists/rgb_val.list",
+    # "rgb_list": "/home/marc/Documents/data/xd/lists/rgb_train.list",
+    # "val_rgb_list": "/home/marc/Documents/data/xd/lists/rgb_val.list",
+    "rgb_list": "/home/cv05f23/data/XD/lists/rgb_train.list",
+    "val_rgb_list": "/home/cv05f23/data/XD/lists/rgb_val.list",
     "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
     "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
 }
