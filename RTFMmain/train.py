@@ -35,7 +35,6 @@ class RTFM_loss(torch.nn.Module):
         self.alpha = alpha
         self.margin = margin
         self.sigmoid = torch.nn.Sigmoid()
-        self.mae_criterion = SigmoidMAELoss()
         self.criterion = torch.nn.BCELoss()
         self.device = device
 

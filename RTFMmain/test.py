@@ -22,7 +22,8 @@ def test(dataloader, model, params, device):
         model.eval()
         pred = torch.zeros(0).cpu()
         # featurelen = []
-        for i, inputs in tqdm(enumerate(dataloader)):
+        for i, (inputs, test_feat_name) in tqdm(enumerate(dataloader)):
+            print(test_feat_name)
             inputs = inputs.to(device)
             inputs = inputs.permute(0, 2, 1, 3)
 
@@ -51,8 +52,8 @@ def test(dataloader, model, params, device):
 
         # print('pr_auc : ' + str(pr_auc))
         # print('rec_auc : ' + str(rec_auc))
-        path = params["pretrained_path"][:-4] + "_test.npy"
-        np.save(path, pred)  # save the prediction file
+        # path = params["pretrained_path"][:-4] + "_test.npy"
+        # np.save(path, pred)  # save the prediction file
         return rec_auc, pr_auc, f1, f1_macro, acc, prec, recall, ap
 
 if __name__ == '__main__':
@@ -76,7 +77,8 @@ if __name__ == '__main__':
     # device = torch.device("cpu")
     device = torch.device(f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu')
 
-    param["pretrained_path"] = f"/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d.pkl"
+    # param["pretrained_path"] = f"/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d.pkl"
+    param["pretrained_path"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d.pkl"  # params_ucf_1
     # param["pretrained_path"] = f"/home/marc/Documents/data/shanghai/shanghai_best_ckpt.pkl"
 
     model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],

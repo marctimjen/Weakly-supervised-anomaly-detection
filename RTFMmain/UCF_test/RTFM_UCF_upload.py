@@ -19,7 +19,7 @@ import neptune
 
 # import option
 # args = option.parse_args()
-# from config import *
+
 # os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 """
@@ -46,8 +46,8 @@ def path_inator(params, args):
 
         params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-        # params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d.pkl"  # params_ucf_1
-        params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d.pkl"  # params_def
+        params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d.pkl"  # params_ucf_1
+        # params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d.pkl"  # params_def
         return params["save_dir"]  # path where to save files
 
 if __name__ == '__main__':
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/rtfmucf",
+        project="AAM/anomaly",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()

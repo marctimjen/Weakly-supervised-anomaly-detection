@@ -13,7 +13,7 @@ import neptune
 # import matplotlib.pyplot as plt
 # import option
 # args = option.parse_args()
-# from config import *
+
 
 """
 This script is for creating a prediction (numpy file and upload the different metric results to neptune).

@@ -1,9 +1,25 @@
 # Weakly supervised anomaly detection
- This is the github repo for the project "Weakly supervised anomaly detection" by: Drozdova Anastasia, Jensen Marc & Jørgensen Andreas.
+
+> This is the github repo for the project "Weakly supervised anomaly detection" by: Drozdova Anastasia, Jensen Marc & Jørgensen Andreas.
 
 Note that this repo contain some __init__.py files to make some directories into py packages. These files will be ignored since they do not contain any informaiton.
 
 Note that there in some of the scripts will be a doc-string telling more about what the goal of the specific scripts is.
+
+
+How to get started: 
+1. Download or generate video features. In this repo features has been downloaded from the sites:
+[xd-violence](https://roc-ng.github.io/XD-Violence/) and [UCF-crime ten-crop I3D](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/cyxcarol_connect_hku_hk/EpNI-JSruH1Ep1su07pVLgIBnjDcBGd7Mexb1ERUVShdNg?e=VMRjhE).
+Note that the xd-violence features comes crop-wise (of five crops). This means that one video exists as five .npy feature-files when downloaded. 
+The networks implemented in this repo use a concatenated version of the feature files. To concatenate the files this script has been used: [crop_to_file.py](data%2Fxd_crop_to_file%2Fcrop_to_file.py).
+
+2. The next step is to obtain the lists with paths to the individual files.
+
+3. Generate or download the GT-file (ground truth) for the test set.
+
+4. Train the models.
+
+5. Test the models and upload data to Neptune.
 
 The structure of the code is as follows:
 
@@ -39,6 +55,28 @@ The structure of the code is as follows:
 
 - [params.py](MGFNmain%2Fparams.py): This file is used to set the hyper-parameteres of the model.
 - [train.py](MGFNmain%2Ftrain.py): This file contain the loss functions, train and validation functions for the training for the network.
+
+
+[RTFMmain](RTFMmain): This dir is used to implement the RTFM model.
+- [cheat](RTFMmain%2Fcheat): This dir contain files for calculating the test-results of the train-epochs of the model.
+  - [cheat_test_ucf.py](RTFMmain%2Fcheat%2Fcheat_test_ucf.py): This file is used for calculate the test/val loss of the RTFM model on the ucf dataset.
+  - [cheat_test_xd.py](RTFMmain%2Fcheat%2Fcheat_test_xd.py): This script calculate the test/val loss for the RTFM model on the XD data.
+- [UCF_test](RTFMmain%2FUCF_test): This dir is used to upload different results to the Neptune for the UCF data.
+
+- [xd_test](RTFMmain%2Fxd_test): This dir is used to upload results from the RTFM model to Neptune.
+  - [1_RTFM_xd_upload.py](RTFMmain%2Fxd_test%2F1_RTFM_xd_upload.py): This file is used to upload the train and test-loss of the model.
+  - [2_RTFM_xd_test.py](RTFMmain%2Fxd_test%2F2_RTFM_xd_test.py): This script is used to upload the different results of the metrics.
+  - [3_RTFM_xd_test_plotter.py](RTFMmain%2Fxd_test%2F3_RTFM_xd_test_plotter.py): This file makes plots of the predictions and a AUC + PR curve that is uploaded to Neptune.
+
+- [dataset.py](RTFMmain%2Fdataset.py): This script contain the implementation of the pytorch dataset for both XD and UCF.
+- [model.py](RTFMmain%2Fmodel.py): This file implements the RTFM model.
+- [Model_params.txt](RTFMmain%2FModel_params.txt): This file contain a summary of the RTFM model - how many parameters it contains.
+- [params.py](RTFMmain%2Fparams.py): This script contain the hyperparameter grid search and different validation parameters.
+- [RFTM_cheat_ucf.py](RTFMmain%2FRFTM_cheat_ucf.py): Train script for the RTFM model 
+
+
+- [train.py](RTFMmain%2Ftrain.py): This file contain the train/validation and loss functions for the training in the different scripts.
+
 
 [process_master](process_master): This dir is used to run different processes - starting training/testing of networks.
 - [delete_failed_data.py](process_master%2Fdelete_failed_data.py): This file deletes the testing results on neptune if the data-upload has failed.

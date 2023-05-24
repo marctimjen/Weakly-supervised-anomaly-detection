@@ -24,7 +24,7 @@ params_def = {
     "feat_extractor": "i3d",
     "feature_size": 2048,
     "gpus": 0,
-    "workers": 4,
+    "workers": 0,
     "num_classes": 1,
     "plot_freq": 10,
 }
@@ -46,7 +46,7 @@ params_def_xd = {
     "feat_extractor": "i3d",
     "feature_size": 1024,
     "gpus": 0,
-    "workers": 4,
+    "workers": 0,
     "num_classes": 1,
     "plot_freq": 10,
 }
@@ -189,3 +189,6 @@ HYPERPARAMS |= {
     'params_ucf_14': params_def | main_xd_reg | dataset_params | original_xd14 | paths,
     'params_ucf_15': params_def | main_xd_reg | dataset_params | original_xd15 | paths,
 }
+
+
+# (16, 5, 32, 1024)

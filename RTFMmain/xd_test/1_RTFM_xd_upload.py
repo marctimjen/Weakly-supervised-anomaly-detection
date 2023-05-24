@@ -19,7 +19,7 @@ import neptune
 
 # import option
 # args = option.parse_args()
-# from config import *
+
 # os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 """
@@ -43,9 +43,8 @@ def path_inator(params, args):
         params["save_dir"] = "/home/marc/Documents/sandbox/rtfm"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
-        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d.pkl"  # params_xd_2
-        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-38/rftm280-i3d.pkl"  # params_xd_val
-        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-41/rftm218-i3d.pkl"  # params_xd_val
+        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d.pkl"  # params_xd_2
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-41/rftm218-i3d.pkl"  # params_xd_val
 
         return params["save_dir"]  # path where to save files
 
@@ -58,7 +57,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/rtfm",
+        project="AAM/anomaly",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()
@@ -97,7 +96,7 @@ if __name__ == '__main__':
 
 
     model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
-                    ncrop=param["ncrop"], drop=param["drop"])
+                    ncrop=param["ncrop"], drop=param["drop"], k_abn=param["k_abn"], k_nor=param["k_nor"])
 
     # params["pretrained_ckpt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
     #                             "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
@@ -117,6 +116,7 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model.parameters(), lr=param["lr"], weight_decay=param["w_decay"])
 
     iterator = 0
+    param["max_epoch"] = 100
     for step in tqdm(range(0, param["max_epoch"]), total=param["max_epoch"], dynamic_ncols=True):
 
         total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
@@ -136,7 +136,7 @@ if __name__ == '__main__':
         run["test/loss_sparse"].log(loss_sparse_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["test/loss_smooth"].log(loss_smooth_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["test/loss_rtfm"].log(loss_rtfm_sum/(param["xd_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        break
+        # break
 
     run.stop()
 

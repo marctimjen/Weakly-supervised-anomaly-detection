@@ -43,9 +43,9 @@ def path_inator(params, args):
         params["save_dir"] = "/home/marc/Documents/sandbox/mgfn"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
-        # params["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd.pkl"  # params_xd_def_cheat
+        params["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd.pkl"  # params_xd_def_cheat
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d.pkl"  # params_xd_reg_11
-        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d.pkl"  # params_xd_reg_22
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d.pkl"  # params_xd_reg_22
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d.pkl"  # params_xd_reg_105
         return params["save_dir"]  # path where to save files
 
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/mgfnxd",
+        project="AAM/anomaly",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()
@@ -113,8 +113,8 @@ if __name__ == '__main__':
 
     if param["pretrained_ckpt"]:
         di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_ckpt"], map_location="cpu").items()}
-        # di["to_logits.weight"] = di.pop("to_logits.0.weight")
-        # di["to_logits.bias"] = di.pop("to_logits.0.bias")
+        di["to_logits.weight"] = di.pop("to_logits.0.weight")
+        di["to_logits.bias"] = di.pop("to_logits.0.bias")
         model_dict = model.load_state_dict(di)
         print("pretrained loaded")
 
@@ -126,6 +126,7 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model.parameters(), lr=param["lr"], weight_decay=param["w_decay"])
 
     iterator = 0
+    param["max_epoch"] = 100
     for step in tqdm(range(0, param["max_epoch"]), total=param["max_epoch"], dynamic_ncols=True):
 
         loss_sum, sce_sum, mc_sum, smooth_sum, sparse_sum, con_sum, con_n_sum, con_a_sum\

@@ -41,7 +41,7 @@ class _NonLocalBlockND(nn.Module):
             bn = nn.BatchNorm1d
 
         self.g = conv_nd(in_channels=self.in_channels, out_channels=self.inter_channels,
-                         kernel_size=1, stride=1, padding=0)
+                         kernel_size=1, stride=1, padding=0)  # 512 -> 256
 
         if bn_layer:
             self.W = nn.Sequential(
@@ -85,7 +85,7 @@ class _NonLocalBlockND(nn.Module):
 
         f = torch.matmul(theta_x, phi_x)  # transpose multiplication
         N = f.size(-1)
-        f_div_C = f / N
+        f_div_C = f / N  # Brown box T by T
 
         y = torch.matmul(f_div_C, g_x)  # brown T -> T box multiplication with right most conv (g)
         y = y.permute(0, 2, 1).contiguous()
@@ -112,7 +112,7 @@ class Aggregate(nn.Module):
         self.len_feature = len_feature
         self.conv_1 = nn.Sequential(
             nn.Conv1d(in_channels=len_feature, out_channels=512, kernel_size=3,
-                      stride=1,dilation=1, padding=1),
+                      stride=1, dilation=1, padding=1),
             nn.ReLU(),
             bn(512)
             # nn.dropout(0.7)
@@ -133,7 +133,7 @@ class Aggregate(nn.Module):
         )
         self.conv_4 = nn.Sequential(
             nn.Conv1d(in_channels=len_feature, out_channels=512, kernel_size=1,
-                      stride=1, padding=0, bias = False),
+                      stride=1, padding=0, bias=False),
             nn.ReLU(),
             # nn.dropout(0.7),
         )
@@ -149,8 +149,8 @@ class Aggregate(nn.Module):
 
 
     def forward(self, x):
-            # x: (B, T, F)
-            out = x.permute(0, 2, 1)
+            # x: (B*P, T, C)
+            out = x.permute(0, 2, 1)  # (B*P, C, T)
             residual = out
 
             out1 = self.conv_1(out)  # constitute the green dashed box.
@@ -160,7 +160,7 @@ class Aggregate(nn.Module):
             #torch.Size([64, 10, 32, 2048])  ->   torch.Size([64, 5, 32, 1024])
             #torch.Size([640, 1536, 32])  -> torch.Size([320, 1536, 32])
 
-            out = self.conv_4(out)  # belive the first conv1d on right block  - the first conv in MTN network
+            out = self.conv_4(out)  # belive the first conv1d on right block  - the first conv in right network
             out = self.non_local(out)  # rest of stuff in the dashed blue -> The rest of the MTN network.
             out = torch.cat((out_d, out), dim=1)  # Orange concat?
 
@@ -212,7 +212,7 @@ class Model(nn.Module):
         out = self.Aggregate(out)  # The two blocks + concat (dashed)
         out = self.drop_out(out)
 
-        features = out
+        features = out  # features (f_model)
         scores = self.relu(self.fc1(features))
         scores = self.drop_out(scores)
         scores = self.relu(self.fc2(scores))
@@ -256,7 +256,6 @@ class Model(nn.Module):
 
         idx_abn_score = idx_abn.unsqueeze(2).expand([-1, -1, abnormal_scores.shape[2]])
         score_abnormal = torch.mean(torch.gather(abnormal_scores, 1, idx_abn_score), dim=1)  # top 3 scores in abnormal bag based on the top-3 magnitude
-
 
         ####### process normal videos -> select top3 feature magnitude #######
 
