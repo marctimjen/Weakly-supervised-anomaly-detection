@@ -44,9 +44,10 @@ def path_inator(params, args):
         params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train_cheat.list"
         # params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train.list"
 
-        params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
+
         params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d.pkl"  # params_ucf_1
+
         # params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d.pkl"  # params_def
         return params["save_dir"]  # path where to save files
 
@@ -59,7 +60,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/anomaly",
+        project="AAM/rtfmucf",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()
@@ -98,7 +99,7 @@ if __name__ == '__main__':
 
 
     model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
-                    ncrop=param["ncrop"], drop=param["drop"])
+                    ncrop=param["ncrop"], drop=param["drop"], k_abn=param["k_abn"], k_nor=param["k_nor"])
 
     # params["pretrained_ckpt"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
     #                             "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
@@ -137,7 +138,7 @@ if __name__ == '__main__':
         run["test/loss_sparse"].log(loss_sparse_sum/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["test/loss_smooth"].log(loss_smooth_sum/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
         run["test/loss_rtfm"].log(loss_rtfm_sum/(param["UCF_test_len"]//(param["batch_size"]*2)*param["batch_size"]))
-        break
+        # break
 
     run.stop()
 

@@ -66,7 +66,6 @@ if __name__ == '__main__':
                                 batch_size=param["batch_size"], shuffle=False, num_workers=param["workers"],
                                 pin_memory=False, drop_last=True)
 
-
     model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
                     ncrop=param["ncrop"], drop=param["drop"], k_abn=param["k_abn"], k_nor=param["k_nor"])
 

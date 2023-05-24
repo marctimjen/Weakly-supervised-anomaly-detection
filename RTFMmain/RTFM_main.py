@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
 
     model = Model(n_features=param["feature_size"], batch_size=param["batch_size"], num_segments=param["num_segments"],
-                    ncrop=param["ncrop"], drop=param["drop"])
+                    ncrop=param["ncrop"], drop=param["drop"], k_abn=param["k_abn"], k_nor=param["k_nor"])
 
     for name, value in model.named_parameters():
         print(name)
