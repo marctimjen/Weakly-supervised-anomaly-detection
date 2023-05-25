@@ -50,7 +50,7 @@ def path_inator(params, args):
     elif args.user == "cluster":
         params["pretrained_ckpt"] = fr"/home/cv05f23/data/xd/results/rftm/nept_id_RTFM-55/rftm676-i3d.pkl"  # params_xd_val_inf
 
-        return ""  # path where to save files
+        return f"/home/cv05f23/data/xd/results/{params['model_name']}"  # path where to save files
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='RTFM')
