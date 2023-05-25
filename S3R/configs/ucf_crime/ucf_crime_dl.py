@@ -45,8 +45,8 @@ base_dict = dict(
 
 train_regular_dict = base_dict.copy()
 train_anomaly_dict = base_dict.copy()
-val_regular_dict = base_dict.copy()
-val_anomaly_dict = base_dict.copy()
+valid_regular_dict = base_dict.copy()
+valid_anomaly_dict = base_dict.copy()
 test_dict = base_dict.copy()
 
 train_regular_dict.update(dict(test_mode=0, is_normal=True))
