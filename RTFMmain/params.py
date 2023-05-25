@@ -36,6 +36,7 @@ paths = {
     "gt": "data/ucf_tencrop_1d/gt-ucf.npy"
 }
 
+dataset_params |= {"UCF_train_cheat_len": 1610}
 
 HYPERPARAMS = {
     'params_def': params_def | main | dataset_params | original | paths,

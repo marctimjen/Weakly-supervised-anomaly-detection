@@ -58,6 +58,8 @@ paths = {
     "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/files/UCF_list/ucf-i3d-test.list",
 }
 
+dataset_params |= {"UCF_train_cheat_len": 1610}
+
 HYPERPARAMS = {
     'params_def': params_def | main | mgfn_params | dataset_params | original | paths,
     'params_1': params_def | main | mgfn_params | dataset_params | params_1 | paths,

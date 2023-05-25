@@ -10,16 +10,22 @@ Note that there in some of the scripts will be a doc-string telling more about w
 How to get started: 
 1. Download or generate video features. In this repo features has been downloaded from the sites:
 [xd-violence](https://roc-ng.github.io/XD-Violence/) and [UCF-crime ten-crop I3D](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/cyxcarol_connect_hku_hk/EpNI-JSruH1Ep1su07pVLgIBnjDcBGd7Mexb1ERUVShdNg?e=VMRjhE).
-Note that the xd-violence features comes crop-wise (of five crops). This means that one video exists as five .npy feature-files when downloaded. 
-The networks implemented in this repo use a concatenated version of the feature files. To concatenate the files this script has been used: [crop_to_file.py](data%2Fxd_crop_to_file%2Fcrop_to_file.py).
+Note that the xd-violence features comes crop-wise (of five crops). This means that one video exists as five .npy feature-files. 
+The networks implemented in this repo use a concatenated version of the feature files. To concatenate the XD files this script has been used: [crop_to_file.py](data%2Fxd_crop_to_file%2Fcrop_to_file.py).
 
-2. The next step is to obtain the lists with paths to the individual files.
+2. The next step is to obtain the lists with paths to the individual files. These lists are known as "rgb_lists". For the XD-violence data-set the list has been generated
+with this file: [make_lists_xd.py](data%2Fmake_lists%2Fmake_lists_xd.py).
 
-3. Generate or download the gt-file (ground truth) for the test set.
+3. (Optinal) To generate a validation data-set with associated rgb_lists (one for the validation set and one for the train set) use the dir: [create_val_split](data%2Fcreate_val_split).
 
-4. Train the models.
+4. Generate or download the gt-file (ground truth) for the test set. In this repo both the UCF and XD gt has been generated. Here the dir is used: [create_gt](data%2Fcreate_gt).
+To use the functions in the dir, one needs the annotation files from the official data-provideres (they are available from the links to the data-sets in 1.).
 
-5. Test the models and upload data to Neptune.
+5. Now the data should be setup for training and testing of the models. In the model-dirs different train-files should exist (see the contents-lists below). For instance to train
+a MGFN model on the UCF-data (with a validation on the validation set) run the [MGFN_main_ucf.py](MGFNmain%2FMGFN_main_ucf.py). To run a model with validation on the test-set use the
+files containing _cheat. For instance one can run: [MGFN_cheat_ucf.py](MGFNmain%2FMGFN_cheat_ucf.py) to train the MGFN model on the UCF-data with validation on the UCF-test set.
+
+6. To test the models one can use the subdirectories: "xd_test" and "ucf_test". These calculate the loss on the train- and test-sets, result metrics and create plots of the predictions (and AUC + PR curves).
 
 The structure of the code is as follows:
 
@@ -129,6 +135,39 @@ The structure of the code is as follows:
 > - [random_predictor.py](result_uploader%2Frandom_predictor.py): Is used to make the [rando.npy](result_uploader%2Frando.npy) file.
 > - [res_no_file_upload_UCF.py](result_uploader%2Fres_no_file_upload_UCF.py): This file is used to upload data from cpkt_models that is not available to us.
 > - [res_uploader_UCF.py](result_uploader%2Fres_uploader_UCF.py): This file use prediction file from the different networks tested and upload the result data to neptune.
+
+
+> [S3R](S3R): This dir contain the implementation of the S3R model.
+> - [anomaly](S3R%2Fanomaly)
+>   - [apis](S3R%2Fanomaly%2Fapis)
+>     - [comm.py](S3R%2Fanomaly%2Fapis%2Fcomm.py)
+>     - [logger.py](S3R%2Fanomaly%2Fapis%2Flogger.py)
+>     - [opts.py](S3R%2Fanomaly%2Fapis%2Fopts.py)
+>     - [utils.py](S3R%2Fanomaly%2Fapis%2Futils.py)
+>   - [datasets](S3R%2Fanomaly%2Fdatasets)
+>     - [video_dataset.py](S3R%2Fanomaly%2Fdatasets%2Fvideo_dataset.py)
+>   - [engine](S3R%2Fanomaly%2Fengine)
+>     - [inference.py](S3R%2Fanomaly%2Fengine%2Finference.py)
+>     - [trainer.py](S3R%2Fanomaly%2Fengine%2Ftrainer.py)
+>   - [losses](S3R%2Fanomaly%2Flosses)
+>     - [sigmoid_mae_loss.py](S3R%2Fanomaly%2Flosses%2Fsigmoid_mae_loss.py)
+>     - [smooth_loss.py](S3R%2Fanomaly%2Flosses%2Fsmooth_loss.py)
+>     - [sparsity_loss.py](S3R%2Fanomaly%2Flosses%2Fsparsity_loss.py)
+>   - [models](S3R%2Fanomaly%2Fmodels)
+>     - [detectors](S3R%2Fanomaly%2Fmodels%2Fdetectors)
+>       - [detector.py](S3R%2Fanomaly%2Fmodels%2Fdetectors%2Fdetector.py)
+>     - [modules](S3R%2Fanomaly%2Fmodels%2Fmodules)
+>       - [memory_module.py](S3R%2Fanomaly%2Fmodels%2Fmodules%2Fmemory_module.py)
+>       - [residual_attention.py](S3R%2Fanomaly%2Fmodels%2Fmodules%2Fresidual_attention.py)
+>   - [utilities](S3R%2Fanomaly%2Futilities)
+> - [configs](S3R%2Fconfigs)
+> - [data](S3R%2Fdata)
+> - [logs](S3R%2Flogs)
+> - [tools](S3R%2Ftools)
+>   - [_init_paths.py](S3R%2Ftools%2F_init_paths.py)
+>   - [trainval_anomaly_detector.py](S3R%2Ftools%2Ftrainval_anomaly_detector.py)
+> - [config.py](S3R%2Fconfig.py)
+> - [utils.py](S3R%2Futils.py)
 
 > [test](test): This dir contain old files that has been used for testing/production of code.
 

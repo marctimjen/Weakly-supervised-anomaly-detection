@@ -46,9 +46,9 @@ def path_inator(params, args):
 
         params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
 
-        params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d.pkl"  # params_ucf_1
+        # params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d.pkl"  # params_ucf_1
+        params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d.pkl"  # params_def
 
-        # params["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-38/rftm771-i3d.pkl"  # params_def
         return params["save_dir"]  # path where to save files
 
 if __name__ == '__main__':
@@ -119,6 +119,7 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model.parameters(), lr=param["lr"], weight_decay=param["w_decay"])
 
     iterator = 0
+    param["max_epoch"] = 100
     for step in tqdm(range(0, param["max_epoch"]), total=param["max_epoch"], dynamic_ncols=True):
 
         total_cost, loss_cls_sum, loss_sparse_sum, loss_smooth_sum, loss_rtfm_sum \
