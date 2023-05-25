@@ -120,7 +120,7 @@ class Dataset(data.Dataset):
         return ground_truths
 
     def _prepare_data(self, video_list: list, verbose: bool=True):
-        if self.test_mode is False:
+        if self.test_mode % 2 == 0:
             if 'shanghaitech' in self.dataset: index = 63
             elif 'ucf-crime' in self.dataset:
                 if self.subset == 'train':
