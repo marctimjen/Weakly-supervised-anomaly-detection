@@ -73,6 +73,8 @@ class MacroLoss(nn.Module):
         return loss
 
 def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, device, run, is_val=False):
+    if is_val:
+        costs = []
     with torch.set_grad_enabled(True):
         if not is_val:
             model.train()
@@ -138,10 +140,13 @@ def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, devic
                 cost.backward()
                 optimizer.step()
             else:
+                costs.append(cost)
                 run["val/loss"].log(cost)
                 run["val/loss_magnitude"].log(loss_magnitude)
                 run["val/loss_smooth"].log(loss_smooth)
                 run["val/loss_sparse"].log(loss_sparse)
                 run["val/loss_macro"].log(loss_macro)
 
+    if is_val:
+        cost = np.mean(costs)
     return cost
