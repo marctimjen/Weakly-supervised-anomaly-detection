@@ -72,7 +72,7 @@ class MacroLoss(nn.Module):
 
         return loss
 
-def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, device, run, is_val=Flase):
+def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, device, run, is_val=False):
     with torch.set_grad_enabled(True):
         if not is_val:
             model.train()
