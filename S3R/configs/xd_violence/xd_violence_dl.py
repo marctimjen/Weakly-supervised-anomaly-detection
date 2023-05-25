@@ -60,6 +60,9 @@ data = dict(
     train=dict(
         regular=train_regular_dict,
         anomaly=train_anomaly_dict),
+    valid=dict(
+        regular=valid_regular_dict,
+        anomaly=valid_anomaly_dict),
     test=test_dict)
 
 data = DefaultMunch.fromDict(data)
