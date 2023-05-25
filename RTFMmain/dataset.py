@@ -73,7 +73,7 @@ class Dataset(data.Dataset):
         if self.tranform is not None:
             features = self.tranform(features)
         if self.mode == "test":
-            return features, self.list[index].strip('\n')
+            return features
         else:
             # process 10-cropped snippet feature
             features = features.transpose(1, 0, 2)  # [10, B, T, F]

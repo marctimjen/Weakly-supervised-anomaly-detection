@@ -41,8 +41,8 @@ def save_config(save_path, nept_id, params):
 def path_inator(params, args):
     if args.user == "marc":
         params["save_dir"] = "/home/marc/Documents/sandbox/mgfn"  # where to save results + model
-        params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
-        params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
+        params["rgb_list"] = "/home/marc/Documents/data/xd/files/rgb.list"
+        params["test_rgb_list"] = "/home/marc/Documents/data/xd/files/rgbtest.list"
         params["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd.pkl"  # params_xd_def_cheat
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d.pkl"  # params_xd_reg_11
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d.pkl"  # params_xd_reg_22

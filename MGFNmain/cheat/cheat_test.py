@@ -70,8 +70,8 @@ if __name__ == '__main__':
 
         elif args.user == "cluster":
             params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
-            params["test_rgb_list"] = "/home/cv05f23/data/UCF/lists/ucf-i3d-test.list"
-            # params["pretrained_path"] = "/home/cv05f23/data/UCF/lists/UCF_pretrained/mgfn_ucf.pkl"
+            params["test_rgb_list"] = "/home/cv05f23/data/UCF/files/ucf-i3d-test.list"
+            # params["pretrained_path"] = "/home/cv05f23/data/UCF/files/UCF_pretrained/mgfn_ucf.pkl"
             return ""  # path where to wave files
 
 

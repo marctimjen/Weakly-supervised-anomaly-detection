@@ -30,9 +30,9 @@ params_def = {
 }
 
 paths = {
-    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-train.list",
-    "val_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-val.list",
-    "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list",
+    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/files/UCF_list/ucf-i3d-train.list",
+    "val_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/files/UCF_list/ucf-i3d-val.list",
+    "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/files/UCF_list/ucf-i3d-test.list",
     "gt": "data/ucf_tencrop_1d/gt-ucf.npy"
 }
 
@@ -71,17 +71,17 @@ original_xd = {"margin": 100, "w_decay": 0.0005, "lr": 0.0001, "batch_size": 32,
             "lambda_1": 8e-4, "alpha": 0.0001, "drop": 0.7, "k_abn": 3, "k_nor": 3}  # hyper params
 
 paths_xd = {
-    "rgb_list": "/home/cv05f23/data/XD/lists/rgb.list",
-    "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
+    "rgb_list": "/home/cv05f23/data/XD/files/rgb.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/files/rgbtest.list",
     "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
 }
 
 paths_xd_val = {
-    # "rgb_list": "/home/marc/Documents/data/xd/lists/rgb_train.list",
-    # "val_rgb_list": "/home/marc/Documents/data/xd/lists/rgb_val.list",
-    "rgb_list": "/home/cv05f23/data/XD/lists/rgb_train.list",
-    "val_rgb_list": "/home/cv05f23/data/XD/lists/rgb_val.list",
-    "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
+    # "rgb_list": "/home/marc/Documents/data/xd/files/rgb_train.list",
+    # "val_rgb_list": "/home/marc/Documents/data/xd/files/rgb_val.list",
+    "rgb_list": "/home/cv05f23/data/XD/files/rgb_train.list",
+    "val_rgb_list": "/home/cv05f23/data/XD/files/rgb_val.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/files/rgbtest.list",
     "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
 }
 
@@ -167,8 +167,8 @@ HYPERPARAMS |= {
 
 
 paths_cheat = {
-    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-train_cheat.list",
-    "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/MGFNmain/UCF_list/ucf-i3d-test.list",
+    "rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/files/UCF_list/ucf-i3d-train_cheat.list",
+    "test_rgb_list": "/home/cv05f23/git/Weakly-supervised-anomaly-detection/files/UCF_list/ucf-i3d-test.list",
     "UCF_train_cheat_len": 1610,
 }
 

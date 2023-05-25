@@ -195,13 +195,13 @@ class mgfn(nn.Module):
 
     def forward(self, video):  # video input: testing: [1, 10, 149, 2049],  training : [16, 10, 32, 2049]
         k = 3  # number of features from select top k
-        bs, ncrops, t, c = video.size()  # batch_size, M=P=# crops, T = # clips, C = feature dimension
+        bs, ncrops, t, c = video.size()  # batch_size, M=P=# crops, T = # clips, C = feature dimension  [B*P, C, T]
         x = video.view(bs * ncrops, t, c).permute(0, 2, 1)
         x_f = x[:, :self.channels, :]
         x_m = x[:, self.channels:, :]
         x_f = self.to_tokens(x_f)
-        x_m = self.to_mag(x_m)  # make the last
-        x_f = x_f + self.mag_ratio * x_m  # time series + feature map
+        x_m = self.to_mag(x_m)  # make the last  # B*P, Æ, T
+        x_f = x_f + self.mag_ratio * x_m  # feature map + time series  <- (4)
 
         for backbone, conv in self.stages:
             x_f = backbone(x_f)

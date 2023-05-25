@@ -17,8 +17,9 @@ def path_inator(params, args):
     if dataset_name.lower() == "xd":
         if args.user == "marc":
             params["save_dir"] = "/home/marc/Documents/sandbox"  # where to save results + model
-            # params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
-            # params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
+            params["rgb_list"] = "/home/marc/Documents/data/xd/files/rgb.list"
+            params["test_rgb_list"] = "/home/marc/Documents/data/xd/files/rgbtest.list"
+            params["val_rgb_list"] = "/home/marc/Documents/data/xd/files/rgb_val.list"
             params["gt"] = "/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy"
             # params["pretrained_path"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
             #                             + "MGFNmain/results/XD_pretrained/mgfn_xd.pkl"
@@ -55,7 +56,7 @@ def path_inator(params, args):
         elif args.user == "cluster":
             params["save_dir"] = f"/home/cv05f23/data/UCF/results/{params['model_name']}"  # where to save results + model
             params["gt"] = "/home/cv05f23/data/UCF/test_gt/gt-ucf_our.npy"
-            params["pretrained_path"] = "/home/cv05f23/data/UCF/lists/UCF_pretrained/mgfn_ucf.pkl"
+            params["pretrained_path"] = "/home/cv05f23/data/UCF/files/UCF_pretrained/mgfn_ucf.pkl"
             return params["save_dir"]  # path where to wave files
     else:
         raise ValueError("Dataset should be UCF og XD")

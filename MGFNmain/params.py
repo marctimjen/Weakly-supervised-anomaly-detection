@@ -198,7 +198,7 @@ HYPERPARAMS |= {
 ####################################### XD-violence data:
 
 original_xd = {"T": 32, "P": 10, "alpha": 0.1, "k": 3, "lambda_1": 1, "lambda_2": 1, "lambda_3": 0.001,
-                "w_decay": 0.0005, "lr": 0.001, "batch_size": 16}  # hyper params
+                "w_decay": 0.0005, "lr": 0.001, "batch_size": 8}  # hyper params
 
 dataset_params_xd = {"seg_length": 32,
                   "add_mag_info": False,  # Do not quite know what this does...
@@ -246,18 +246,18 @@ params_def_xd = {
 }
 
 paths_xd = {
-    "rgb_list": "/home/cv05f23/data/XD/lists/rgb.list",
-    "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
+    "rgb_list": "/home/cv05f23/data/XD/files/rgb.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/files/rgbtest.list",
     "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
 }
 
 paths_xd_val = {
-    # "rgb_list": "/home/marc/Documents/data/xd/lists/rgb_train.list",
-    # "val_rgb_list": "/home/marc/Documents/data/xd/lists/rgb_val.list",
-    # "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
-    "rgb_list": "/home/cv05f23/data/XD/lists/rgb_train.list",
-    "val_rgb_list": "/home/cv05f23/data/XD/lists/rgb_val.list",
-    "test_rgb_list": "/home/cv05f23/data/XD/lists/rgbtest.list",
+    # "rgb_list": "/home/marc/Documents/data/xd/files/rgb_train.list",
+    # "val_rgb_list": "/home/marc/Documents/data/xd/files/rgb_val.list",
+    # "test_rgb_list": "/home/cv05f23/data/XD/files/rgbtest.list",
+    "rgb_list": "/home/cv05f23/data/XD/files/rgb_train.list",
+    "val_rgb_list": "/home/cv05f23/data/XD/files/rgb_val.list",
+    "test_rgb_list": "/home/cv05f23/data/XD/files/rgbtest.list",
     "gt": "/home/cv05f23/data/XD/test_gt/gt-xd_our.npy"
 }
 

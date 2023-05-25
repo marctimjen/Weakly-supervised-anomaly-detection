@@ -41,8 +41,8 @@ def save_config(save_path, nept_id, params):
 def path_inator(params, args):
     if args.user == "marc":
         params["save_dir"] = "/home/marc/Documents/sandbox/rtfm"  # where to save results + model
-        params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
-        params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
+        params["rgb_list"] = "/home/marc/Documents/data/xd/files/rgb.list"
+        params["test_rgb_list"] = "/home/marc/Documents/data/xd/files/rgbtest.list"
         params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d.pkl"  # params_xd_2
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-41/rftm218-i3d.pkl"  # params_xd_val
 

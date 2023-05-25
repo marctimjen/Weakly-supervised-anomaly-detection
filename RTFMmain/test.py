@@ -6,10 +6,6 @@ import numpy as np
 import sys
 sys.path.append("../..")  # adds higher directory to python modules path
 sys.path.append("..")  # adds higher directory to python modules path
-
-import os
-import neptune
-
 # import matplotlib.pyplot as plt
 # import option
 # args = option.parse_args()
@@ -22,8 +18,7 @@ def test(dataloader, model, params, device):
         model.eval()
         pred = torch.zeros(0).cpu()
         # featurelen = []
-        for i, (inputs, test_feat_name) in tqdm(enumerate(dataloader)):
-            print(test_feat_name)
+        for i, inputs in tqdm(enumerate(dataloader)):
             inputs = inputs.to(device)
             inputs = inputs.permute(0, 2, 1, 3)
 
@@ -50,10 +45,10 @@ def test(dataloader, model, params, device):
         recall = recall_score(gt, np.rint(pred))
         ap = average_precision_score(gt, pred)
 
-        # print('pr_auc : ' + str(pr_auc))
-        # print('rec_auc : ' + str(rec_auc))
-        # path = params["pretrained_path"][:-4] + "_test.npy"
-        # np.save(path, pred)  # save the prediction file
+        print('pr_auc : ' + str(pr_auc))
+        print('rec_auc : ' + str(rec_auc))
+        path = params["pretrained_path"][:-4] + "_test.npy"
+        np.save(path, pred)  # save the prediction file
         return rec_auc, pr_auc, f1, f1_macro, acc, prec, recall, ap
 
 if __name__ == '__main__':

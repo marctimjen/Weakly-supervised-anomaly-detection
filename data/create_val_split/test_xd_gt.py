@@ -7,7 +7,7 @@ This is a test-file that is used to validate our gt-file.
 
 res = np.load("/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy")
 
-gt_file_path = rf"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/download_features/xd.list"
+gt_file_path = rf"/lists/xd.list"
 
 files_dir = os.listdir("/home/marc/Documents/data/xd/RGBTest")
 files_dir = sorted(files_dir)

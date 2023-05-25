@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 """
-This script is used for creating the plots for a specific UCF model.
+This script is used for creating predictions plots for different UCF model.
 """
 
 
@@ -10,9 +10,11 @@ network = "mgfn7"
 
 gt = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")
 
-pred = np.load(f"/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/{network}-i3d_test.npy")
 
-# pred = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf_test.npy")
+pred_dict = {}
+
+pred = np.load(f"/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/{network}-i3d_test.npy")
+pred2 = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf_test.npy")
 
 path = rf"/home/marc/Documents/data/UCF/UCF_list/"
 with open(path + rf"ucf-i3d-test.list", 'r') as f:  # use a context manager to safely opening and closing files
@@ -47,9 +49,11 @@ for i in val:
 
     gt_anno = gt[leng: length]
     pred_anno = pred[leng: length]
+    pred2_anno = pred2[leng: length]
 
     plt.plot(range(length - leng), gt_anno, color='b', label='gt')
-    plt.plot(range(length - leng), pred_anno, color='r', label='prediction')
+    plt.plot(range(length - leng), pred_anno, color='r', label='pred_anno')
+    plt.plot(range(length - leng), pred2_anno, color='g', label='pred2_anno')
     plt.ylim(-0.05, 1.05)
     plt.legend()
     plt.title(f"{string}")

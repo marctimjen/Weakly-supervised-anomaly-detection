@@ -4,7 +4,7 @@ import os
 path = "/home/cv05f23/data/XD/RGB"
 files = os.listdir(path)
 files = sorted(files)
-name = "/home/cv05f23/data/XD/lists/rgb.list"
+name = "/home/cv05f23/data/XD/files/rgb.list"
 
 with open(name, 'w+') as f:  ## the name of feature list
     for file in files:
@@ -15,7 +15,7 @@ with open(name, 'w+') as f:  ## the name of feature list
 path = "/home/cv05f23/data/XD/RGBTest"
 files = os.listdir(path)
 files = sorted(files)
-name = "/home/cv05f23/data/XD/lists/rgbtest.list"
+name = "/home/cv05f23/data/XD/files/rgbtest.list"
 
 with open(name, 'w+') as f:  ## the name of feature list
     for file in files:
@@ -26,7 +26,7 @@ with open(name, 'w+') as f:  ## the name of feature list
 # path = "/home/cv05f23/data/XD/FlowTest"
 # files = os.listdir(path)
 # files = sorted(files)
-# name = "/home/cv05f23/data/XD/lists/flowtest.list"
+# name = "/home/cv05f23/data/XD/files/flowtest.list"
 #
 # with open(name, 'w+') as f:  ## the name of feature list
 #     for file in files:
@@ -37,7 +37,7 @@ with open(name, 'w+') as f:  ## the name of feature list
 # path = "/home/cv05f23/data/XD/Flow"
 # files = os.listdir(path)
 # files = sorted(files)
-# name = "/home/cv05f23/data/XD/lists/flow.list"
+# name = "/home/cv05f23/data/XD/files/flow.list"
 #
 # with open(name, 'w+') as f:  ## the name of feature list
 #     for file in files:
