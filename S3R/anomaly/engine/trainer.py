@@ -140,7 +140,7 @@ def do_train(regular_loader, anomaly_loader, model, batch_size, optimizer, devic
                 cost.backward()
                 optimizer.step()
             else:
-                costs.append(cost)
+                costs.append(cost.item())
                 run["val/loss"].log(cost)
                 run["val/loss_magnitude"].log(loss_magnitude)
                 run["val/loss_smooth"].log(loss_smooth)
