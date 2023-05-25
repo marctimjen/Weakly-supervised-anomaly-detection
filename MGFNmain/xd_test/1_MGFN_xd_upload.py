@@ -49,6 +49,12 @@ def path_inator(params, args):
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d.pkl"  # params_xd_reg_105
         return params["save_dir"]  # path where to save files
 
+    elif args.user == "cluster":
+        params["pretrained_ckpt"] = fr"/home/cv05f23/data/xd/results/mgfn/nept_id_MGFNXD-149/mgfn56-i3d.pkl"  # params_xd_val_inf
+
+        return f"/home/cv05f23/data/xd/results/{params['model_name']}"  # path where to save files
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='MGFN')
     parser.add_argument("-u", '--user', default='cluster', choices=['cluster', 'marc'])  # this gives dir to data and save loc
@@ -58,7 +64,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/anomaly",
+        project="AAM/mgfnxd",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()
@@ -113,15 +119,15 @@ if __name__ == '__main__':
 
     if param["pretrained_ckpt"]:
         di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_ckpt"], map_location="cpu").items()}
-        di["to_logits.weight"] = di.pop("to_logits.0.weight")
-        di["to_logits.bias"] = di.pop("to_logits.0.bias")
+        # di["to_logits.weight"] = di.pop("to_logits.0.weight")
+        # di["to_logits.bias"] = di.pop("to_logits.0.bias")
         model_dict = model.load_state_dict(di)
         print("pretrained loaded")
 
     model = model.to(device)
 
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
+    # if not os.path.exists(save_path):
+    #     os.makedirs(save_path)
 
     optimizer = optim.Adam(model.parameters(), lr=param["lr"], weight_decay=param["w_decay"])
 
