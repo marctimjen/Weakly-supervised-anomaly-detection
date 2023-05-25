@@ -80,6 +80,7 @@ paths_xd_val = {
     # "rgb_list": "/home/marc/Documents/data/xd/files/rgb_train.list",
     # "val_rgb_list": "/home/marc/Documents/data/xd/files/rgb_val.list",
     "rgb_list": "/home/cv05f23/data/XD/files/rgb_train.list",
+    # "rgb_list": "/home/cv05f23/data/XD/files/rgb.list",
     "val_rgb_list": "/home/cv05f23/data/XD/files/rgb_val.list",
     "test_rgb_list": "/home/cv05f23/data/XD/files/rgbtest.list",
     "gt": "/home/cv05f23/data/xd/test_gt/gt-xd_our.npy"
@@ -88,10 +89,10 @@ paths_xd_val = {
 dataset_params_xd_val = copy.deepcopy(dataset_params_xd)
 dataset_params_xd_val |= {"xd_train_len": 3164, "xd_val_len": 790}
 
-
 HYPERPARAMS |= {
     'params_xd': params_def_xd | main_xd | dataset_params_xd | original_xd | paths_xd,
     'params_xd_val': params_def_xd | main_xd | dataset_params_xd_val | original_xd | paths_xd_val,
+    "params_xd_val_inf": params_def_xd | main_xd | dataset_params_xd | original_xd | paths_xd,
 }
 
 main_xd_reg = {"max_epoch": 100,

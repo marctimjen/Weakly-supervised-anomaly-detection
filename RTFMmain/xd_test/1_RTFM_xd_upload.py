@@ -43,10 +43,14 @@ def path_inator(params, args):
         params["save_dir"] = "/home/marc/Documents/sandbox/rtfm"  # where to save results + model
         params["rgb_list"] = "/home/marc/Documents/data/xd/files/rgb.list"
         params["test_rgb_list"] = "/home/marc/Documents/data/xd/files/rgbtest.list"
-        params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d.pkl"  # params_xd_2
+        # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-18/rftm30-i3d.pkl"  # params_xd_2
         # params["pretrained_ckpt"] = fr"/home/marc/Documents/data/xd/results/rtfm/nept_id_RTFM-41/rftm218-i3d.pkl"  # params_xd_val
-
         return params["save_dir"]  # path where to save files
+
+    elif args.user == "cluster":
+        params["pretrained_ckpt"] = fr"/home/cv05f23/data/xd/results/rftm/nept_id_RTFM-55/rftm676-i3d.pkl"  # params_xd_val_inf
+
+        return ""  # path where to save files
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='RTFM')
@@ -57,7 +61,7 @@ if __name__ == '__main__':
 
     token = os.getenv('NEPTUNE_API_TOKEN')
     run = neptune.init_run(
-        project="AAM/anomaly",
+        project="AAM/rtfm",
         api_token=token,
     )
     run_id = run["sys/id"].fetch()
@@ -110,8 +114,8 @@ if __name__ == '__main__':
 
     model = model.to(device)
 
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
+    # if not os.path.exists(save_path):
+    #     os.makedirs(save_path)
 
     optimizer = optim.Adam(model.parameters(), lr=param["lr"], weight_decay=param["w_decay"])
 
