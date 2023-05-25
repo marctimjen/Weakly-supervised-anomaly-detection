@@ -120,8 +120,8 @@ if __name__ == '__main__':
 
     if param["pretrained_ckpt"]:
         di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_ckpt"], map_location="cpu").items()}
-        di["to_logits.weight"] = di.pop("to_logits.0.weight")
-        di["to_logits.bias"] = di.pop("to_logits.0.bias")
+        # di["to_logits.weight"] = di.pop("to_logits.0.weight")
+        # di["to_logits.bias"] = di.pop("to_logits.0.bias")
         model_dict = model.load_state_dict(di)
         print("pretrained loaded")
 
