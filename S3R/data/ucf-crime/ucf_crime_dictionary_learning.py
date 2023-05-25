@@ -31,7 +31,7 @@ def color(text, txt_color='green', attrs=['bold']):
     return colored(text, txt_color, attrs=attrs)
 
 class DictArgumentParser(Tap):
-    # ============= 
+    # =============
     # basic setting
     # -------------
     backbone: Literal['i3d', 'c3d'] = 'i3d' # default backbone
@@ -41,13 +41,13 @@ class DictArgumentParser(Tap):
     quantize_size: int = 32 # new temporal size for training
     max_iter: int = 100 # maximum iteration for dictionary learning
 
-    # ============ 
+    # ============
     # path setting
     # ------------
     root_path: Path = 'data' # Directory path of data
     dictionary_path: Path = 'dictionary' # Directory path of dictionary
 
-    # ==== 
+    # ====
     # misc
     # ----
     seed: Optional[int] = 42 # random seed for dictionary learning
@@ -94,7 +94,8 @@ class DictionarySet(object):
         for dataset, video_list in video_dict.items():
             if self.test_mode is False:
                 if dataset == 'shanghaitech': index = 63
-                elif dataset == 'ucf-crime': index = 810
+                elif dataset == 'ucf-crime': index = 729 # 810
+                elif 'xd-violence' in self.dataset: index = 1748
 
                 template = '{video_id}_{backbone}.npy'
                 regular_videos, anomaly_videos = video_list[index:], video_list[:index]

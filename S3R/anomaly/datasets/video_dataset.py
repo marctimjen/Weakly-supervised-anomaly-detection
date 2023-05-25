@@ -53,7 +53,14 @@ class Dataset(data.Dataset):
         self.quantize_size = quantize_size
         self.ann_file = ann_file
 
-        self.subset = 'test' if test_mode else 'train'
+        # self.subset = 'test' if test_mode else 'train'
+        self.subset = 'train'
+        if test_mode == 1:
+            self.subset = 'test'
+        elif test_mode == 2:
+            self.subset = 'val'
+
+
         self.data_root = data_root
         self.dictionary_root = dictionary_root
         self.data_dir = data_root.joinpath(dataset).joinpath(self.subset)
@@ -74,6 +81,13 @@ class Dataset(data.Dataset):
                     backbone).joinpath(
                         self.subset).joinpath(
                             '{video_id}_{backbone}.npy')
+        if self.dataset == "xd-violence":
+            self.data_path_formatter = data_root.joinpath(
+                        dataset).joinpath(
+                            backbone).joinpath(
+                                self.subset).joinpath(
+                                    '{video_id}.npy')
+
 
         # >> Obtain global video statistics
         if dictionary is None:
@@ -86,7 +100,13 @@ class Dataset(data.Dataset):
         else:
             self.dictionary = dictionary
 
+
+
     def _prepare_frame_level_labels(self, video_list):
+        if self.dataset == "xd-violence":
+            ann_file = self.ann_file
+            ground_truths = np.load(ann_file)
+            return ground_truths
         import json
         ann_file = self.ann_file
         with open(ann_file, 'r') as fin:
@@ -102,7 +122,12 @@ class Dataset(data.Dataset):
     def _prepare_data(self, video_list: list, verbose: bool=True):
         if self.test_mode is False:
             if 'shanghaitech' in self.dataset: index = 63
-            elif 'ucf-crime' in self.dataset: index = 810
+            elif 'ucf-crime' in self.dataset:
+                if self.subset == 'train':
+                    index = 729 # 810
+                if self.subset == 'val':
+                    index = 81
+            elif 'xd-violence' in self.dataset: index = 1748
 
             self.video_list = video_list[index:] if self.is_normal else video_list[:index]
         else:

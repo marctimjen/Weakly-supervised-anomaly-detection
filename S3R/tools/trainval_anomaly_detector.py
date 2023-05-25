@@ -59,6 +59,8 @@ def main():
         import configs.shanghaitech.shanghaitech_dl as cfg
     elif 'ucf-crime' in args.dataset:
         import configs.ucf_crime.ucf_crime_dl as cfg
+    elif 'xd-violence' in args.dataset:
+        import configs.xd_violence.xd_violence_dl as cfg
 
     if args.lr:
         lr = [args.lr] * args.max_epoch
@@ -85,6 +87,8 @@ def main():
     data = DefaultMunch.fromDict(cfg.data)
     train_regular_dataset_cfg = data.train.regular
     train_anomaly_dataset_cfg = data.train.anomaly
+    valid_regular_dataset_cfg = data.valid.regular
+    valid_anomaly_dataset_cfg = data.valid.anomaly
     test_dataset_cfg = data.test
 
     # >> regular (normal) videos for the training set
@@ -94,6 +98,14 @@ def main():
     # >> anomaly (abnormal) videos for the training set
     train_anomaly_dataset_cfg.dictionary = dictionary
     train_anomaly_set = Dataset(**train_anomaly_dataset_cfg)
+
+    # >> regular (normal) videos for the valid set
+    valid_regular_set = Dataset(**valid_regular_dataset_cfg)
+    valid_regular_dataset_cfg.dictionary = dictionary
+
+    # >> anomaly (abnormal) videos for the valid set
+    valid_anomaly_dataset_cfg.dictionary = dictionary
+    valid_anomaly_set = Dataset(**valid_anomaly_dataset_cfg)
 
     # >> testing set
     test_dataset_cfg.dictionary = dictionary
@@ -116,6 +128,27 @@ def main():
             pin_memory=False,
             drop_last=True,
             generator=torch.Generator(device='cuda'),)
+
+
+    valid_regular_loader = DataLoader(
+            valid_regular_set,
+            batch_size=args.batch_size,
+            shuffle=True,
+            num_workers=args.workers,
+            pin_memory=False,
+            drop_last=True,
+            generator=torch.Generator(device='cuda'),)
+
+    valid_anomaly_loader = DataLoader(
+            valid_anomaly_set,
+            batch_size=args.batch_size,
+            shuffle=True,
+            num_workers=args.workers,
+            pin_memory=False,
+            drop_last=True,
+            generator=torch.Generator(device='cuda'),)
+
+
     test_loader = DataLoader(
             test_set,
             batch_size=1,
@@ -150,6 +183,7 @@ def main():
         'epoch': [], 'elapsed': [], 'now': [], 'train_loss': [],
         'test_{metric}'.format(metric='AUC' if 'xd-violence' not in args.dataset else 'AP'): []}
     best_AUC = -1
+    best_val_loss = 1000.0
 
     if args.resume:
         if os.path.isfile(args.resume):
@@ -257,14 +291,25 @@ def main():
 
         if condition:
 
+            val_loss = do_train(valid_regular_loader, valid_anomaly_loader, model, args.batch_size, optimizer, device, run, is_val=True)
+            # best_val_loss
+
             score = inference(test_loader, model, args, device, rec_auc_only=False)
             rec_auc, pr_auc, f1, f1_macro, acc, prec, recall, ap = score.values()
 
             # score = inference(test_loader, model, args, device)
 
             test_info["epoch"].append(step)
-            test_info["test_{metric}".format(
-                metric='AUC' if 'xd-violence' not in args.dataset else 'AP')].append(rec_auc)
+            # test_info["test_{metric}".format(
+            #     metric='AUC' if 'xd-violence' not in args.dataset else 'AP')].append(rec_auc)
+
+            if 'xd-violence' not in args.dataset:
+                test_info["test_{metric}".format(
+                    metric='AUC' if 'xd-violence' not in args.dataset else 'AP')].append(rec_auc)
+            else:
+                test_info["test_{metric}".format(
+                    metric='AUC' if 'xd-violence' not in args.dataset else 'AP')].append(ap)
+
             test_info["train_loss"].append(loss)
 
             test_info["elapsed"].append(str(datetime.timedelta(seconds = time.time() - start_time)))
@@ -284,14 +329,24 @@ def main():
             statistics.append([step, rec_auc])
 
             metric = 'test_{metric}'.format(metric='AUC' if 'xd-violence' not in args.dataset else 'AP')
-            if test_info[metric][-1] > best_AUC:
-                best_AUC = test_info[metric][-1]
+
+            if val_loss < best_val_loss:
+                best_val_loss = val_loss
                 filename = checkpoint_filename.format(
                     data=args.dataset, model=args.model_name)
                 torch.save(
                     model.state_dict(), args.checkpoint_path.joinpath(args.version).joinpath(filename))
 
                 save_best_record(test_info, log_filepath, metric)
+
+            # if test_info[metric][-1] > best_AUC:
+            #     best_AUC = test_info[metric][-1]
+            #     filename = checkpoint_filename.format(
+            #         data=args.dataset, model=args.model_name)
+            #     torch.save(
+            #         model.state_dict(), args.checkpoint_path.joinpath(args.version).joinpath(filename))
+            #
+            #     save_best_record(test_info, log_filepath, metric)
 
         # measure elapsed time
         process_time.update(time.time() - end)

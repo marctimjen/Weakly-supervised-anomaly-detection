@@ -3,13 +3,12 @@
 from ..base import *
 from munch import DefaultMunch
 
-dataset = 'ucf-crime'
+dataset = 'xd-violence'
 modality = 'taskaware'
 univ_data = 'kinetics400'
 
 data_file_train = f'data/{dataset}/{dataset}.training.csv' # video list
 data_file_test = f'data/{dataset}/{dataset}.testing.csv' # video list
-data_file_valid = f'data/{dataset}/{dataset}.valid.csv'
 ann_file_test = f'data/{dataset}/{dataset}_ground_truth.testing.json'
 if 'universal' in modality:
     univ_dict_file = f'dictionary/{univ_data}/{univ_data}_dictionaries.{modality}.omp.100iters.npy'
@@ -45,36 +44,27 @@ base_dict = dict(
 
 train_regular_dict = base_dict.copy()
 train_anomaly_dict = base_dict.copy()
-val_regular_dict = base_dict.copy()
-val_anomaly_dict = base_dict.copy()
 test_dict = base_dict.copy()
 
-train_regular_dict.update(dict(test_mode=0, is_normal=True))
-train_anomaly_dict.update(dict(test_mode=0, is_normal=False))
-valid_regular_dict.update(dict(test_mode=2, is_normal=True))
-valid_anomaly_dict.update(dict(test_mode=2, is_normal=False))
-test_dict.update(dict(test_mode=1, is_normal=False))
+train_regular_dict.update(dict(test_mode=False, is_normal=True))
+train_anomaly_dict.update(dict(test_mode=False, is_normal=False))
+test_dict.update(dict(test_mode=True, is_normal=False))
 
 data = dict(
     train=dict(
         regular=train_regular_dict,
         anomaly=train_anomaly_dict),
-    valid=dict(
-        regular=valid_regular_dict,
-        anomaly=valid_anomaly_dict),
     test=test_dict)
 
 data = DefaultMunch.fromDict(data)
 
 data.train.regular.dataset = dataset
 data.train.anomaly.dataset = dataset
-data.valid.regular.dataset = dataset
-data.valid.anomaly.dataset = dataset
 data.test.dataset = dataset
 
 data.train.regular.data_file = data_file_train
 data.train.anomaly.data_file = data_file_train
-data.valid.regular.data_file = data_file_valid
-data.valid.anomaly.data_file = data_file_valid
 data.test.data_file = data_file_test
 data.test.ann_file = ann_file_test
+
+
