@@ -70,12 +70,13 @@ if __name__ == '__main__':
     def path_inator(params, args):
         if args.user == "marc":
             params["save_dir"] = "/home/marc/Documents/sandbox/mgfn"  # where to save results + model
-            params["rgb_list"] = "/home/marc/Documents/data/xd/files/rgb.list"
-            params["test_rgb_list"] = "/home/marc/Documents/data/xd/files/rgbtest.list"
+            params["rgb_list"] = "/home/marc/Documents/data/xd/lists/rgb.list"
+            params["test_rgb_list"] = "/home/marc/Documents/data/xd/lists/rgbtest.list"
             # param["pretrained_path"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/XD_pretrained/mgfn_xd.pkl"  # params_xd_def_cheat
             # params["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d.pkl"  # params_xd_reg_11
             # param["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d.pkl"  # params_xd_reg_22
-            param["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d.pkl"  # params_xd_reg_105
+            # param["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d.pkl"  # params_xd_reg_105
+            param["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD149/mgfn56-i3d.pkl"  # params_xd_val
             params["gt"] = "/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy"
             return params["save_dir"]  # path where to save files
 

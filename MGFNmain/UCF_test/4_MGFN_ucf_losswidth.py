@@ -7,7 +7,7 @@ token = os.getenv('NEPTUNE_API_TOKEN')
 run = neptune.init_run(
     project="AAM/mgfn",
     api_token=token,
-    with_id="MGFN-77"
+    with_id="MGFN-80"
 )
 
 
@@ -26,7 +26,7 @@ run["test/loss_std"] = np.std(test_loss)
 run["train/loss_mean"] = np.mean(train_loss)
 run["train/loss_std"] = np.std(train_loss)
 
-run["model_pre"] = "UCF_pretrained/mgfn_ucf.pkl"
+run["model_pre"] = "nept_id_MGFN-38/mgfn95-i3d.pkl"
 
 run.stop()
 
