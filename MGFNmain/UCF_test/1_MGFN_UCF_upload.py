@@ -45,12 +45,16 @@ def path_inator(params, args):
         params["rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-train_cheat.list"
         params["val_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
 
-        param["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"  # params_def_cheat
+        # param["pretrained_ckpt"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"  # params_def_cheat
         # param["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-38/mgfn95-i3d.pkl"  # params_cheat_1
         # param["pretrained_ckpt"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfn50-i3d.pkl"  # params_def
 
         # params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
         return params["save_dir"]  # path where to save files
+    elif args.user == "cluster":
+        params["pretrained_ckpt"] = fr"/home/cv05f23/data/UCF/results/mgfn/nept_id_MGFN-38/mgfn95-i3d.pkl"  # params_cheat_1
+
+        return f"/home/cv05f23/data/UCF/results/{params['model_name']}"  # path where to save files
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='MGFN')
