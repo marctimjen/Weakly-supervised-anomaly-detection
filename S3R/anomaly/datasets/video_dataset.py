@@ -31,7 +31,7 @@ class Dataset(data.Dataset):
             quantize_size: int=32,
             is_normal: bool=True,
             transform = None,
-            test_mode: bool=False,
+            test_mode: int=0,
             verbose: bool=False,
             dictionary = None,
             dictionary_root: Path=Path('.dictionary'),
@@ -225,7 +225,7 @@ class Dataset(data.Dataset):
             features = self.transform(features)
 
 
-        if self.test_mode:
+        if self.test_mode == 1:
             return features, dictionary
         else:
             t, n_group, channels = features.shape
