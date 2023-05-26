@@ -176,8 +176,9 @@ The structure of the code is as follows:
 > [test](test): This dir contain old files that has been used for testing/production of code.
 
 
-How to upload data for the MGFN model to neptune?
+How to upload result data for the models to neptune? -> Use either the xd_test og ucf_test for the MGFN or RTFM model.
 
-Firstly we run the [MGFN_UCF_upload.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_UCF_upload.py) file to get a neptune run + the loss of the model at the current iteration. Remember to set the path to the correct model and set the parameters for this model correctly.
-Then we run the [MGFN_UCF_test.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_UCF_test.py) file to get the results of the model. These results are also uploaded to neptune (remember to set the -n for neptune run argument).
-Lastly we can upload the plots using the test-file create before and the script: [MGFN_test_plotter.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_test_plotter.py).
+Firstly we run the [1_RTFM_xd_upload.py](RTFMmain%2Fxd_test%2F1_RTFM_xd_upload.py) file to get a neptune run + the loss of the model at the current iteration. Remember to set the path to the correct model and set the parameters for this model correctly.
+Then we run the [2_RTFM_xd_test.py](RTFMmain%2Fxd_test%2F2_RTFM_xd_test.py) file to get the results of the model. These results are also uploaded to neptune (remember to set the -n for neptune run argument).
+Lastly we can upload the plots using the test-file create before and the script: [3_RTFM_xd_test_plotter.py](RTFMmain%2Fxd_test%2F3_RTFM_xd_test_plotter.py). 
+If multiple loss calculations has been done, then an average can be taken and uploaded to Neptune with: [4_RTFM_xd_losswidth.py](RTFMmain%2Fxd_test%2F4_RTFM_xd_losswidth.py).
