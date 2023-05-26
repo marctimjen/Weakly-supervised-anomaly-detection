@@ -70,6 +70,10 @@ The structure of the code is as follows:
 >  - [dataset.py](MGFNmain%2Fdatasets%2Fdataset.py): This is the specific data-set used. It can load both UCF and XD data.
 > - [models](MGFNmain%2Fmodels): Contain the implementation of the MGFN model.
 >  - [mgfn.py](MGFNmain%2Fmodels%2Fmgfn.py): The specific file that contain the code for the MGFN model.
+> - [test](MGFNmain%2Ftest): This dir is used to calculate some test-metrics from the prediction files.
+>   - [test_files_ucf.py](MGFNmain%2Ftest%2Ftest_files_ucf.py): This file does testing of the models prediction (with and without thresholding) on the UCF-crime dataset.
+>   - [total_test_ucf.py](MGFNmain%2Ftest%2Ftotal_test_ucf.py): Used to calculate the measures for different models on the UCF-crime.
+>   - [total_test_xd.py](MGFNmain%2Ftest%2Ftotal_test_xd.py): Used to calculate the measures for different models on the XD-violence.
 > - [UCF_test](MGFNmain%2FUCF_test): This dir is used to upload different results to the Neptune for the UCF data.
 >  - [1_MGFN_UCF_upload.py](MGFNmain%2FUCF_test%2F1_MGFN_UCF_upload.py): This file is used to upload the loss of the train and test-set to Neptune.
 >  - [2_MGFN_UCF_test.py](MGFNmain%2FUCF_test%2F2_MGFN_UCF_test.py): This script does the supervised test of the RTFM-model and upload the results to Neptune.

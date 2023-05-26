@@ -3,8 +3,8 @@ from sklearn.metrics import auc, roc_curve, precision_recall_curve
 from tqdm import tqdm
 import numpy as np
 import sys
-sys.path.append("../..")  # adds higher directory to python modules path
 sys.path.append("..")  # adds higher directory to python modules path
+sys.path.append("../MGFNmain")  # adds higher directory to python modules path
 from MGFNmain.datasets.dataset import Dataset
 
 # import matplotlib.pyplot as plt
