@@ -7,10 +7,10 @@ Note that this repo contain some __init__.py files to make some directories into
 Note that there in some of the scripts will be a doc-string telling more about what the goal of the specific scripts is.
 
 
-How to get started: 
+How to get started:
 1. Download or generate video features. In this repo features has been downloaded from the sites:
 [xd-violence](https://roc-ng.github.io/XD-Violence/) and [UCF-crime ten-crop I3D](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/cyxcarol_connect_hku_hk/EpNI-JSruH1Ep1su07pVLgIBnjDcBGd7Mexb1ERUVShdNg?e=VMRjhE).
-Note that the xd-violence features comes crop-wise (of five crops). This means that one video exists as five .npy feature-files. 
+Note that the xd-violence features comes crop-wise (of five crops). This means that one video exists as five .npy feature-files.
 The networks implemented in this repo use a concatenated version of the feature files. To concatenate the XD files this script has been used: [crop_to_file.py](data%2Fxd_crop_to_file%2Fcrop_to_file.py).
 
 2. The next step is to obtain the lists with paths to the individual files. These lists are known as "rgb_lists". For the XD-violence data-set the list has been generated
@@ -137,43 +137,43 @@ The structure of the code is as follows:
 > - [res_uploader_UCF.py](result_uploader%2Fres_uploader_UCF.py): This file use prediction file from the different networks tested and upload the result data to neptune.
 
 
-> [S3R](S3R): This dir contain the implementation of the S3R model.
+> [S3R](S3R): This dir contains the implementation of the S3R model.
 > - [anomaly](S3R%2Fanomaly)
 >   - [apis](S3R%2Fanomaly%2Fapis)
->     - [comm.py](S3R%2Fanomaly%2Fapis%2Fcomm.py)
->     - [logger.py](S3R%2Fanomaly%2Fapis%2Flogger.py)
->     - [opts.py](S3R%2Fanomaly%2Fapis%2Fopts.py)
->     - [utils.py](S3R%2Fanomaly%2Fapis%2Futils.py)
+>     - [comm.py](S3R%2Fanomaly%2Fapis%2Fcomm.py) This file contains primitives for multi-gpu communication for possibility of distributed training.
+>     - [logger.py](S3R%2Fanomaly%2Fapis%2Flogger.py) Set up logger.
+>     - [opts.py](S3R%2Fanomaly%2Fapis%2Fopts.py) Defines training parameters.
+>     - [utils.py](S3R%2Fanomaly%2Fapis%2Futils.py) Some utility functions.
 >   - [datasets](S3R%2Fanomaly%2Fdatasets)
->     - [video_dataset.py](S3R%2Fanomaly%2Fdatasets%2Fvideo_dataset.py)
+>     - [video_dataset.py](S3R%2Fanomaly%2Fdatasets%2Fvideo_dataset.py) Contain the datasets class used in the training/testing of the S3R model.
 >   - [engine](S3R%2Fanomaly%2Fengine)
->     - [inference.py](S3R%2Fanomaly%2Fengine%2Finference.py)
->     - [trainer.py](S3R%2Fanomaly%2Fengine%2Ftrainer.py)
->   - [losses](S3R%2Fanomaly%2Flosses)
+>     - [inference.py](S3R%2Fanomaly%2Fengine%2Finference.py) This file contain the metric calculation for testing the model.
+>     - [trainer.py](S3R%2Fanomaly%2Fengine%2Ftrainer.py) This file contain the loss functions, train and validation functions for the training for the network.
+>   - [losses](S3R%2Fanomaly%2Flosses) Loss functions.
 >     - [sigmoid_mae_loss.py](S3R%2Fanomaly%2Flosses%2Fsigmoid_mae_loss.py)
 >     - [smooth_loss.py](S3R%2Fanomaly%2Flosses%2Fsmooth_loss.py)
 >     - [sparsity_loss.py](S3R%2Fanomaly%2Flosses%2Fsparsity_loss.py)
 >   - [models](S3R%2Fanomaly%2Fmodels)
 >     - [detectors](S3R%2Fanomaly%2Fmodels%2Fdetectors)
->       - [detector.py](S3R%2Fanomaly%2Fmodels%2Fdetectors%2Fdetector.py)
+>       - [detector.py](S3R%2Fanomaly%2Fmodels%2Fdetectors%2Fdetector.py) The model implementation.
 >     - [modules](S3R%2Fanomaly%2Fmodels%2Fmodules)
->       - [memory_module.py](S3R%2Fanomaly%2Fmodels%2Fmodules%2Fmemory_module.py)
->       - [residual_attention.py](S3R%2Fanomaly%2Fmodels%2Fmodules%2Fresidual_attention.py)
+>       - [memory_module.py](S3R%2Fanomaly%2Fmodels%2Fmodules%2Fmemory_module.py) Implementation of enNormalModule
+>       - [residual_attention.py](S3R%2Fanomaly%2Fmodels%2Fmodules%2Fresidual_attention.py) Implementation of deNormalModule and GlobalStatistics
 >   - [utilities](S3R%2Fanomaly%2Futilities)
-> - [configs](S3R%2Fconfigs)
-> - [data](S3R%2Fdata)
-> - [logs](S3R%2Flogs)
-> - [tools](S3R%2Ftools)
->   - [_init_paths.py](S3R%2Ftools%2F_init_paths.py)
->   - [trainval_anomaly_detector.py](S3R%2Ftools%2Ftrainval_anomaly_detector.py)
-> - [config.py](S3R%2Fconfig.py)
-> - [utils.py](S3R%2Futils.py)
+> - [configs](S3R%2Fconfigs) Configs that define used datasets.
+> - [data](S3R%2Fdata) This dir contains the datasets: files lists for train/test/val
+> - [logs](S3R%2Flogs) Directory for saving training logs
+> - [tools](S3R%2Ftools) Directory for main scripts
+>   - [_init_paths.py](S3R%2Ftools%2F_init_paths.py) Add to path
+>   - [trainval_anomaly_detector.py](S3R%2Ftools%2Ftrainval_anomaly_detector.py) This is the main script which runs training or testing. It also initiates a neptune run to log losses and metrics.
+> - [config.py](S3R%2Fconfig.py) Config class
+> - [utils.py](S3R%2Futils.py) Some utility functions.
 
 > [test](test): This dir contain old files that has been used for testing/production of code.
 
 
 How to upload data for the MGFN model to neptune?
 
-Firstly we run the [MGFN_UCF_upload.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_UCF_upload.py) file to get a neptuen run + the loss of the model at the current iteration. Remember to set the path to the correct model and set the parameters for this model correctly.
+Firstly we run the [MGFN_UCF_upload.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_UCF_upload.py) file to get a neptune run + the loss of the model at the current iteration. Remember to set the path to the correct model and set the parameters for this model correctly.
 Then we run the [MGFN_UCF_test.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_UCF_test.py) file to get the results of the model. These results are also uploaded to neptune (remember to set the -n for neptune run argument).
 Lastly we can upload the plots using the test-file create before and the script: [MGFN_test_plotter.py](MGFNmain%2FUCF_pretrained_test%2FMGFN_test_plotter.py).
