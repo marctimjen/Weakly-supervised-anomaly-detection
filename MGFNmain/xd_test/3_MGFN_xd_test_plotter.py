@@ -17,8 +17,8 @@ gt = np.load("/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy")
 # pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d_test.npy")  # params_xd_reg_11
 # pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d_test.npy")  # params_xd_reg_22
 # pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d_test.npy")  # params_xd_reg_105
-pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD149/mgfn56-i3d_test.npy")  # params_xd_reg_11
-
+# pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD149/mgfn56-i3d_test.npy")  # params_xd_reg_11
+pred = np.load(fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD59/mgfn60-i3d_test.npy")  # params_xd_reg_51
 path = "/home/marc/Documents/data/xd/lists/rgbtest.list"
 
 with open(path, 'r') as f:  # use a context manager to safely opening and closing files
@@ -39,7 +39,7 @@ if nept:
     run = neptune.init_run(
         project="AAM/mgfnxd",
         api_token=token,
-        with_id="MGFNXD-152"
+        with_id="MGFNXD-154"
     )
 
 leng = 0

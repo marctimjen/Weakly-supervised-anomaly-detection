@@ -76,7 +76,8 @@ if __name__ == '__main__':
             # params["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD10/mgfn8-i3d.pkl"  # params_xd_reg_11
             # param["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD30/mgfn1-i3d.pkl"  # params_xd_reg_22
             # param["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD113/mgfn7-i3d.pkl"  # params_xd_reg_105
-            param["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD149/mgfn56-i3d.pkl"  # params_xd_val
+            # param["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD149/mgfn56-i3d.pkl"  # params_xd_val
+            params["pretrained_path"] = fr"/home/marc/Documents/data/xd/results/MGFN/MGFNXD59/mgfn60-i3d.pkl"  # params_xd_reg_51
             params["gt"] = "/home/marc/Documents/data/xd/test_gt/gt-xd_our.npy"
             return params["save_dir"]  # path where to save files
 

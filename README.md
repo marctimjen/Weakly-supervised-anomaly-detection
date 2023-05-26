@@ -63,14 +63,14 @@ The structure of the code is as follows:
 >   - [xd.list](files%2FXD_list%2Fxd.list): This is the file with the gt frames of the test-data of XD-violence.
 
 >[MGFNmain](MGFNmain): This dir is used to implement the MGFN model.
->- [cheat](MGFNmain%2Fcheat): This dir contain files for calculating the test-results of the train-epochs of the model.
+> -[cheat](MGFNmain%2Fcheat): This dir contain files for calculating the test-results of the train-epochs of the model.
 >  - [cheat_test.py](MGFNmain%2Fcheat%2Fcheat_test.py): Is used to test/validate the MGFN model on the UCF train set.
 >  - [cheat_test_xd.py](MGFNmain%2Fcheat%2Fcheat_test_xd.py): Is used to test/validate the MGFN model on the XD train set.
 >- [datasets](MGFNmain%2Fdatasets) Contain the datasets used in the training/testing of the MGFN model.
 >  - [dataset.py](MGFNmain%2Fdatasets%2Fdataset.py): This is the specific data-set used. It can load both UCF and XD data.
->- [models](MGFNmain%2Fmodels): Contain the implementation of the MGFN model.
+> - [models](MGFNmain%2Fmodels): Contain the implementation of the MGFN model.
 >  - [mgfn.py](MGFNmain%2Fmodels%2Fmgfn.py): The specific file that contain the code for the MGFN model.
->- [UCF_test](MGFNmain%2FUCF_test): This dir is used to upload different results to the Neptune for the UCF data.
+> - [UCF_test](MGFNmain%2FUCF_test): This dir is used to upload different results to the Neptune for the UCF data.
 >  - [1_MGFN_UCF_upload.py](MGFNmain%2FUCF_test%2F1_MGFN_UCF_upload.py): This file is used to upload the loss of the train and test-set to Neptune.
 >  - [2_MGFN_UCF_test.py](MGFNmain%2FUCF_test%2F2_MGFN_UCF_test.py): This script does the supervised test of the RTFM-model and upload the results to Neptune.
 >  - [3_MGFN_test_plotter.py](MGFNmain%2FUCF_test%2F3_MGFN_test_plotter.py): This file create prediction plots (and AUC + PR plots) and does upload these to Neptune.
@@ -82,14 +82,14 @@ The structure of the code is as follows:
 >  - [2_MGFN_xd_test.py](MGFNmain%2Fxd_test%2F2_MGFN_xd_test.py): This script does the supervised test of the RTFM-model and upload the results to Neptune.
 >  - [3_MGFN_xd_test_plotter.py](MGFNmain%2Fxd_test%2F3_MGFN_xd_test_plotter.py): This file makes plots of the predictions (and AUC + PR plots) that is uploaded to Neptune.
 >  - [4_MGFN_xd_losswidth.py](MGFNmain%2Fxd_test%2F4_MGFN_xd_losswidth.py): This file calculate the standard error of the loss and upload this to Neptune.
->- [config.py](MGFNmain%2Fconfig.py): Contain some configuration functions that is used while training the networks.
->- [MGFN_cheat_ucf.py](MGFNmain%2FMGFN_cheat_ucf.py): Is the training of the MGFN model on the UCF data using the testing on each epoch.
->- [MGFN_cheat_xd.py](MGFNmain%2FMGFN_cheat_xd.py): Is the training of the MGFN model on the XD data using the testing on each epoch.
->- [MGFN_main_ucf.py](MGFNmain%2FMGFN_main_ucf.py): This is the main script for training the MGFN model on UCF with validation on the validation set.
->- [MGFN_main_xd.py](MGFNmain%2FMGFN_main_xd.py): This is the main script for training the MGFN model on XD with validation on the validation set.
->- [params.py](MGFNmain%2Fparams.py): This file is used to set the hyper-parameteres of the model.
->- [test.py](MGFNmain%2Ftest.py): This is a test-script for testing and debugging the model locally (so no upload to Neptune).
->- [train.py](MGFNmain%2Ftrain.py): This file contain the loss functions, train and validation functions for the training for the network.
+> - [config.py](MGFNmain%2Fconfig.py): Contain some configuration functions that is used while training the networks.
+> - [MGFN_cheat_ucf.py](MGFNmain%2FMGFN_cheat_ucf.py): Is the training of the MGFN model on the UCF data using the testing on each epoch.
+> - [MGFN_cheat_xd.py](MGFNmain%2FMGFN_cheat_xd.py): Is the training of the MGFN model on the XD data using the testing on each epoch.
+> - [MGFN_main_ucf.py](MGFNmain%2FMGFN_main_ucf.py): This is the main script for training the MGFN model on UCF with validation on the validation set.
+> - [MGFN_main_xd.py](MGFNmain%2FMGFN_main_xd.py): This is the main script for training the MGFN model on XD with validation on the validation set.
+> - [params.py](MGFNmain%2Fparams.py): This file is used to set the hyper-parameteres of the model.
+> - [test.py](MGFNmain%2Ftest.py): This is a test-script for testing and debugging the model locally (so no upload to Neptune).
+> - [train.py](MGFNmain%2Ftrain.py): This file contain the loss functions, train and validation functions for the training for the network.
 
 >[plotter](plotter): This dir creates different types of plots for testing purposes.
 > - [MGFN_ucf_test_plotter.py](plotter%2FMGFN_ucf_test_plotter.py): This file creates prediction plots for the UCF-data.
@@ -103,10 +103,10 @@ The structure of the code is as follows:
 >- [process_master.py](process_master%2Fprocess_master.py): This scripts starts the code in chronological order. The process_master waits for the current process to finish before starting a new process.
 
 >[RTFMmain](RTFMmain): This dir is used to implement the RTFM model.
->- [cheat](RTFMmain%2Fcheat): This dir contain files for calculating the test-results (on the test-set) of the train-epochs of the model.
+> - [cheat](RTFMmain%2Fcheat): This dir contain files for calculating the test-results (on the test-set) of the train-epochs of the model.
 >  - [cheat_test_ucf.py](RTFMmain%2Fcheat%2Fcheat_test_ucf.py): This file is used for calculate the test/val loss of the RTFM model on the ucf dataset.
 >  - [cheat_test_xd.py](RTFMmain%2Fcheat%2Fcheat_test_xd.py): This script calculate the test/val loss for the RTFM model on the XD data.
->- [UCF_test](RTFMmain%2FUCF_test): This dir is used to upload different results to the Neptune for the UCF data.
+> - [UCF_test](RTFMmain%2FUCF_test): This dir is used to upload different results to the Neptune for the UCF data.
 >  - [1_RTFM_UCF_upload.py](RTFMmain%2FUCF_test%2F1_RTFM_UCF_upload.py): This file is used to upload the loss of the train and test-set to Neptune.
 >  - [2_RTFM_UCF_test.py](RTFMmain%2FUCF_test%2F2_RTFM_UCF_test.py): This script does the supervised test of the RTFM-model and upload the results to Neptune.
 >  - [3_RTFM_test_plotter.py](RTFMmain%2FUCF_test%2F3_RTFM_test_plotter.py): This file create prediction plots (and AUC + PR plots) and does upload these to Neptune.
