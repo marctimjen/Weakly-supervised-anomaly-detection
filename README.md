@@ -92,8 +92,8 @@ The structure of the code is as follows:
 > - [train.py](MGFNmain%2Ftrain.py): This file contain the loss functions, train and validation functions for the training for the network.
 
 > [plotter](plotter): This dir creates different types of plots for testing purposes.
-> - [MGFN_ucf_test_plotter.py](plotter%2FMGFN_ucf_test_plotter.py): This file creates prediction plots for the UCF-data.
-> - [MGFN_xd_test_plotter.py](plotter%2FMGFN_xd_test_plotter.py): This file creates prediction plots for the XD-data.
+> - [ucf_test_plotter.py](plotter%2Fucf_test_plotter.py): This file creates prediction plots for the UCF-data.
+> - [xd_test_plotter.py](plotter%2Fxd_test_plotter.py): This file creates prediction plots for the XD-data.
 
 > [process_master](process_master): This dir is used to run different processes - starting training/testing of networks.
 >- [delete_failed_data.py](process_master%2Fdelete_failed_data.py): This file deletes the testing results on neptune if the data-upload has failed.

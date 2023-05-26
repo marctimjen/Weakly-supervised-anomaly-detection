@@ -15,8 +15,6 @@ with open("/home/marc/Documents/data/s3r/ucf-crime_pretrain.pickle", "rb") as f:
 with open("/home/marc/Documents/data/s3r/ucf-crime_validation.pickle", "rb") as f:
     s3r_path_ucf_val = pkl.load(f)
 
-print("no")
-
 # network = "mgfn7"
 # pred = np.load(f"/home/marc/Documents/data/UCF/results/MGFN/Nept_id_MGFN-6/{network}-i3d_test.npy")
 # pred2 = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/MGFNmain/results/UCF_pretrained/mgfn_ucf_test.npy")
@@ -44,7 +42,7 @@ val.sort()  # make sure to sort the values!
 start = "/home/marc/Documents/data/UCF/test/"
 end = "_i3d.npy"
 
-nept = False
+nept = True
 if nept:
     import neptune
     import os
@@ -60,7 +58,7 @@ colors = ['tab:blue', 'tab:cyan', 'tab:green', 'tab:olive', 'tab:gray', 'tab:pur
 
 
 for i in val:
-    string = "UCF_" + i[len(start):-len(end)]
+    string = "UCF " + i[len(start):-len(end)]
     length = np.load(i).shape[0] * 16
     length += leng
     gt_anno = gt[leng: length]
@@ -77,7 +75,7 @@ for i in val:
         c_idx += 1
 
     plt.ylim(-0.05, 1.05)
-    plt.legend()
+    # plt.legend()
     plt.tight_layout(pad=5.0)
     fig.set_size_inches(10, 3)
     plt.title(f"{string[:-5]}")
@@ -92,9 +90,9 @@ for i in val:
     leng = length
 
 
-    #
-    # if nept:
-    #     run[f"test_pics/{network}/{string[:-3]}"].upload(path)
+
+    if nept:
+        run[f"test_pics/{string[:-3]}"].upload(path)
 
 if nept:
     run.stop()
