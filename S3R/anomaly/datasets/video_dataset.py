@@ -127,7 +127,11 @@ class Dataset(data.Dataset):
                     index = 729 # 810
                 if self.subset == 'val':
                     index = 81
-            elif 'xd-violence' in self.dataset: index = 1748
+            elif 'xd-violence' in self.dataset:
+                if self.subset == 'train':
+                    index = 1402 # 1748
+                if self.subset == 'val':
+                    index = 346
 
             self.video_list = video_list[index:] if self.is_normal else video_list[:index]
         else:
