@@ -14,9 +14,12 @@ This script is for comparing two files: The Ground Truth file (GT) and a predict
 
 model_path = f"/home/marc/Documents/data/Model_files"
 
-gt = np.load(model_path + "/XD/gt-xd_our.npy")
+gt = np.load(model_path + "/UCF/gt-ucf_our.npy")
 # pred = np.load(model_path + "/MGFN_xd_pre_test.npy")
-pred = np.load(model_path + "/MGFN_ucf_cheat_A_test.npy")
+# pred = np.load(model_path + "/MGFN_xd_cheat_A_test.npy")
+np.random.seed(42)
+pred = np.random.uniform(low=0, high=1, size=len(gt))
+
 # pred = np.load(model_path + "/MGFN_ucf_cheat_B_test.npy")
 # pred = np.load(model_path + "/MGFN_ucf_cheat_C_test.npy")
 # pred = np.load(model_path + "/RTFM_xd_val_test.npy")

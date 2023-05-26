@@ -7,7 +7,7 @@ token = os.getenv('NEPTUNE_API_TOKEN')
 run = neptune.init_run(
     project="AAM/rtfmucf",
     api_token=token,
-    with_id="RTFMUC-47"
+    with_id="RTFMUC-51"
 )
 
 
@@ -26,7 +26,7 @@ run["test/loss_std"] = np.std(test_loss)
 run["train/loss_mean"] = np.mean(train_loss)
 run["train/loss_std"] = np.std(train_loss)
 
-run["model_pre"] = "nept_id_RTFMUC-22/rftm91-i3d.pkl"
+run["model_pre"] = "nept_id_RTFMUC-38/rftm771-i3d.pkl"
 
 run.stop()
 
