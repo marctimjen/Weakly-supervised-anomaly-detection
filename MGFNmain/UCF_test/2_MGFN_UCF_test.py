@@ -68,12 +68,15 @@ if __name__ == '__main__':
 
     def path_inator(params, args):
         if args.user == "marc":
-            params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
-            params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
+            # params["test_rgb_list"] = "/home/marc/Documents/data/UCF/UCF_list/ucf-i3d-test.list"
+            params["test_rgb_list"] = "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/files/UCF_list/ucf-i3d-test.list"
+            # params["gt"] = "/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy"
+            params["gt"] = "/home/marc/Documents/data/Model_files/UCF/gt-ucf_our.npy"
             # param["pretrained_path"] = fr"/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/" \
             #                             + "MGFNmain/results/UCF_pretrained/mgfn_ucf.pkl"
             # param["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-38/mgfn95-i3d.pkl"  # params_cheat_1
-            param["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfn50-i3d.pkl"  # params_def
+            # param["pretrained_path"] = "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-63/mgfn50-i3d.pkl"  # params_def
+            param["pretrained_path"] = "/home/marc/Documents/data/Model_files/MGFN_ucf_pre.pkl"  # params_def
 
             return ""
 
@@ -90,12 +93,12 @@ if __name__ == '__main__':
     # device = torch.device("cpu")
     device = torch.device(f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu')
 
-    token = os.getenv('NEPTUNE_API_TOKEN')
-    run = neptune.init_run(
-        project="AAM/mgfn",
-        api_token=token,
-        with_id=f"MGFN-{args.nept_run}"
-    )
+    # token = os.getenv('NEPTUNE_API_TOKEN')
+    # run = neptune.init_run(
+    #     project="AAM/mgfn",
+    #     api_token=token,
+    #     with_id=f"MGFN-{args.nept_run}"
+    # )
 
     for i in range(param["max_epoch"]):
         model = mgfn(dims=(param["dims1"], param["dims2"], param["dims3"]),
@@ -113,24 +116,33 @@ if __name__ == '__main__':
         model = model.to("cpu")
 
         di = {k.replace('module.', ''): v for k, v in torch.load(param["pretrained_path"], map_location="cpu").items()}
-        # di["to_logits.weight"] = di.pop("to_logits.0.weight")
-        # di["to_logits.bias"] = di.pop("to_logits.0.bias")
+        di["to_logits.weight"] = di.pop("to_logits.0.weight")
+        di["to_logits.bias"] = di.pop("to_logits.0.bias")
 
         model_dict = model.load_state_dict(di)
         model = model.to(device)
         rec_auc, pr_auc, f1, f1_macro, acc, prec, recall, ap = test(test_loader, model, param, device)
 
-        run["test/auc"].log(rec_auc)
-        run["test/pr"].log(pr_auc)
-        run["test/f1"].log(f1)
-        run["test/f1_macro"].log(f1_macro)
-        run["test/accuracy"].log(acc)
-        run["test/precision"].log(prec)
-        run["test/recall"].log(recall)
-        run["test/average_precision"].log(ap)
+        print("rec_auc", rec_auc)
+        print("pr_auc", pr_auc)
+        print("f1", f1)
+        print("f1_macro", f1_macro)
+        print("acc", acc)
+        print("prec", prec)
+        print("recall", recall)
+        print("ap", ap)
+
+        # run["test/auc"].log(rec_auc)
+        # run["test/pr"].log(pr_auc)
+        # run["test/f1"].log(f1)
+        # run["test/f1_macro"].log(f1_macro)
+        # run["test/accuracy"].log(acc)
+        # run["test/precision"].log(prec)
+        # run["test/recall"].log(recall)
+        # run["test/average_precision"].log(ap)
         break
 
-    run.stop()
+    # run.stop()
 
 
 # dir = fr"/home/marc/Downloads/UCF_Test_ten_i3d/"

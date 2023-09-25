@@ -14,7 +14,7 @@ dataset.
 gt_file = np.load("/home/marc/Documents/data/UCF/UCF_list/gt-ucf_our.npy")
 # gt_file = np.load("/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/RTFMmain/list/gt-ucf.npy")
 
-model = "random"
+model = "s3r_val"
 
 if model[-3:] == "thr":
     use_thresholding = True
@@ -34,6 +34,13 @@ model_data = {
     "random_thr": "/home/marc/Documents/GitHub/8semester/Weakly-supervised-anomaly-detection/result_uploader/rando.npy",
     "Shanghai": "/home/marc/Documents/data/shanghai/shanghai_best_ckpt_test.npy",
     "MGFN_best_cheat": "/home/marc/Documents/data/UCF/results/MGFN/nept_id_MGFN-38/mgfn95-i3d_test.npy",
+
+    "Pretrained_s3r": "/home/marc/Documents/data/s3r/ucf-crime_pretrain.npy",
+
+    "MGFN_val": "/home/marc/Documents/data/Model_files/MGFN_ucf_val_test.npy",
+    "RTFM_val": "/home/marc/Documents/data/Model_files/RTFM_ucf_val_test.npy",
+    "s3r_val": "/home/marc/Documents/data/s3r/ucf-crime_validation.npy",
+
 
     "RTFM_UCF_22": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d_test.npy",
     "RTFM_UCF_22_thr": "/home/marc/Documents/data/UCF/results/rftm/nept_id_RTFMUC-22/rftm91-i3d_test.npy",

@@ -12,6 +12,7 @@ classes in the UCF crime dataset.
 
 
 ids = {
+    # "Pretrained_MGFN": "RES-36",
     # "Pretrained_RTFM": "RES-2",
     # "Pretrained_MIL": "RES-3",
     # "Pretrained_MGFN": "RES-5",
@@ -22,11 +23,11 @@ ids = {
 }
 
 
-# metric = "auc"
+metric = "auc"
 # metric = "pr"
 # metric = "ap"
 # metric = "recall"
-metric = "precision"
+# metric = "precision"
 # metric = "f1_macro"
 # metric = "f1"
 # metric = "accuarcy"
@@ -35,7 +36,9 @@ metric = "precision"
 ids = ids | {
     # "MGFN_AN46": "RES-13",
     # "MGFN_AN46_thr": "RES-21",
-    # "Pretrained_MGFN": "RES-36",
+
+    #
+
     # "Pretrained_MGFN_thr": "RES-16",
     # "RTFM_UCF_22": "RES-17",
     # "RTFM_UCF_22_thr": "RES-18",
@@ -43,15 +46,21 @@ ids = ids | {
     # "RTFM_UCF_22_0_thr": "RES-20",
     # "MGFN_63_val": "RES-37",
     # "MGFN_63_val_thr": "RES-25",
-    "RTFM_38_val": "RES-26",
+    # "RTFM_38_val": "RES-26",
     # "RTFM_38_val_thr": "RES-27",
-    "random": "RES-35",
+    # "random": "RES-35",
     # "random_thr": "RES-38",
     # "Shanghai": "RES-40",
     # "MGFN_63_final": "RES-41",
     # "MGFN_63_final_thr": "RES-42",
     # "MGFN_best_cheat": "RES-46",
-    "RTFM_38_771_val": "RES-47",
+    # "RTFM_38_771_val": "RES-47",
+
+    # "Pretrained_s3r": "RES-78",
+
+    "MGFN_val": "RES-79",
+    "RTFM_val": "RES-80",
+    "s3r_val": "RES-81",
 }
 
 
@@ -85,7 +94,7 @@ for key in data.keys():
 
 df = df.T
 
-ax = df.plot.bar(rot=0)
+ax = df.plot.bar(rot=0, ylim=(0, 1.0))
 
 for p in ax.patches:
    height = p.get_height()
@@ -94,8 +103,9 @@ for p in ax.patches:
       ha='center', rotation=45)
 
 ax.set_xlabel("Anomaly type")
-ax.set_ylabel(f"{metric}")
+ax.set_ylabel(f"{metric.upper()}")
 ax.set_title(f"{metric.upper()} of UCF anomaly classes")
+plt.axhline(y=0.49999, color='r', linestyle="dashed")
 plt.plot()
 plt.show()
 
